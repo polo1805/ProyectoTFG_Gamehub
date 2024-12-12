@@ -10,6 +10,8 @@ use PHPMailer\PHPMailer\SMTP;
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
+require_once('./config/SMTP_credenciales.php');
+$credencialesSMTP = new credenciales_SMTP;
 class Services{
 
 
@@ -181,18 +183,19 @@ class Services{
         }
     }
     public function enviarCodigo($email , $codigo){
+        global $credencialesSMTP; 
         $mail = new PHPMailer(true);
         try{
             //configuracion del servidor SMTP de gmail
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true ; 
-            $mail->Username = 'gamehub.webapp@gmail.com';
-            $mail->Password = 'khajrtqsmdugjojg';
+            $mail->Username = $credencialesSMTP->email;
+            $mail->Password = $credencialesSMTP->password;
             $mail->SMTPSecure = PHPMailer :: ENCRYPTION_STARTTLS;
-            $mail->Port = 587 ; 
+            $mail->Port = $credencialesSMTP->port ; 
             //Configuaracion del envio de email
-            $mail->setFrom('gamehub.webapp@gmail.com' , 'Gamehub');
+            $mail->setFrom($credencialesSMTP->email , 'Gamehub');
             $mail->addAddress($email);
             $mail->isHTML(true);
             //contenido del correo

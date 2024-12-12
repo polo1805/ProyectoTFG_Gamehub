@@ -4,7 +4,7 @@ require_once('./services.php');
 
 
 $service = new Services();
-
+$credencialesSMTP = new credenciales_SMTP;
 $request = trim($_SERVER['REQUEST_URI'] , '/');
 header('Content-Type: application/json');
 if($_SERVER['REQUEST_METHOD']==='GET'){
