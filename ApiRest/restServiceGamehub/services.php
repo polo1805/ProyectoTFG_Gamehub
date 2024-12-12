@@ -10,176 +10,215 @@ use PHPMailer\PHPMailer\SMTP;
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
-require_once('./config/SMTP_credenciales.php');
+require_once ('./config/credenciales_SMTP.php');
 $credencialesSMTP = new credenciales_SMTP;
 class Services{
 
 
     public function status(){
-        header('Content-Type: application/json');
-        $conexionBD = new ConexionBBDD;
-        $conn = $conexionBD->conectarBBDD();
-        if($conn){
-            http_response_code('200');
+        try{
+            header('Content-Type: application/json');
+            $conexionBD = new ConexionBBDD;
+            $conn = $conexionBD->conectarBBDD();
+            if($conn){
+                http_response_code('200');
+                return json_encode([
+                    'status'=>200 , 
+                    'message'=>'OK'
+                ]);
+            }
+        }catch (Exception $error){
+            http_response_code(500);
             return json_encode([
-                'status'=>200 , 
-                'message'=>'OK'
+                'status'=>500 , 
+                'message' => 'Internal Server Error : ' . $error
             ]);
+        }finally{
+            $conn->close();
         }
+
             
     }
     public function registrarUsuario(){
-        header('Content-Type: application/json');
-        $conexionBD = new ConexionBBDD;
-        $conn = $conexionBD->conectarBBDD();
-        if($conn){
-            $json = file_get_contents('php://input');
-            $datos = json_decode($json , true);
-            if(isset($datos['NOMBRE'] , $datos['EMAIL'] , $datos['USERNAME'] , $datos['PASSWORD'])){
-                //Definimos los datos que se van a registrar
-                $nombre = $datos['NOMBRE'] ; 
-                $email = $datos['EMAIL'] ; 
-                $fecha = date('Y-m-d');
-                $contraseña = $datos['PASSWORD'] ; 
-                $username = $datos['USERNAME'];
-                $rol = 'USER';
-                $imagen = 'default.jpg';
-                $contraseñaHash = password_hash($contraseña , PASSWORD_DEFAULT);//Encriptacion de contraseñas
-                $validacion = false;
-                $codigo = random_int(100000 , 900000);
-                $stmt = $conn->prepare("SELECT * FROM USUARIOS 
-                WHERE ( CORREO_ELECTRONICO = ? OR NOMBRE_USUARIO = ? ) AND VALIDACION = 1");//Comprobamos que si el usuario ya existe y si existe que este validado
-                $stmt->bind_param('ss' , $email , $username);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                if($result->num_rows > 0){//La select nos devuelve datos , por lo que el usuario existe y esta validado , mandamos un error
-                    http_response_code(409);
-                    return json_encode([
-                        'status'=>409 , 
-                        'message'=>'El correo electronico o el nombre de usuario ya existen'
-                    ]);
-                }else{ //El usuario sabemos que no esta validado pero comprobamos que existe para volver a mandarle otro codigo de verificacion
+        try{
+            $conexionBD = new ConexionBBDD;
+            $conn = $conexionBD->conectarBBDD();
+            if($conn){
+                $json = file_get_contents('php://input');
+                $datos = json_decode($json , true);
+                if(isset($datos['NOMBRE'] , $datos['EMAIL'] , $datos['USERNAME'] , $datos['PASSWORD'])){
+                    //Definimos los datos que se van a registrar
+                    $nombre = $datos['NOMBRE'] ; 
+                    $email = $datos['EMAIL'] ; 
+                    $fecha = date('Y-m-d');
+                    $contraseña = $datos['PASSWORD'] ; 
+                    $username = $datos['USERNAME'];
+                    $rol = 'USER';
+                    $imagen = 'default.jpg';
+                    $contraseñaHash = password_hash($contraseña , PASSWORD_DEFAULT);//Encriptacion de contraseñas
+                    $validacion = false;
+                    $codigo = random_int(100000 , 900000);
                     $stmt = $conn->prepare("SELECT * FROM USUARIOS 
-                    WHERE CORREO_ELECTRONICO = ? OR NOMBRE_USUARIO = ?");//Miramos si el usuario existe para asi no volver a crearlo 
+                    WHERE ( CORREO_ELECTRONICO = ? OR NOMBRE_USUARIO = ? ) AND VALIDACION = 1");//Comprobamos que si el usuario ya existe y si existe que este validado
                     $stmt->bind_param('ss' , $email , $username);
                     $stmt->execute();
                     $result = $stmt->get_result();
-                    if($result->num_rows > 0){//Existe por lo que le enviamos el codigo y lo actualizamos en la bbdd
-                        $stmt = $conn -> prepare("UPDATE USUARIOS SET CODIGO_VERIFICACION = ? 
-                        WHERE CORREO_ELECTRONICO = ?");
-                        $stmt->bind_param('ss' , $codigo , $email);
+    
+                    if($result->num_rows > 0){//La select nos devuelve datos , por lo que el usuario existe y esta validado , mandamos un error
+                        http_response_code(409);
+                        return json_encode([
+                            'status'=>409 , 
+                            'message'=>'El correo electronico o el nombre de usuario ya existen'
+                        ]);
+                    }else{ //El usuario sabemos que no esta validado pero comprobamos que existe para volver a mandarle otro codigo de verificacion
+                        $stmt = $conn->prepare("SELECT * FROM USUARIOS 
+                        WHERE CORREO_ELECTRONICO = ? OR NOMBRE_USUARIO = ?"); //Miramos si el usuario existe para asi no volver a crearlo 
+                        $stmt->bind_param('ss' , $email , $username);
                         $stmt->execute();
-                        $this->enviarCodigo($email , $codigo);
-                    }else{ // No existe por lo que tendremos insertarlo 
-                        $stmt = $conn->prepare("INSERT INTO USUARIOS (NOMBRE , CORREO_ELECTRONICO , FECHA_REGISTRO , NOMBRE_USUARIO , CONTRASEÑA , ROL , IMAGEN , 
-                        VALIDACION , CODIGO_VERIFICACION) 
-                        VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? )");
-        
-                        $stmt -> bind_param('sssssssii' , $nombre , $email , $fecha , $username , $contraseñaHash , $rol , $imagen , $validacion , $codigo);
-        
-                        if($stmt->execute()){ //Registrado con exito
-                            return $this->enviarCodigo($email , $codigo);
-        
-                        }else{ //Error al registrar el usuario
-                            http_response_code(502);
+                        $result = $stmt->get_result();
+                        if($result->num_rows > 0){ //Existe por lo que le enviamos el codigo y lo actualizamos en la bbdd
+                            $stmt = $conn -> prepare("UPDATE USUARIOS SET CODIGO_VERIFICACION = ? 
+                            WHERE CORREO_ELECTRONICO = ?");
+                            $stmt->bind_param('ss' , $codigo , $email);
+                            $stmt->execute();
+                            $this->enviarCodigo($email , $codigo);
+                        }else{ // No existe por lo que tendremos insertarlo 
+                            $stmt = $conn->prepare("INSERT INTO USUARIOS (NOMBRE , CORREO_ELECTRONICO , FECHA_REGISTRO , NOMBRE_USUARIO , CONTRASEÑA , ROL , IMAGEN , 
+                            VALIDACION , CODIGO_VERIFICACION) 
+                            VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? )");
+            
+                            $stmt -> bind_param('sssssssii' , $nombre , $email , $fecha , $username , $contraseñaHash , $rol , $imagen , $validacion , $codigo);
+            
+                            if($stmt->execute()){ //Registrado con exito
+                                return $this->enviarCodigo($email , $codigo);
+            
+                            }else{ //Error al registrar el usuario
+                                http_response_code(502);
+                                return json_encode([
+                                    'status'=>502 , 
+                                    'message'=>'No se ha podido registrar el usuario : ' . $conn->error 
+                                ]);
+                            }
+                        }
+                    }
+                }else{ //No se han enviado todos los datos
+                    http_response_code(400);
+                    return json_encode([
+                        'status'=>400 , 
+                        'message'=>'Datos incompletos o invalidos'
+                    ]);
+                }
+            }
+        }catch(Exception $error ){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message' => 'Internal Server Error : ' . $error
+            ]);
+        }finally{
+            $conn->close();
+        }
+
+    }
+    // Verifica si el usuario y contraseña corresponden con registrado en la bbdd en el log in
+    public function comprobarUsuario(){
+        try{
+            $conexionBD = new ConexionBBDD;
+            $conn = $conexionBD->conectarBBDD();
+            if($conn){
+                $json = file_get_contents('php://input');
+                $datos = json_decode($json , true);
+                if(isset($datos['USUARIO'] , $datos['CONTRASEÑA'])){
+                    $usuario = $datos['USUARIO'];
+                    $contraseña = $datos['CONTRASEÑA'];
+                    $stmt = $conn->prepare("SELECT CONTRASEÑA FROM USUARIOS 
+                    WHERE ( CORREO_ELECTRONICO = ? OR NOMBRE_USUARIO = ? ) AND VALIDACION = 1");
+                    $stmt->bind_param('ss' , $usuario , $usuario);
+                    $stmt->execute();
+                    $result = $stmt ->get_result();
+                    if($result->num_rows>0){ // si nos devuelve es que el usuario existe
+                        $row = $result->fetch_assoc();
+                        $passwordHashed = $row['CONTRASEÑA'];
+                        if(password_verify($contraseña , $passwordHashed)){//comprobamos que la contraseña recibida es la misma que la haseada en el bbdd
+                            http_response_code(200);
                             return json_encode([
-                                'status'=>502 , 
-                                'message'=>'No se ha podido registrar el usuario : ' . $conn->error 
+                                'status'=>200 ,
+                                'message' =>'Usuario correcto'
+                            ]);
+                        }else{ //Se ha equivocado de contraseña
+                            http_response_code(401);
+                            return json_encode([
+                                'status'=>401 ,
+                                'message' =>'Contraseña incorrecta'
+                            ]);
+                        }
+                    }else{ //El usuario no existe en la base de datos
+                        http_response_code(404);
+                        return json_encode([
+                            'status'=>404 ,
+                            'message' =>'Usuario no encontrado'
+                        ]);
+                    }
+       
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message' => 'Internal Server Error : ' . $error
+            ]);
+        }finally{
+            $conn->close();
+        }
+
+    }
+    //Comprueba que el codigo recibido , es el codigo registrado en la base de datos
+    public function validarCodigo(){
+        try{
+            header('Content-Type: application/json');
+            $conexionBD = new ConexionBBDD;
+            $conn = $conexionBD->conectarBBDD();
+            if($conn){
+                $json = file_get_contents('php://input');
+                $datos = json_decode($json , true);
+                if(isset($datos['EMAIL'] , $datos['CODIGO'])){
+                    $email = $datos['EMAIL'];
+                    $codigo = $datos['CODIGO'];
+                    $stmt = $conn->prepare("SELECT CODIGO_VERIFICACION FROM USUARIOS 
+                    WHERE CORREO_ELECTRONICO = ?");//Obtenemos el codigo de verificacion de la BBDD y lo comparamos con el recibido
+                    $stmt->bind_param('s' , $email);
+                    $stmt->execute();
+                    $result = $stmt ->get_result();
+                    if($result->num_rows>0){
+                        $row = $result->fetch_assoc();
+                        if($row['CODIGO_VERIFICACION'] != $codigo){//Si no es el mismo el recibido que el de la BBDD , mandamos error
+                            http_response_code(401);
+                            return json_encode([
+                                'status'=>401 ,
+                                'message' =>'Codigo de validacion incorrecto'
+                            ]);
+                        }else{//Si es igual , actulizamos el estado de validacion a true
+                            $stmt = $conn ->prepare("UPDATE USUARIOS SET VALIDACION = 1 WHERE CORREO_ELECTRONICO = ?");
+                            $stmt -> bind_param('s' , $email);
+                            $stmt->execute();
+                            http_response_code(200);
+                            return json_encode([
+                                'status'=>200 ,
+                                'message' =>'Codigo de validacion correcto'
                             ]);
                         }
                     }
                 }
-
-
-            }else{ //No se han enviado todos los datos
-                http_response_code(400);
-                return json_encode([
-                    'status'=>400 , 
-                    'message'=>'Datos incompletos o invalidos'
-                ]);
             }
-        }
-    }
-    // Verifica si el usuario y contraseña corresponden con registrado en la bbdd en el log in
-    public function comprobarUsuario(){
-        header('Content-Type: application/json');
-        $conexionBD = new ConexionBBDD;
-        $conn = $conexionBD->conectarBBDD();
-        if($conn){
-            $json = file_get_contents('php://input');
-            $datos = json_decode($json , true);
-            if(isset($datos['USUARIO'] , $datos['CONTRASEÑA'])){
-                $usuario = $datos['USUARIO'];
-                $contraseña = $datos['CONTRASEÑA'];
-                $stmt = $conn->prepare("SELECT CONTRASEÑA FROM USUARIOS 
-                WHERE ( CORREO_ELECTRONICO = ? OR NOMBRE_USUARIO = ? ) AND VALIDACION = 1");
-                $stmt->bind_param('ss' , $usuario , $usuario);
-                $stmt->execute();
-                $result = $stmt ->get_result();
-                if($result->num_rows>0){ // si nos devuelve es que el usuario existe
-                    $row = $result->fetch_assoc();
-                    $passwordHashed = $row['CONTRASEÑA'];
-                    if(password_verify($contraseña , $passwordHashed)){//comprobamos que la contraseña recibida es la misma que la haseada en el bbdd
-                        http_response_code(200);
-                        return json_encode([
-                            'status'=>200 ,
-                            'message' =>'Usuario correcto'
-                        ]);
-                    }else{
-                        http_response_code(401);
-                        return json_encode([
-                            'status'=>401 ,
-                            'message' =>'Contraseña incorrecta'
-                        ]);
-                    }
-                }else{
-                    http_response_code(404);
-                    return json_encode([
-                        'status'=>404 ,
-                        'message' =>'Usuario no encontrado'
-                    ]);
-                }
-   
-            }
-        }
-    }
-    //Comprueba que el codigo recibido , es el codigo registrado en la base de datos
-    public function validarCodigo(){
-        header('Content-Type: application/json');
-        $conexionBD = new ConexionBBDD;
-        $conn = $conexionBD->conectarBBDD();
-        if($conn){
-            $json = file_get_contents('php://input');
-            $datos = json_decode($json , true);
-            if(isset($datos['EMAIL'] , $datos['CODIGO'])){
-                $email = $datos['EMAIL'];
-                $codigo = $datos['CODIGO'];
-                $stmt = $conn->prepare("SELECT CODIGO_VERIFICACION FROM USUARIOS 
-                WHERE CORREO_ELECTRONICO = ?");//Obtenemos el codigo de verificacion de la BBDD y lo comparamos con el recibido
-                $stmt->bind_param('s' , $email);
-                $stmt->execute();
-                $result = $stmt ->get_result();
-                if($result->num_rows>0){
-                    $row = $result->fetch_assoc();
-                    if($row['CODIGO_VERIFICACION'] != $codigo){//Si no es el mismo el recibido que el de la BBDD , mandamos error
-                        http_response_code(401);
-                        return json_encode([
-                            'status'=>401 ,
-                            'message' =>'Codigo de validacion incorrecto'
-                        ]);
-                    }else{//Si es igual , actulizamos el estado de validacion a true
-                        $stmt = $conn ->prepare("UPDATE USUARIOS SET VALIDACION = 1 WHERE CORREO_ELECTRONICO = ?");
-                        $stmt -> bind_param('s' , $email);
-                        $stmt->execute();
-                        http_response_code(200);
-                        return json_encode([
-                            'status'=>200 ,
-                            'message' =>'Codigo de validacion correcto'
-                        ]);
-                    }
-                }
-            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message' => 'Internal Server Error : ' . $error
+            ]);
+        }finally{
+            $conn->close();
         }
     }
     public function enviarCodigo($email , $codigo){
