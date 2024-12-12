@@ -1,0 +1,16 @@
+<app-loading [isVisible]="isLoading"></app-loading>
+<form class="needs-validation" novalidate>
+    <h1 class="text-center my-5">Verificacion</h1>
+    <p class="text-center">Se ha enviado un codigo de verificacion a la siguiente direccion de correo electronico :  {{emailRecibido}} . Introduce el codigo para verificar la cuenta.</p>
+    <div class=" w-100" id="inputCodigo">
+        <input [(ngModel)]="codigo" name="codigo" type="number" class="form-control text-center no-spinner" [ngClass]="{'is-invalid' : !codigoValidado}" 
+        id="codigo" aria-describedby="codigo" for="invalid-feedback" required>
+        <div class="invalid-feedback">
+            Por favor , introduce un  codigo valido 
+        </div>
+    </div>
+    <button type="submit" class="btn btn-warning p-3 w-100" (click)="clickVerificacion()">Verificar</button>
+    <div *ngIf="mensajeError" class="alert alert-danger" role="alert">
+        {{mensajeError}}
+    </div>
+</form>

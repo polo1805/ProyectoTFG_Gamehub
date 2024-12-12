@@ -1,0 +1,34 @@
+<div class="container">
+    <img src="/fotosGamehub/portada_gamehub.png" alt="portadaGamehub">
+</div>
+<h1 class="text-center mb-4">Inicia sesión en Gamehub</h1>
+<form class="needs-validation" novalidate>
+    <div class="form-floating w-100 has-validation" id="inputUsuario">
+        <input [(ngModel)]="usuario" name="usuario" type="user" class="form-control" [ngClass]="{'is-invalid' : !usuarioValidado}" 
+        id="usuario" aria-describedby="email" placeholder="Correo Electronico o usuario" for="invalid-feedback" required>
+        <div class="invalid-feedback">
+            Por favor , introduce un usuario o correo electronico valido
+        </div>
+        <label for="usuario">Correo electronico o usuario</label>
+
+    </div>
+    <div class="input-group has-validation" id="inputContraseña">
+        <div class="form-floating" [ngClass]="{'is-invalid' : !passwordValidada}">
+            <input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" name="password" [ngClass]="{'is-invalid' : !passwordValidada}"
+            class="form-control" id="password" placeholder="Contraseña" for="invalid-feedback" required>
+            <label for="password">Contraseña</label>
+        </div>
+        <button class="input-group-text bg-dark" [ngClass]="{'is-invalid' : !passwordValidada}" (click)="cambiarVisibilidad()">
+            <i [class]="passwordVisible ? 'bi bi-eye-slash' : 'bi bi-eye-fill'" ></i>
+        </button>
+        <div class="invalid-feedback">
+            Por favor , introduce una contraseña valida
+        </div>
+    </div>
+    <div *ngIf="mensajeError" class="alert alert-danger" role="alert">
+        {{mensajeError}}
+    </div>
+    <button type="submit" class="btn btn-warning p-3 w-100" (click)="clickInicioSesion()"> Iniciar Sesion</button>
+    <button class="btn btn-dark p-3 border-white w-100">¿Olvidaste tu contraseña?</button>
+    <p>¿No tienes cuenta? <a routerLink = "/registro">Registrate aqui</a></p>
+</form>

@@ -1,0 +1,7 @@
+.centered{
+    top: 40%;
+    position: absolute;
+    z-index: 9999;
+    width: 5rem;
+    height: 5rem;
+}
