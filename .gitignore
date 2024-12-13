@@ -1,2 +1,2 @@
-#Configuracion de la BBDD
-**/config
+#Archivo .env con informacion sensible
+.env

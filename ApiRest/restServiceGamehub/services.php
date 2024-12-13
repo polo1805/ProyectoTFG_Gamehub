@@ -1,17 +1,27 @@
 <?
+
 // Mostrar errores PHP (Desactivar en producción)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+//importamos la conexion con la bbddd
 require_once('./config/conexionBBDD.php');
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
+//importamos la key 
+require_once('./config/auth.php');
+//Importamos JWT
+require 'vendor/autoload.php';
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+//Importamos PHPMailer
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
-require_once ('./config/credenciales_SMTP.php');
-$credencialesSMTP = new credenciales_SMTP;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+//Cargamos las variables de entorno 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 class Services{
 
 
@@ -126,6 +136,14 @@ class Services{
             $conexionBD = new ConexionBBDD;
             $conn = $conexionBD->conectarBBDD();
             if($conn){
+                $now = strtotime('now');
+                
+                $payload = [
+                    'exp' => $now + 3600 ,
+                    'data' =>'1' , 
+                    ''
+                ] ; 
+
                 $json = file_get_contents('php://input');
                 $datos = json_decode($json , true);
                 if(isset($datos['USUARIO'] , $datos['CONTRASEÑA'])){
@@ -227,15 +245,15 @@ class Services{
         try{
             //configuracion del servidor SMTP de gmail
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
+            $mail->Host = $_ENV['HOST'];
             $mail->SMTPAuth = true ; 
-            $mail->Username = $credencialesSMTP->email;
-            $mail->Password = $credencialesSMTP->password;
+            $mail->Username = $_ENV['EMAIL'];
+            $mail->Password = $_ENV['PASSWORD'];
             $mail->SMTPSecure = PHPMailer :: ENCRYPTION_STARTTLS;
-            $mail->Port = $credencialesSMTP->port ; 
+            $mail->Port = $_ENV['PORT']; 
             //Configuaracion del envio de email
-            $mail->setFrom($credencialesSMTP->email , 'Gamehub');
-            $mail->addAddress($email);
+            $mail->setFrom($_ENV['EMAIL'] , 'Gamehub');
+            $mail->addAddress($_ENV['EMAIL']);
             $mail->isHTML(true);
             //contenido del correo
             $mail->Subject = 'Codigo de validacion - Gamehub';
