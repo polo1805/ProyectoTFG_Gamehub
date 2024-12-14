@@ -206,7 +206,6 @@ class Services
                                 'data' => $id,
                             ];
                             $jwt = JWT::encode($payload, $_ENV['KEY'], 'HS256');
-                            print_r($jwt);
                             http_response_code(200);
                             return json_encode([
                                 'status' => 200,

@@ -1,8 +1,11 @@
+import { Injectable } from "@angular/core";
+
+@Injectable({
+    providedIn: 'root',
+})
+
 export class KeyService{
-    constructor(
-        public USERNAME : string , 
-        public PASSWORD : string , 
-        public TOKEN : string , 
-        public AUTORIZADO : boolean 
-    ){}
+    public USERNAME : string  = ""; 
+    public TOKEN : string = ""; 
+    constructor(){}
 }

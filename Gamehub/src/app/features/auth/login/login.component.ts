@@ -1,14 +1,15 @@
-import { Component, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 import { Usuario } from '../../../shared/usuarioData';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Request } from '../../../core/request.service';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { KeyService } from '../../../core/keys.service';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule , ReactiveFormsModule , CommonModule , RouterModule],
+  imports: [FormsModule , ReactiveFormsModule , CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css', 
 })
@@ -18,6 +19,8 @@ export class LoginComponent {
   constructor(
     public request : Request  , 
     public key: KeyService , 
+    public router : Router , 
+    private cookieService : CookieService
   ){}
   //Propiedades de la clase LogIn
   password : string = '';
@@ -48,6 +51,10 @@ export class LoginComponent {
         next : (res)=>{
           console.log(res);
           this.key.USERNAME = this.usuario; 
+          this.key.TOKEN = res.token;
+          console.log(this.key);
+          this.cookieService.set(this.key.TOKEN , 'KEY');
+          this.router.navigate(['/home'])
         },
         error : (error)=>{
           console.log(error);
