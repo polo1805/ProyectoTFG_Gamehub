@@ -1,15 +1,21 @@
 <?
-require '../vendor/autoload.php'; //Cargamos el composer
+require __DIR__ . '/../vendor/autoload.php';//Cargamos el composer
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ .'/..');
 $dotenv->load();
 Class ConexionBBDD{
         //Se definen los parametros que se utilizaran para realizar la conexion 
-    public $host = $_ENV['DB_HOST'] ; 
-    private $user = $_ENV['DB_USER'] ;
-    private $pass = $_ENV['DB_PASSWORD'];
-    private $dbname = $_ENV['DB_NAME'];
+    private $host; 
+    private $user;
+    private $pass;
+    private $dbname;
     private $conexion ; 
+    public function __construct(){
+        $this->host = $_ENV['DB_HOST'] ; 
+        $this->user = $_ENV['DB_USER'] ;
+        $this->pass = $_ENV['DB_PASSWORD'];
+        $this->dbname = $_ENV['DB_NAME'];
+    }
         //Metodo que realiza la conexion a la base de datos 
 public function conectarBBDD(){
     $this->conexion = new mysqli(
@@ -26,12 +32,6 @@ public function conectarBBDD(){
             ]);
         }else{
             return $this->conexion;
-        }
-    }
-
-    public function cerrarConexion(){
-        if($this->conexion){
-            $this->conexion->close();
         }
     }
 }

@@ -1,12 +1,17 @@
 <?
+
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+require __DIR__ . '/vendor/autoload.php';
 require_once('./config/conexionBBDD.php');
 require_once('./services.php');
 
 
 $service = new Services();
-$credencialesSMTP = new credenciales_SMTP;
 $request = trim($_SERVER['REQUEST_URI'] , '/');
 header('Content-Type: application/json');
+//Obtenemos el token
+
 if($_SERVER['REQUEST_METHOD']==='GET'){
     switch($request){
         case 'status':
@@ -22,6 +27,7 @@ if($_SERVER['REQUEST_METHOD']==='GET'){
     
 }
 if($_SERVER['REQUEST_METHOD']==='POST'){
+    //Llamadas a la API publicas 
     switch($request){
         case 'registrarUsuario':
             echo $service->registrarUsuario();
@@ -32,6 +38,9 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         case 'validarCodigo':
             echo $service->validarCodigo();
         break;
+        case 'obtenerPerfil':
+            print_r( $service->obtenerPerfil());
+        break;
         default:
             http_response_code(404);
             echo json_encode([
@@ -39,6 +48,8 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
                 'message'=>"Llamada a la API erronea"
             ]);
     }
+    //Llamadas a la API con verificacion de JWT
+    
     
 }
 
