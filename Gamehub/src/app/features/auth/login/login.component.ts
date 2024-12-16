@@ -6,10 +6,11 @@ import { Request } from '../../../core/request.service';
 import { Router } from '@angular/router';
 import { KeyService } from '../../../core/keys.service';
 import { CookieService } from 'ngx-cookie-service';
+import { LoadingComponent } from '../../../services/loading/loading.component';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule , ReactiveFormsModule , CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, LoadingComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css', 
 })
@@ -29,7 +30,7 @@ export class LoginComponent {
   usuarioValidado = true
   passwordValidada = true
   mensajeError : string = '';
-
+  isLoading : boolean = false
   cambiarVisibilidad(){
     this.passwordVisible = !this.passwordVisible
   }
@@ -47,21 +48,25 @@ export class LoginComponent {
     if((this.passwordValidada && this.usuarioValidado) != false){
       let usuario = new Usuario(this.usuario , this.password)
       console.log(usuario);
+      this.isLoading = true
       this.request.comprobarUsuario(usuario).subscribe({
         next : (res)=>{
+
           console.log(res);
           this.key.USERNAME = this.usuario; 
           this.key.TOKEN = res.token;
           console.log(this.key);
-          this.cookieService.set(this.key.TOKEN , 'KEY');
+          this.cookieService.set('KEY' , this.key.TOKEN , 90 , '/' , undefined , true , 'Lax');
+          console.log(this.cookieService.getAll())
           this.router.navigate(['/home'])
         },
         error : (error)=>{
           console.log(error);
           this.mensajeError = error.error.message ; 
+          this.isLoading = false
         } , 
         complete : ()=>{
-          
+          this.isLoading = false
         }
       });
     }

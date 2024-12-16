@@ -13,11 +13,12 @@ export class HomeComponent implements OnInit{
   constructor(
     private router : Router, 
     @Inject(PLATFORM_ID) private platformID : any , 
-    private cookieServide : CookieService , 
+    private cookieService : CookieService , 
   ){}
   ngOnInit(): void {
-    if(this.cookieServide.check('KEY')){
+    if(!this.cookieService.check('KEY')){
       this.router.navigate(['/login'])
+      
     }
   }
 }
