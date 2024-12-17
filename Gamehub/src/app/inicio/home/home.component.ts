@@ -2,10 +2,11 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { SideNavbarComponent } from '../../services/side-navbar/side-navbar.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [SideNavbarComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
