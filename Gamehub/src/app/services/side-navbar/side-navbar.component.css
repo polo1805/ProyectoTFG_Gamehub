@@ -24,11 +24,12 @@
     font-size: 20px;
 }
 .sidebar p:hover{
-    background-color: gray;
+    transition: 0.3s;
+    background-color: rgba(163, 163, 163, 0.267);
     cursor: pointer;
 }
 .sidebar img:hover{
-     background-color: gray;
+     background-color: rgba(163, 163, 163, 0.267);
      cursor: pointer;
 }
 .postear p{
@@ -36,12 +37,72 @@
     color: white;
     
 }
-
-@media (max-width : 768px){
+.postear i {
+    font-size: 0;
+}
+.postear p{
+    padding-left: 15%;
+    padding-right: 15%;  
+}
+.postear p:hover{
+    background-color: orange !important;
+}
+@media (max-width : 1264px){
     .sidebar p {
         font-size: 0;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: 50px !important;
     }
     .sidebar i{
-        font-size: 1.5rem;
+        font-size: 1.25rem;
+    }
+}
+@media (max-width : 576px){
+    .sidebar{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px; 
+        width: 100%; 
+        flex-direction: row; 
+        gap: 1vh; 
+        border-top: 1px solid orange;
+        border-right: none; 
+        justify-content: space-evenly;
+    }
+    .sidebar img{
+        display: none;
+    }
+    .sidebar p{
+        margin: 0px;
+        padding: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: 50px !important;
+    }
+    .sidebar div{
+        margin-top: 10px;
+        flex-shrink: 1;
+        flex-grow: 0;
+    }
+    .postear{
+        order: 3;
+    }
+    .inicio{
+        order: 1;
+    }
+    .perfil{
+        order: 2;
+    }
+    .buscarJuegos{
+        order: 5
+    }
+    .buscarUsuarios{
+        order:4
+    }
+    .opciones{
+        order:6
     }
 }

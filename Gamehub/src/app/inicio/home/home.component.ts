@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { SideNavbarComponent } from '../../services/side-navbar/side-navbar.component';
@@ -12,8 +11,7 @@ import { SideNavbarComponent } from '../../services/side-navbar/side-navbar.comp
 })
 export class HomeComponent implements OnInit{
   constructor(
-    private router : Router, 
-    @Inject(PLATFORM_ID) private platformID : any , 
+    private router : Router,
     private cookieService : CookieService , 
   ){}
   ngOnInit(): void {

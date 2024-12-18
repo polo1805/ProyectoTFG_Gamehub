@@ -1,11 +1,11 @@
 import {
   BrowserModule,
   DomRendererFactory2
-} from "./chunk-YMUEEQRX.js";
-import "./chunk-JJJAALSB.js";
+} from "./chunk-TVQZRLIR.js";
+import "./chunk-NZDNKXNC.js";
 import {
   DOCUMENT
-} from "./chunk-54L2ORA5.js";
+} from "./chunk-LC63JU7F.js";
 import {
   ANIMATION_MODULE_TYPE,
   Inject,
@@ -24,7 +24,7 @@ import {
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
   ɵɵinject
-} from "./chunk-KCSUZAPK.js";
+} from "./chunk-SXHOZHTL.js";
 
 // node_modules/@angular/animations/fesm2022/animations.mjs
 var AnimationMetadataType;
@@ -4530,21 +4530,21 @@ export {
 
 @angular/animations/fesm2022/animations.mjs:
   (**
-   * @license Angular v18.2.12
+   * @license Angular v18.2.13
    * (c) 2010-2024 Google LLC. https://angular.io/
    * License: MIT
    *)
 
 @angular/animations/fesm2022/browser.mjs:
   (**
-   * @license Angular v18.2.12
+   * @license Angular v18.2.13
    * (c) 2010-2024 Google LLC. https://angular.io/
    * License: MIT
    *)
 
 @angular/platform-browser/fesm2022/animations.mjs:
   (**
-   * @license Angular v18.2.12
+   * @license Angular v18.2.13
    * (c) 2010-2024 Google LLC. https://angular.io/
    * License: MIT
    *)
