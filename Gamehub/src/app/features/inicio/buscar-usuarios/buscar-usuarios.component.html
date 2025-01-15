@@ -1,0 +1,21 @@
+<main>
+    <app-side-navbar></app-side-navbar>
+    <div class="buscarUsuarios">
+        <header>
+            <div class="buscador">
+                <input type="text" class="form-control w-100" placeholder="Buscar usuarios" (input)="buscarUsuarios($event)">
+            </div>
+        </header>
+        <div class="usuarios">
+            <div class="usuario" *ngFor="let usuario of arrayUsuarios" (click)="clickPerfil(usuario.NOMBRE_USUARIO)">
+                <div class="imagen">
+                    <img src="fotosPerfil/{{usuario.IMAGEN}}" alt="Foto de perfil" class="rounded-circle">
+                </div>
+                <div class="nombre">
+                    <p class="fw-bold">{{usuario.NOMBRE}}</p>
+                    <p class="text-secondary">&commat;{{usuario.NOMBRE_USUARIO}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

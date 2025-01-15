@@ -1,0 +1,53 @@
+app-side-navbar{
+    width: 25%;
+}
+main{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+}
+.buscarUsuarios{
+    width: 75%;
+}
+header{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 40px;
+    border-bottom: 1px solid orange;
+}
+.buscador {
+    width: 100%;
+}
+.form-control:focus{
+    border-color: rgb(255, 165, 0) !important;
+    box-shadow: 0 0 0 .25rem rgba(255,165, 0 ,  .25);
+}
+.usuario{
+    height: 75px;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: row;
+    border-bottom: orange 1px solid;
+    padding-top: 10px;
+}
+.imagen{
+    width: 20%;
+    text-align: center;
+}
+.imagen img{
+    width: 50px;
+}
+.nombre{
+    gap:5px;
+    display: flex;
+    flex-direction: column;
+}
+.nombre p{
+    margin:0;
+}
+.usuario:hover{
+    background-color: rgba(163, 163, 163, 0.267);
+    cursor: pointer;
+}
+

@@ -1,0 +1,44 @@
+.home{
+    display: flex;
+    width: 100%;
+}
+header{
+    height: 60px;
+    width: 75%;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    border-bottom: 1px solid orange;
+    align-items: center;
+}
+header div{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+header div:hover{
+    cursor: pointer;
+    background-color: rgba(240, 240, 240, 0.2);
+    transition: background-color 0.3s ease;
+}
+header div p{
+    margin: 0;
+    padding: 10px;
+    
+}
+.seleccionado{
+    border-bottom: 3px solid orange;
+}
+.home app-side-navbar{
+    width: 25%;
+}
+@media (max-width : 576px){
+    .home{
+        display: block;
+    }
+    header{
+        width: 100%;
+    }
+}

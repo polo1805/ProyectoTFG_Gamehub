@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgModel } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Request } from '../../../core/request.service';
 import { LoadingComponent } from '../../../services/loading/loading.component';
 @Component({
@@ -16,6 +16,7 @@ export class VerificacionComponent implements OnInit{
   constructor(
     private route : ActivatedRoute , 
     private request : Request , 
+    private router : Router , 
   ){}
   codigoValidado : boolean = true ; 
   codigo : string = '';
@@ -46,6 +47,9 @@ export class VerificacionComponent implements OnInit{
       this.request.validarCodigo(this.emailRecibido , this.codigo).subscribe({
         next : (datos)=>{
           console.log(datos);
+          if(datos.status == 200){
+            this.router.navigate(['/login'])
+          }
         } , 
         error : (error)=>{
           console.log(error.error);

@@ -5,22 +5,25 @@
         </div>
     </div>
     <div class="inicio ">
-        <p class="rounded-pill"> <i class="bi bi-house"></i>    Inicio</p>
+        <a class="rounded-pill" href="/home"> <i class="bi bi-house"></i>    Inicio</a>
     </div>
     <div class="perfil">
-        <p class="rounded-pill"><i class="bi bi-person"></i>    Perfil</p>
+        <a class="rounded-pill" [routerLink]="['/' , this.key.USERNAME]"><i class="bi bi-person"></i>    Perfil</a>
     </div>
     <div class="buscarJuegos">
-        <p class="rounded-pill"><i class="bi bi-controller"></i>    Buscar Juegos</p>
+        <a class="rounded-pill" routerLink="/buscar-juegos"><i class="bi bi-controller"></i>    Buscar juegos</a>
     </div>
     <div class="buscarUsuarios">
-        <p class="rounded-pill"><i class="bi bi-search"></i>    Buscar Usuarios</p>
+        <a class="rounded-pill" routerLink="/buscar-usuarios"><i class="bi bi-search"></i>    Buscar usuarios</a>
     </div>
     <div class="opciones">
-        <p class="rounded-pill"><i class="bi bi-gear"></i>    Configuracion</p>
+        <a class="rounded-pill" routerLink="/configuracion"><i class="bi bi-gear"></i>    Configuracion</a>
+    </div>
+    <div class="cerrarSesion">
+        <a class="rounded-pill" (click)="cerrarSesion()"><i class="bi bi-box-arrow-left"></i>    Cerrar sesion</a>
     </div>
     <div class="postear">
-        <p class="rounded-pill"><i class="bi bi-plus"></i>Postear</p>
+        <a class="rounded-pill"  ><i class="bi bi-plus "></i>Postear</a>
     </div>
 </nav>
   

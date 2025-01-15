@@ -8,4 +8,8 @@ export class KeyService{
     public USERNAME : string  = ""; 
     public TOKEN : string = ""; 
     constructor(){}
+    cerrarSesion(){
+        this.USERNAME = "";
+        this.TOKEN = "";
+    }
 }

@@ -1,0 +1,41 @@
+main{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+app-side-navbar{
+    width: 25%;
+}
+.buscarJuegos{
+    width: 75%;
+}
+header{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding-top:30px;
+    padding-left: 30px;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 50px;
+    border-bottom:1px solid orange;
+}
+.buscador{
+    width: 75%;
+}
+.form-control:focus{
+    border-color: rgb(255, 165, 0) !important;
+    box-shadow: 0 0 0 .25rem rgba(255,165, 0 ,  .25);
+}
+.botonBuscador button{
+    background-color: transparent;
+    border: 2px solid orange;
+    color: orange;
+    &:hover{
+        background-color: orange;
+        color: white;
+        transition: 0.5s;
+    }
+
+}

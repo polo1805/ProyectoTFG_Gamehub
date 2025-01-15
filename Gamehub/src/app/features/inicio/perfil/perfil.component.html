@@ -1,0 +1,34 @@
+<app-loading [isVisible]="isLoading"></app-loading>
+<main >
+    <app-side-navbar></app-side-navbar>
+    <div class="perfil" *ngIf="!isLoading">
+        <header>
+            <div class="info">
+                <div class="imagen-perfil">
+                    <img class="rounded-circle"src="/fotosPerfil/{{this.perfil.IMAGEN}}" alt="">
+                </div>
+                <div class="nombre-pefil">
+                    <h5>{{this.perfil.NOMBRE}}</h5>
+                </div>
+                <div class="username">
+                    <p class="text-secondary">&commat;{{this.perfil.USERNAME}}</p>
+                </div>
+                <div class="descripcion">
+                    <p>{{this.perfil.BIOGRAFIA}}</p>
+                </div>
+            </div>
+            <div class="opciones">
+                <div class="editarPerfil">
+                    <button class="rounded-pill" *ngIf="mismoUsuario">Editar Perfil</button>
+                </div>
+                <div class="seguir">
+                    <button class="rounded-pill" *ngIf="!mismoUsuario">Seguir</button>
+                </div>
+                <div class="mas">
+                    <button class="rounded-pill"><i class="bi bi-three-dots"></i></button>
+                </div>
+            </div>
+        </header>
+    </div>
+</main>
+

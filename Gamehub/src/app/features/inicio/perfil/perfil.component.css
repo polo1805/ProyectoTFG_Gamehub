@@ -1,0 +1,47 @@
+main{
+    display: flex;
+    
+}
+.perfil{
+    width: 75%;
+}
+app-side-navbar{
+    width: 25%;
+}
+header{
+    display: flex;
+    flex-direction: row;
+    padding-left:50px;
+    padding-top:30px; 
+    gap: 20px;
+    border-bottom: 1px solid orange;
+}
+.info{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;  
+}
+.opciones{
+    gap: 50px;
+    align-items:center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row-reverse;
+    width: 50%;
+}
+.editarPerfil button{
+    background-color: orange;
+    padding: 5px 10px 5px 10px;
+    border: 2px solid orange;
+}
+.seguir button{
+    background-color: orange;
+    padding: 5px 10px 5px 10px;
+    border: 2px solid orange;
+}
+.mas button{
+    background-color: transparent;
+    border:2px solid white;
+    padding: 5px 10px 5px 10px;
+}

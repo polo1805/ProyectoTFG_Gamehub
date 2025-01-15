@@ -1,0 +1,11 @@
+<div class="home">
+    <app-side-navbar></app-side-navbar>
+    <header>
+        <div class="parati" (click)="cambiarVista('parati')" >
+            <p [ngClass]="{'seleccionado': vistaParati == true}">Para ti</p>
+        </div>
+        <div class="siguiendo" (click)="cambiarVista('siguiendo')">
+            <p [ngClass]="{'seleccionado': vistaSiguiendo == true}">Siguiendo</p>
+        </div>
+    </header>
+</div>
