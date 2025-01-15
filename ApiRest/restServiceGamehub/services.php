@@ -112,7 +112,7 @@ class Services
                     $contraseña = $datos['PASSWORD'];
                     $username = $datos['USERNAME'];
                     $rol = 'USER';
-                    $imagen = 'default.jpg';
+                    $imagen = 'default.png';
                     $contraseñaHash = password_hash($contraseña, PASSWORD_DEFAULT);//Encriptacion de contraseñas
                     $validacion = false;
                     $codigo = random_int(100000, 900000);
@@ -202,7 +202,7 @@ class Services
                             $id = $row['ID_USUARIO'];
                             $now = strtotime('now');
                             $payload = [
-                                'exp' => $now + 3600,
+                                'exp' => $now + 31536000,//Un año en segundos
                                 'data' => $id,
                             ];
                             $jwt = JWT::encode($payload, $_ENV['KEY'], 'HS256');
@@ -290,6 +290,98 @@ class Services
             $conn->close();
         }
     }
+    
+    public function getPerfil()
+    {
+        if(!$this->validarToken()){//Comprobamos que el token es valido
+            http_response_code(400);
+            return json_encode([
+                'status'=> 401 , 
+                'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+            ]);
+        }else{//Si es valido , obtenemos los datos del usuario que nos han mandado
+            http_response_code(200);
+            $json = file_get_contents('php://input');
+            $datos = json_decode($json, true);
+            if(isset($datos['USERNAME'])){
+                $username = $datos['USERNAME'];
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                $stmt = $conn->prepare("SELECT * FROM USUARIOS WHERE NOMBRE_USUARIO = ?");
+                $stmt->bind_param('s', $username);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if($result->num_rows > 0){
+                    $row = $result->fetch_assoc();
+                    return json_encode([
+                        'status'=>200 , 
+                        'message'=>$row
+                    ]);
+                }else{
+                    return json_encode([
+                        'status'=>404 , 
+                        'message'=>'Usuario no encontrado'
+                    ]);
+                }
+            }else{//Si no nos han mandado ningun usuario , obtenemos los datos del usuario que ha iniciado sesion
+                return json_encode([
+                    'status'=>200 , 
+                    'message'=>$this->validarToken()
+                ]);
+            }
+
+        }
+
+    }
+    public function buscarUsuarios(){
+        try{
+            header('Content-Type: application/json');
+            if(!$this->validarToken()){
+                http_response_code(400);
+                return json_encode([
+                    'status'=> 401 , 
+                    'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                ]);
+            }else{            
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                if($conn){
+                    $json = file_get_contents('php://input');
+                    $datos = json_decode($json, true);
+                    if(isset($datos['INPUT'])){
+                        $input = $datos['INPUT']."%";
+                        $stmt = $conn->prepare("SELECT * FROM USUARIOS WHERE NOMBRE LIKE ? OR NOMBRE_USUARIO LIKE ?");
+                        $stmt->bind_param('ss', $input , $input);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        if($result->num_rows > 0){
+                            $usuarios = [];
+                            http_response_code(200);
+                            while($row = $result->fetch_assoc()){
+                                array_push($usuarios , $row);
+                            }
+                            return json_encode([
+                                'status'=>200 , 
+                                'message'=>$usuarios
+                            ]);
+                        }else{
+                            http_response_code(404);
+                            return json_encode([
+                                'status'=>404 , 
+                                'message'=>'No se han encontrado usuarios'
+                            ]);
+                        }
+                    }
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
     public function enviarCodigo($email, $codigo)
     {
         $mail = new PHPMailer(true);
@@ -304,7 +396,7 @@ class Services
             $mail->Port = $_ENV['PORT'];
             //Configuaracion del envio de email
             $mail->setFrom($_ENV['EMAIL'], 'Gamehub');
-            $mail->addAddress($_ENV['EMAIL']);
+            $mail->addAddress($email);
             $mail->isHTML(true);
             //contenido del correo
             $mail->Subject = 'Codigo de validacion - Gamehub';
@@ -327,23 +419,6 @@ class Services
                 'message' => 'Error al enviar el correo electronico : ' . $mail->ErrorInfo
             ]);
         }
-    }
-    public function obtenerPerfil()
-    {
-        if(!$this->validarToken()){
-            http_response_code(400);
-            return json_encode([
-                'status'=> 401 , 
-                'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
-            ]);
-        }else{
-            http_response_code(200);
-            return json_encode([
-                'status'=>200 , 
-                'message'=>$this->validarToken()
-            ]);
-        }
-
     }
 
 }

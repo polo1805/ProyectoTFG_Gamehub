@@ -10,6 +10,9 @@ require_once('./services.php');
 $service = new Services();
 $request = trim($_SERVER['REQUEST_URI'] , '/');
 header('Content-Type: application/json');
+header("Access-Control-Allow-Origin: http://localhost:4200");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 //Obtenemos el token
 
 if($_SERVER['REQUEST_METHOD']==='GET'){
@@ -38,8 +41,11 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         case 'validarCodigo':
             echo $service->validarCodigo();
         break;
-        case 'obtenerPerfil':
-            print_r( $service->obtenerPerfil());
+        case 'getPerfil':
+            echo( $service->getPerfil());
+        break;
+        case 'buscarUsuarios':
+            echo $service->buscarUsuarios();
         break;
         default:
             http_response_code(404);
