@@ -1,0 +1,107 @@
+main{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+app-side-navbar{
+    width: 25%;
+}
+.postear{
+    padding-top:20px ;
+    padding-left: 20px;
+    width: 75%;
+}
+.container-1{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.valoracion{
+    display: flex;
+    flex-direction: column;
+    gap:1px;
+    width: 50%;
+}
+.barraPuntuacion{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+}
+.barra{
+    width: 40px;
+    height: 15px;
+    cursor: pointer;
+    &:nth-child(-n+5){
+        background-color: #ff687580;
+        &.activo{
+            background-color: #ff6875 !important;
+        }
+        &.inactivo{
+            background-color: grey;
+        }
+    }
+    &:nth-child(n+6){
+        background-color: #ffbc3f83;
+        &.activo{
+            background-color: #ffbc3f;
+        }
+        &.inactivo{
+            background-color: grey;
+        }
+    }
+    &:nth-last-child(-n+3){
+        background-color: #00ce7c7a;
+        &.activo{
+            background-color: #00ce7c;
+        }
+        &.inactivo{
+            background-color: grey;
+        }
+    }
+    &:first-child{
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+    }
+    &:last-child{
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+    }
+
+}
+.puntuacion{
+    text-align: center;
+    width: 20%;
+}
+.puntuacion h3{
+    height: 75px;
+    width: 75px;
+    margin: auto;
+    border: 2px solid gray;
+    border-radius: 50%;
+    vertical-align: middle;
+    line-height: 65px;
+}
+.juego{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    align-items: center;
+    text-align: center;
+    width: 20%;
+}
+.juego img{
+    width: 80%;
+    border-radius: 10px;
+}
+.adjuntarImagenes p{
+    font-size: 12px;
+}
+.subirPost{
+    text-align: center;
+
+}
+.subirPost button{
+    background-color: orange;
+    border-color: orange;
+}

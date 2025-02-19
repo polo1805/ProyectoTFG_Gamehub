@@ -51,14 +51,24 @@ export class LoginComponent {
       this.isLoading = true
       this.request.comprobarUsuario(usuario).subscribe({
         next : (res)=>{
-
-          console.log(res);
           this.key.USERNAME = this.usuario; 
           this.key.TOKEN = res.token;
-          console.log(this.key);
           this.cookieService.set('KEY' , this.key.TOKEN , 90 , '/' , undefined , true , 'Lax');
-          console.log(this.cookieService.getAll())
-          this.router.navigate(['/home'])
+          this.request.getPerfil().subscribe({
+            next: (response) => {
+              if(response.message.ROL == 'ADMIN'){
+                this.router.navigate(['/admin']);
+              }else{
+                this.router.navigate(['/home'])
+              }
+            }, 
+            error: (error) => {
+              console.log(error)
+            } ,
+            complete: () => {
+              console.log('getPerfil completado')
+            }
+          })
         },
         error : (error)=>{
           console.log(error);

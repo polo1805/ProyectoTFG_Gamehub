@@ -39,3 +39,30 @@ header{
     }
 
 }
+.listaJuegos{
+    padding: 40px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.juego{
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5px;
+    padding: 10px;
+    &:hover{
+        background-color: rgba(163, 163, 163, 0.267);
+        cursor: pointer;
+    }
+}
+.juego p{
+    text-align: center;
+    margin:0;
+}
+.juego img{
+    width: 80%;
+    max-height: 140px;
+    border-radius: 5px;
+}

@@ -1,11 +1,24 @@
-<app-loading [isVisible]="isLoading"></app-loading>
+<app-loading *ngIf="isLoading"></app-loading>
+<div class="toast-container position-fixed bottom-0 end-0 p-3 ">
+    <div id="liveToast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="me-auto"><i class=" text-{{stateToast}} bi bi-{{iconToast}}-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;GAMEHUB</strong>
+        <small></small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body text-{{stateToast}}">
+        {{mensajeToast}}
+      </div>
+    </div>
+</div>
+
 <main >
     <app-side-navbar></app-side-navbar>
     <div class="perfil" *ngIf="!isLoading">
         <header>
             <div class="info">
                 <div class="imagen-perfil">
-                    <img class="rounded-circle"src="/fotosPerfil/{{this.perfil.IMAGEN}}" alt="">
+                    <img class="rounded-circle"src="http://localhost/uploads/fotosPerfil/{{this.perfil.IMAGEN}}" alt="">
                 </div>
                 <div class="nombre-pefil">
                     <h5>{{this.perfil.NOMBRE}}</h5>
@@ -25,10 +38,94 @@
                     <button class="rounded-pill" *ngIf="!mismoUsuario">Seguir</button>
                 </div>
                 <div class="mas">
-                    <button class="rounded-pill"><i class="bi bi-three-dots"></i></button>
+                    <button class="rounded-pill" ><i class="bi bi-three-dots"></i></button>
                 </div>
             </div>
         </header>
+        <div class="postUsuario" >
+            <div class="post ps-4 pt-4" *ngFor="let post of this.postsCargados" (click)="clickPost(post.id_publicacion)">
+                <div *ngIf="post" class="content">
+                    <div class="infoPost">
+                        <div class="infoUsuario">
+                            <div class="fotoPerfil">
+                                <img src="http://localhost/uploads/fotosPerfil/{{perfil.IMAGEN}}" alt="" class="rounded-circle">
+                            </div>
+                            <div class="nombre">
+                                <p class="fw-bold">{{perfil.NOMBRE}}</p>
+                            </div>
+                            <div class="username">
+                                <p class="text-secondary">&nbsp;&nbsp;&nbsp;&commat;{{perfil.USERNAME}}</p>
+                            </div>
+                            <div class="calificacion">
+                                <h4 [ngClass]="{
+                                    'bg-danger': post.calificacion >= 0 && post.calificacion  < 5,
+                                    'bg-warning': post.calificacion  >= 5 && post.calificacion  < 8,
+                                    'bg-success': post.calificacion  >= 8
+                                }">{{post.calificacion}}</h4>
+                            </div>
+                        </div>
+                        <div class="datosPost">
+                            <div *ngIf="post.DESCRIPCION" class="descripcion">
+                                <p>{{post.DESCRIPCION}}</p>
+                            </div>
+                            <div *ngIf="esArray(post.imagen)" class="imagenes px-5 pb-3" [ngClass]="'imagenes-'+ post.imagen.length">
+                                <img *ngFor="let imagen of post?.imagen"  src="http://localhost/uploads/fotosPost/{{imagen}}" alt="" (click)="clickImagen(imagen) ; $event.stopPropagation()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="infoJuego">
+                        <div class="imagenJuego">
+                            <img src="http://localhost/uploads/fotosJuegos/{{post.juego?.portada}}">
+                        </div>
+                        <div class="tituloJuego">
+                            <p class="text-center">{{post.juego?.nombre_juego}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="options mb-3 ">
+                    <div class="comentar d-flex flex-row" (click)="clickComentar(post) ; $event.stopPropagation()">
+                        <i class="bi bi-chat" ></i>
+                        <p>{{post.COMENTARIOS?.N_COMENTARIOS}}</p>
+                    </div>
+                    <div class="like d-flex flex-row"(click)="cambiarLike(post) ; $event.stopPropagation()">
+                        <i [ngClass]="post.LIKES?.LIKE_USUARIO ? 'bi bi-heart-fill text-warning' : 'bi bi-heart'" class="mt-1"></i>
+                        <p>{{post.LIKES?.N_LIKES}}</p>
+                    </div>
+                    <div class="dropdown moreOptions d-flex flex-row" (click)="$event.stopPropagation()">
+                        <i class="bi bi-three-dots mt-1" data-bs-toggle="dropdown" aria-expanded="true"></i>
+                        <ul class="dropdown-menu text-danger">
+                            <li (click)="clickEliminar(post) ; $event.stopPropagation()"><i class="bi bi-trash"></i>Eliminar</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
+<div class="modal fade" id="imagenModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img [src]="imagenClick" class="img-fluid" alt="Imagen ampliada">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-dark" id="comentarioModal" tabindex="-1" aria-labelledby="comentarioModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="comentarioModalLabel">Añadir Comentario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" (click)="$event.stopPropagation()"></button>
+        </div>
+        <div class="modal-body">
+            <textarea class="form-control border-0 p-1" id="comentarioTextarea" rows="3" placeholder="Escribe un comentario..." [(ngModel)]="comentario"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" (click)="subirComentario()">Postear</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 

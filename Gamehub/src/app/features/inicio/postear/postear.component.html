@@ -1,0 +1,52 @@
+<main>
+    <app-side-navbar></app-side-navbar>
+    <div class="postear">
+        <h4>Selecciona la valoracion:</h4>
+        <div class="container-1">
+            <div class="valoracion">
+                <div class="barraPuntuacion">
+                    <div class="barra" data-index="0"></div>
+                    <div class="barra" data-index="1"></div>
+                    <div class="barra" data-index="2"></div>
+                    <div class="barra" data-index="3"></div>
+                    <div class="barra" data-index="4"></div>
+                    <div class="barra" data-index="5"></div>
+                    <div class="barra" data-index="6"></div>
+                    <div class="barra" data-index="7"></div>
+                    <div class="barra" data-index="8"></div>
+                    <div class="barra" data-index="9"></div>
+                    <div class="barra" data-index="10"></div>
+                </div>
+                <div class="comentarios">
+                    <h4 class="mt-5">Escribe un comentario:</h4>
+                    <textarea [(ngModel)]="this.descripcion"placeholder="Deja un comentario sobre el juego (opcional)"
+                        class="form-control mt-3"></textarea>
+                </div>
+                <div class="adjuntarImagenes mt-5">
+                    <h4 class="mb-3">Adjunta imagenes (opcional) :</h4>
+                    <input class="form-control" type="file" multiple (change)="onFileChange($event)" />
+                    <p class="mt-3">
+                        Puedes adjuntar imagenes de logros , informacion revelante para los
+                        demas usuarios o como se ve el juego graficamente
+                    </p>
+                </div>
+                <div class="subirPost">
+                    <button (click)="onSubmit()" class="btn btn-primary mt-3">Subir post</button>
+                </div>
+            </div>
+            <div class="puntuacion">
+                <h3 [ngClass]="{
+            'bg-danger': this.valoracion >= 0 && this.valoracion < 5,
+            'bg-warning': this.valoracion >= 5 && this.valoracion < 8,
+            'bg-success': this.valoracion >= 8
+          }">
+                    {{ valoracion }}
+                </h3>
+            </div>
+            <div class="juego">
+                <img src="http://localhost/uploads/fotosJuegos/{{ datosJuego.portada }}" alt="" />
+                <h5>{{ datosJuego.nombre_juego }}</h5>
+            </div>
+        </div>
+    </div>
+</main>

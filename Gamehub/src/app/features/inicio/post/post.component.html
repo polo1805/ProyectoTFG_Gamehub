@@ -1,0 +1,82 @@
+<main>
+    <app-side-navbar></app-side-navbar>
+    <article>
+        <div class="post">
+            <div *ngIf="datosPost" class="content">
+                <div class="infoPost">
+                    <div class="infoUsuario">
+                        <div class="fotoPerfil">
+                            <img src="http://localhost/uploads/fotosPerfil/{{datosPost.USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
+                        </div>
+                        <div class="nombre">
+                            <p class="fw-bold">{{datosPost.USUARIO?.NOMBRE}}</p>
+                        </div>
+                        <div class="username">
+                            <p class="text-secondary">&nbsp;&nbsp;&nbsp;&commat;{{datosPost.USUARIO?.NOMBRE_USUARIO}}</p>
+                        </div>
+                        <div class="calificacion">
+                            <h4 [ngClass]="{
+                                'bg-danger':  datosPost.calificacion >= 0 && datosPost.calificacion < 5,
+                                'bg-warning': datosPost.calificacion  >= 5 && datosPost.calificacion < 8,
+                                'bg-success': datosPost.calificacion  >= 8
+                            }">{{datosPost.calificacion}}</h4>
+                        </div>
+                    </div>
+                    <div class="datosPost">
+                        <div *ngIf="datosPost.DESCRIPCION" class="descripcion">
+                            <p>{{datosPost.DESCRIPCION}}</p>
+                        </div>
+                        <div *ngIf="esArray(datosPost.imagen)" class="imagenes px-5 pb-3" [ngClass]="'imagenes-'+ datosPost.imagen.length">
+                            <img *ngFor="let imagen of datosPost?.imagen"  src="http://localhost/uploads/fotosPost/{{imagen}}" alt="" (click)="clickImagen(imagen)">
+                        </div>
+                    </div>
+                </div>
+                <div class="infoJuego">
+                    <div class="imagenJuego">
+                        <img src="http://localhost/uploads/fotosJuegos/{{datosPost.JUEGO?.portada}}">
+                    </div>
+                    <div class="tituloJuego">
+                        <p class="text-center">{{datosPost.JUEGO?.nombre_juego}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="options mb-3 ">
+                <div class="comentar d-flex flex-row" (click)="clickComentar(datosPost)">
+                    <i class="bi bi-chat" ></i>
+                    <p>{{datosPost.COMENTARIOS?.N_COMENTARIOS}}</p>
+                </div>
+                <div class="like d-flex flex-row" (click)="cambiarLike(datosPost)">
+                    <i [ngClass]="datosPost.LIKES?.LIKE_USUARIO ? 'bi bi-heart-fill text-warning' : 'bi bi-heart'" class=""></i>
+                    <p>{{datosPost.LIKES?.N_LIKES}}</p>
+                </div>
+                <div class="dropdown moreOptions d-flex flex-row">
+                    <i class="bi bi-three-dots" data-bs-toggle="dropdown" aria-expanded="true"></i>
+                    <ul class="dropdown-menu text-danger">
+                        <li (click)="clickEliminar(datosPost)"><i class="bi bi-trash"></i>Eliminar</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="comentarios">
+            <div class="comentario" *ngFor="let comentario of arrayComentarios">
+                
+            </div>
+        </div>
+    </article>
+    <div class="modal fade modal-dark" id="comentarioModal" tabindex="-1" aria-labelledby="comentarioModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="comentarioModalLabel">Añadir Comentario</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" (click)="$event.stopPropagation()"></button>
+            </div>
+            <div class="modal-body">
+                <textarea class="form-control border-0 p-1" id="comentarioTextarea" rows="3" placeholder="Escribe un comentario..." [(ngModel)]="comentario"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" (click)="subirComentario()">Postear</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</main>

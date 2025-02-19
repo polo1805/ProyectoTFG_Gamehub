@@ -4,26 +4,25 @@
             <img src="fotosGamehub/portada_gamehub.png" class="rounded-circle" alt="">
         </div>
     </div>
-    <div class="inicio ">
-        <a class="rounded-pill" href="/home"> <i class="bi bi-house"></i>    Inicio</a>
-    </div>
-    <div class="perfil">
-        <a class="rounded-pill" [routerLink]="['/' , this.key.USERNAME]"><i class="bi bi-person"></i>    Perfil</a>
-    </div>
-    <div class="buscarJuegos">
-        <a class="rounded-pill" routerLink="/buscar-juegos"><i class="bi bi-controller"></i>    Buscar juegos</a>
-    </div>
-    <div class="buscarUsuarios">
-        <a class="rounded-pill" routerLink="/buscar-usuarios"><i class="bi bi-search"></i>    Buscar usuarios</a>
-    </div>
-    <div class="opciones">
-        <a class="rounded-pill" routerLink="/configuracion"><i class="bi bi-gear"></i>    Configuracion</a>
-    </div>
-    <div class="cerrarSesion">
-        <a class="rounded-pill" (click)="cerrarSesion()"><i class="bi bi-box-arrow-left"></i>    Cerrar sesion</a>
-    </div>
-    <div class="postear">
-        <a class="rounded-pill"  ><i class="bi bi-plus "></i>Postear</a>
-    </div>
+    <ng-container>
+        <div class="inicio">
+            <a class="rounded-pill" routerLink="/home"> <i class="bi bi-house"></i>    Inicio</a>
+        </div>
+        <div class="perfil">
+            <a class="rounded-pill" [routerLink]="['/' , this.key.USERNAME]"><i class="bi bi-person"></i>    Perfil</a>
+        </div>
+        <div class="buscarJuegos">
+            <a class="rounded-pill" routerLink="/buscar-juegos"><i class="bi bi-controller"></i>    Buscar juegos</a>
+        </div>
+        <div class="buscarUsuarios">
+            <a class="rounded-pill" routerLink="/buscar-usuarios"><i class="bi bi-search"></i>    Buscar usuarios</a>
+        </div>
+        <div class="opciones">
+            <a class="rounded-pill" routerLink="/configuracion"><i class="bi bi-gear"></i>    Configuracion</a>
+        </div>
+        <div class="cerrarSesion">
+            <a class="rounded-pill" (click)="cerrarSesion()"><i class="bi bi-box-arrow-left"></i>    Cerrar sesion</a>
+        </div>
+    </ng-container>
 </nav>
   

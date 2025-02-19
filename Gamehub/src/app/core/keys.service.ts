@@ -6,7 +6,7 @@ import { Injectable } from "@angular/core";
 
 export class KeyService{
     public USERNAME : string  = ""; 
-    public TOKEN : string = ""; 
+    public TOKEN : string = "";
     constructor(){}
     cerrarSesion(){
         this.USERNAME = "";

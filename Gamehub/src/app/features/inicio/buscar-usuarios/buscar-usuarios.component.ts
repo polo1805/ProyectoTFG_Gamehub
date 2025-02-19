@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SideNavbarComponent } from "../../../services/side-navbar/side-navbar.component";
 import { Request } from '../../../core/request.service';
 import { CommonModule } from '@angular/common';
@@ -10,12 +10,23 @@ import { Router } from '@angular/router';
   templateUrl: './buscar-usuarios.component.html',
   styleUrl: './buscar-usuarios.component.css'
 })
-export class BuscarUsuariosComponent {
+export class BuscarUsuariosComponent implements OnInit{
+  arrayUsuarios : any [] = [];
   constructor(
     public request : Request , 
     public router : Router
   ){}
-  arrayUsuarios : any [] = [];
+  ngOnInit(): void {
+    this.request.buscarUsuarios('').subscribe({
+      next : (res)=>{
+        console.log(res);
+        this.arrayUsuarios = res.message;
+      },
+      error : (error)=>{
+        console.log(error);
+      }
+    })
+  }
   buscarUsuarios(event : Event){
     let input = event.target as HTMLInputElement;
     let valor = input.value;

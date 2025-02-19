@@ -28,15 +28,10 @@ export class HomeComponent implements OnInit{
       this.vistaParati = true ;
       this.request.getPerfil().subscribe({
         next: (response) => {
-          console.log(response)
+          console.log(response);
           this.key.USERNAME = response.message.NOMBRE_USUARIO;
-          console.log(this.key)
-        }, 
-        error: (error) => {
-          console.log(error)
-        } ,
-        complete: () => {
-          console.log('getPerfil completado')
+          this.key.TOKEN = this.cookieService.get('KEY'); 
+          console.log(this.key);
         }
       })
     }

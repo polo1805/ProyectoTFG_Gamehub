@@ -1,1 +1,42 @@
-<p>registrar-juegos works!</p>
+<header>
+    <a href="/admin"><i class="bi bi-house"></i></a>
+    <a (click)="cerrarSesion()"><i class="bi bi-box-arrow-left"></i></a>
+    <h2 class="text-center mt-2">Registrar Juegos</h2>
+</header>
+<main class="px-5 py-3">
+    <app-loading *ngIf="isLoading"></app-loading>
+    <form [formGroup]="formularioRegistroJuego" (ngSubmit)="registrarJuego()">
+        <div class="nombreJuego">
+            <label for="nombreJuego" class="form-label">Nombre del juego</label>
+            <input type="text" id="nombreJuego" class="form-control" placeholder="Nombre del juego" formControlName="nombreJuego">
+        </div>
+        <div class="portadaJuego">
+            <label for="imagen" class="form-label">Portada del juego</label>
+            <input type="file" id="portadaJuego" class="form-control" placeholder="Seleccionar imagen" formControlName="portadaJuego" (change)="onFileChange($event)">
+        </div>
+        <div class="descripcionJuego">
+            <label for="descripcion" class="form-label">Descripcion del juego</label>
+            <textarea class="form-control" aria-label="With textarea" formControlName="descripcionJuego"></textarea>
+        </div>
+        <div class="fechaLanzamiento">
+            <label for="fecha" class="form-label">Fecha de lanzamiento</label>
+            <input type="date" id="fechaLanzamiento" class="form-control" placeholder="Fecha de lanzamiento" formControlName="fechaLanzamientoJuego">
+        </div>
+        <div class="generoJuego">
+            <label for="genero" class="form-label">Genero del juego</label>
+            <input type="text" id="generoJuego" class="form-control" placeholder="Genero del juego" formControlName="generoJuego">
+        </div>
+        <div class="registrarJuego text-center">
+            <button type="submit" class="btn btn-warning">Registrar Juego</button>
+        </div>
+        <div class="esInvalido" *ngIf="esInvalido">
+            <p class="text-danger text-center">Registro Erroneo . Todos los campos son obligatorios</p>
+        </div>
+        <div class="registradoCorrectamente" *ngIf="registradoExito">
+            <p class="text-success text-center">Se ha registrado el juego correctamente</p>
+        </div>
+        <div class="registradoIncorrectamente" *ngIf="registradoExito == false">
+            <p class="text-danger text-center">No se ha podido registrar el juego </p>
+        </div>
+    </form>
+</main>

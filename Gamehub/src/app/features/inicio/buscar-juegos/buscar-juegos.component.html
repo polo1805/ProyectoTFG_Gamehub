@@ -3,11 +3,19 @@
     <div class="buscarJuegos">
         <header>
             <div class="buscador">
-                <input type="text" class="form-control w-100" placeholder="Escribe el nombre del juego">
+                <input type="text" class="form-control w-100" placeholder="Escribe el nombre del juego" (input)="buscarJuegos($event)">
             </div>
             <div class="botonBuscador">
                 <button class="rounded-pill px-3 py-2">Buscar</button>
             </div>
         </header>
+        <div class="resultados">
+            <div class="listaJuegos">
+                <div class="juego"*ngFor="let juego of arrayJuegos" (click)="verJuego(juego.id_juego)">
+                    <img src="http://localhost/uploads/fotosJuegos/{{juego.portada}}" alt="">
+                    <p class="my-4">{{juego.nombre_juego}}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </main>

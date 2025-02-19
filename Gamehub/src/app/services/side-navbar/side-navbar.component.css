@@ -3,7 +3,6 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    border-right: 1px solid orange;
     gap: 50px;
 }
 .sidebar img{

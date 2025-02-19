@@ -1,6 +1,3 @@
-app-side-navbar{
-    width: 25%;
-}
 header {
     position: relative;
     text-align: center;
@@ -25,30 +22,32 @@ header a{
         color: white;
     }
 }
-.registrarJuegos{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+header h2{
+    margin-top: 5px;
+}
+img{
+    width: 100px;
 }
 main{
-    width: 100%;
-}
-form{
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: center;
 }
-form div{
-    width: 100%
+.opciones{
+    display: flex;
+    flex-direction:row ;
+    margin-top: 50px;
 }
-form textarea{
-    height: 100px;
-}
-.form-control:focus{
-    box-shadow: 0 0 0 .25rem rgba(255, 166, 0 , .25);
-    border-color: orange;
-}
-.registrarJuego button{
-    background-color: orange ;
-    border-color: orange;
+.opciones div a{
+    text-decoration: none;
+    color: orange;
+    border: 2px solid orange;
+    padding : 20px 150px 20px 150px;
+    border-radius: 10px;
+    font-size: 20px;
+    &:hover{
+        background-color: orange;
+        color: white;
+        transition: 0.5s;
+    }
 }

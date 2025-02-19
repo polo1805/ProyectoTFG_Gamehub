@@ -1,0 +1,46 @@
+main{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+app-side-navbar{
+    width: 25%;
+}
+.imagenJuego img{
+    width: 40%;
+    border-radius: 10px;
+}
+.informacionJuego{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+.puntuacionJuego{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+.descripcion {
+    width: 75%;
+}
+.genero p{
+    margin: 0;
+}
+.juego{
+    width: 75%;
+    display: flex;
+    flex-direction: row;
+}
+.calificacion{
+    margin: 0px 200px 0px 200px;
+}
+.calificacion h1{
+    border-radius: 20px;
+}
+.postear{
+    text-align: center;
+}
+.postear button{
+    color: orange;
+    border: orange 2px solid;
+}

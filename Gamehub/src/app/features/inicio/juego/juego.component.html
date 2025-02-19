@@ -1,0 +1,31 @@
+<main>
+    <app-side-navbar></app-side-navbar>
+    <div class="juego ps-5">
+        <div class="informacionJuego">
+            <div class="tituloJuego mt-3">
+                <h3>{{this.juego.nombre_juego}}</h3>
+            </div>
+            <div class="imagenJuego mt-3">
+                <img src="http://localhost/uploads/fotosJuegos/{{this.juego.portada}}" alt="">
+            </div>
+            <div class="fecha mt-3">
+                <p><strong>Fecha de lanzamiento : </strong>{{this.juego.fecha_lanzamiento}}</p>
+            </div>
+            <div class="genero mt-3" >
+                <p><strong>Genero </strong>: {{this.generos.join(', ')}}</p>
+            </div>
+            <div class="descripcion mt-3">
+
+                <p>{{this.juego.descripcion}}</p>
+            </div>
+        </div>
+        <div class="puntuacionJuego pt-5">
+            <div class="calificacion" >
+                <h1 class="text-center m-0 p-3"[ngClass]="{'bg-danger' : this.juego.calificacion_media >= 0 && this.juego.calificacion_media < 5 ,'bg-warning' : this.juego.calificacion_media >= 5 && this.juego.calificacion_media < 8 , 'bg-success' : this.juego.calificacion_media >= 8 }">{{this.juego.calificacion_media}}</h1>
+            </div>
+            <div class="postear mt-5">
+                <button class="btn" [routerLink]="['/juegos', this.juego.id_juego , 'postear']"><i class="bi bi-box-arrow-right">  </i>&nbsp;DEJA TU OPINIÓN</button>
+            </div>
+        </div>
+    </div>
+</main>
