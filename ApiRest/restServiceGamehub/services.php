@@ -30,13 +30,14 @@ class Services
         try {
             $headers = apache_request_headers();
             if(!array_key_exists('Authorization' , $headers)){
-                return false ; 
+                return false ;
+            }else{
+                $authorization = $headers["Authorization"];
+                $authorizationArray = explode(" ", $authorization);
+                $token = $authorizationArray[1];
+                $decodedToken = JWT::decode($token, new Key($_ENV['KEY'], 'HS256'));
+                return $decodedToken;
             }
-            $authorization = $headers["Authorization"];
-            $authorizationArray = explode(" ", $authorization);
-            $token = $authorizationArray[1];
-            $decodedToken = JWT::decode($token, new Key($_ENV['KEY'], 'HS256'));
-            return $decodedToken;
         } catch (DomainException $domainException) {
             return false ; 
         } catch (ExpiredException $expiredException) {
@@ -44,9 +45,7 @@ class Services
         } catch (Exception $exception){
             return false ; 
         }
-
-    }
-
+    } 
     function validarToken()
     {
         try {
@@ -290,7 +289,9 @@ class Services
             $conn->close();
         }
     }
-    
+    public function getUsuario(){
+        
+    }
     public function getPerfil()
     {
         if(!$this->validarToken()){//Comprobamos que el token es valido
@@ -369,6 +370,668 @@ class Services
                             return json_encode([
                                 'status'=>404 , 
                                 'message'=>'No se han encontrado usuarios'
+                            ]);
+                        }
+                    }
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
+    public function registrarJuego(){
+        try{
+            if(!$this->validarToken()){
+                http_response_code(400);
+                return json_encode([
+                    'status'=> 401 , 
+                    'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                ]);
+            }else{
+                $conexionBD = new ConexionBBDD();
+                $conn = $conexionBD->conectarBBDD();
+                if($conn){
+                    if(isset($_POST['NOMBRE'] , $_FILES['IMAGEN'] , $_POST['DESCRIPCION'] , $_POST['FECHA'] , $_POST['GENERO'])){
+                        $nombre = $_POST['NOMBRE'];
+                        $portada = $_FILES['IMAGEN'];
+                        $genero = $_POST['GENERO'];
+                        $fecha = $_POST['FECHA'];
+                        $descripcion = $_POST['DESCRIPCION'];
+                        $calificacion = 0;
+                        $directorio = './uploads/fotosJuegos/';
+                        $nombreArchivo = uniqid() . '_' . basename($_FILES['IMAGEN']['name']);
+                        $rutaCompleta = $directorio . $nombreArchivo;
+                        if(!move_uploaded_file($_FILES['IMAGEN']['tmp_name'] , $rutaCompleta)){
+                            chmod($rutaCompleta, 0644);
+                            http_response_code(500);
+                            return json_encode([
+                                'status'=>500 , 
+                                'message'=>'Error al subir imagen'
+                            ]);
+                        }
+                        $stmt = $conn->prepare("SELECT * FROM JUEGOS WHERE NOMBRE_JUEGO = ?");
+
+                        $stmt->bind_param('s', $nombre);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        if($result->num_rows){
+                            http_response_code(409);
+                            return json_encode([
+                                'status'=>409 , 
+                                'message'=>'El juego ya existe'
+                            ]);
+                        }
+                        $stmt = $conn->prepare("INSERT INTO JUEGOS (NOMBRE_JUEGO , PORTADA , DESCRIPCION , FECHA_LANZAMIENTO , GENERO , CALIFICACION_MEDIA) 
+                            VALUES (? , ? , ? , ? , ? , ?  )");
+                        $stmt->bind_param('sssssd' , $nombre , $nombreArchivo , $descripcion , $fecha , $genero , $calificacion);
+                        if ($stmt->execute()) { //Registro del juego con exito
+                            http_response_code(200);
+                            return json_encode([
+                                'status' => 200,
+                                'message' => 'Juego registrado con exito'
+                            ]);
+                        } else { //Error al registrar el usuario
+                            http_response_code(502);
+                            return json_encode([
+                                'status' => 502,
+                                'message' => 'No se ha podido registrar el usuario : ' . $conn->error
+                            ]);
+                        }
+                    }
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
+    public function buscarJuegos(){
+        try{
+            header('Content-Type: application/json');
+            if(!$this->validarToken()){
+                http_response_code(400);
+                return json_encode([
+                    'status'=> 401 , 
+                    'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                ]);
+            }else{            
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                if($conn){
+                    $json = file_get_contents('php://input');
+                    $datos = json_decode($json, true);
+                    if(isset($datos['INPUT'])){
+                        $input = $datos['INPUT']."%";
+                        $stmt = $conn->prepare("SELECT * FROM JUEGOS WHERE NOMBRE_JUEGO LIKE ?");
+                        $stmt->bind_param('s', $input );
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        if($result->num_rows > 0){
+                            $juegos = [];
+                            http_response_code(200);
+                            while($row = $result->fetch_assoc()){
+                                array_push($juegos , $row);
+                            }
+                            return json_encode([
+                                'status'=>200 , 
+                                'message'=>$juegos
+                            ]);
+                        }else{
+                            http_response_code(404);
+                            return json_encode([
+                                'status'=>404 , 
+                                'message'=>'No se han encontrado juegos'
+                            ]);
+                        }
+                    }
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
+    public function verJuegos(){
+        try{
+            header('Content-Type: application/json');
+            if(!$this->validarToken()){
+                http_response_code(400);
+                return json_encode([
+                    'status'=> 401 , 
+                    'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                ]);
+            }else{            
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                if($conn){
+                    $json = file_get_contents('php://input');
+                    $datos = json_decode($json, true);
+                    if(isset($datos['ID'])){
+                        $id = $datos['ID'];
+                        $stmt = $conn->prepare("SELECT * FROM JUEGOS WHERE ID_JUEGO = ?");
+                        $stmt->bind_param('s', $id );
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        if($result->num_rows > 0){
+                            $row = $result->fetch_assoc();
+                            http_response_code(200);
+                            return json_encode([
+                                'status'=>200 , 
+                                'message'=>$row
+                            ]);
+                        }else{
+                            http_response_code(404);
+                            return json_encode([
+                                'status'=>404 , 
+                                'message'=>'No se ha encontrado el juego'
+                            ]);
+                        }
+                    }
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
+    public function subirPost(){
+        try{
+            if(!$this->validarToken()){
+                http_response_code(401);
+                return json_encode([
+                    'status'=>401, 
+                    'message'=>'No autorizado. Credenciales de autenticacion incorrectas'
+                ]);
+            }
+            $conexionBD = new ConexionBBDD();
+            $conn = $conexionBD->conectarBBDD();
+            if($conn){
+                $descripcion = '';
+                $valoracion = $_POST['valoracion'];
+                $imagenes = [];
+                $juegoID = $_POST['idJuego'];
+                $userID = $_POST['idUser'];
+                if(isset($_POST['descripcion'])){
+                    $descripcion = $_POST['descripcion'];
+                }
+                if(isset($_FILES['imagen'])){
+                    $directorio = './uploads/fotosPost/';
+                    if (is_array($_FILES['imagen']['tmp_name'])) { // Múltiples archivos
+                        foreach ($_FILES['imagen']['tmp_name'] as $key => $tmp_name) {
+                            $nombreArchivo = uniqid() . '_' . basename($_FILES['imagen']['name'][$key]); // Usar $key
+                            $rutaCompleta = $directorio . $nombreArchivo;
+        
+                            if (!move_uploaded_file($tmp_name, $rutaCompleta)) {
+                                http_response_code(500);
+                                return json_encode(['status' => 500, 'message' => 'Error al subir la imagen']);
+                            } else {
+                                $imagenes[] = $nombreArchivo;
+                            }
+                        }
+                    } else { // Un solo archivo
+                        $nombreArchivo = uniqid() . '_' . basename($_FILES['imagen']['name']);
+                        $rutaCompleta = $directorio . $nombreArchivo;
+        
+                        if (!move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaCompleta)) {
+                            http_response_code(500);
+                            return json_encode(['status' => 500, 'message' => 'Error al subir la imagen']);
+                        } else {
+                            $imagenes[] = $nombreArchivo;
+                        }
+                    }
+
+                }
+                $stmt = $conn->prepare("INSERT INTO PUBLICACIONES (ID_USUARIO , ID_JUEGO , IMAGEN , DESCRIPCION , CALIFICACION) 
+                        VALUES (? , ? , ? , ? , ?)");
+                $imagenesjson = json_encode($imagenes);
+                $stmt->bind_param('sssss' , $userID , $juegoID , $imagenesjson , $descripcion , $valoracion);
+                if($stmt->execute()){
+                    http_response_code(200);
+                    return json_encode([
+                        'status'=>200 , 
+                        'message'=>'Post subido con exito'
+                    ]);
+                }else{
+                    http_response_code(200);
+                    return json_encode([
+                        'status'=>500 , 
+                        'message'=>'Error al subir el post'. $stmt->error
+                    ]);
+                }
+                
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
+    public function getPostsPerfil(){
+            try{
+                header('Content-Type: application/json');
+                if(!$this->validarToken()){
+                    http_response_code(400);
+                    return json_encode([
+                        'status'=> 401 , 
+                        'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                    ]);
+                }else{            
+                    $conexionBD = new ConexionBBDD;
+                    $conn = $conexionBD->conectarBBDD();
+                    if($conn){
+                        $json = file_get_contents('php://input');
+                        $datos = json_decode($json, true);
+                        if(isset($datos['ID_USUARIO'])){
+                            $id = $datos['ID_USUARIO'];
+                            $stmt = $conn->prepare("SELECT * FROM PUBLICACIONES WHERE ID_USUARIO = ?");
+                            $stmt->bind_param('s', $id );
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            if($result->num_rows > 0){
+                                $posts = [];
+                                http_response_code(200);
+                                while($row = $result->fetch_assoc()){
+                                    array_push($posts , $row);
+                                }
+                                return json_encode([
+                                    'status'=>200 , 
+                                    'message'=>$posts
+                                ]);
+                            }else{
+                                http_response_code(404);
+                                return json_encode([
+                                    'status'=>404 , 
+                                    'message'=>'No se han encontrado posts'
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }catch(Exception $error){
+                http_response_code(500);
+                return json_encode([
+                    'status'=>500 , 
+                    'message'=>'Internal Server Error : '.$error
+                ]);
+            }
+    }
+    public function getLikes(){
+        try{
+            header('Content-Type: application/json');
+            if(!$this->validarToken()){
+                http_response_code(400);
+                return json_encode([
+                    'status'=> 401 , 
+                    'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                ]);
+            }else{            
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                if($conn){
+                    $json = file_get_contents('php://input');
+                    $datos = json_decode($json, true);
+                    if(isset($datos['ID_USUARIO'] , $datos['ID_POST'])){
+                        $id_user = $datos['ID_USUARIO'];
+                        $id_post = $datos['ID_POST'];
+                        $likes = [];
+                        $stmt = $conn->prepare("SELECT COUNT(*) as N_LIKES FROM LIKES WHERE ID_PUBLICACION = ? ");
+                        $stmt->bind_param('s' , $id_post);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        if($result->num_rows > 0){
+                            $likes = $result->fetch_assoc();
+                            $stmt = $conn->prepare("SELECT ID_USUARIO FROM LIKES WHERE ID_PUBLICACION = ? ");
+                            $stmt->bind_param('s' , $id_post);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            if($result->num_rows > 0){
+                                $likeUsuario = true;
+                            }else{
+                                $likeUsuario = false;
+                            }
+                            $likes['LIKE_USUARIO']=$likeUsuario;
+                            http_response_code(200);
+                            return json_encode([
+                                'status'=>200 , 
+                                'message'=>$likes
+                            ]);
+                        }else{
+                            http_response_code(404);
+                            return json_encode([
+                                'status'=>404 , 
+                                'message'=>'No se han encontrado posts'
+                            ]);
+                        }
+                    }
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
+    public function anadirLike(){
+        try{
+            header('Content-Type: application/json');
+            if(!$this->validarToken()){
+                http_response_code(400);
+                return json_encode([
+                    'status'=> 401 , 
+                    'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                ]);
+            }else{            
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                if($conn){
+                    $json = file_get_contents('php://input');
+                    $datos = json_decode($json, true);
+                    if(isset($datos['ID_USUARIO'] , $datos['ID_POST'])){
+                        $id_user = $datos['ID_USUARIO'];
+                        $id_post = $datos['ID_POST'];
+                        $stmt = $conn->prepare("INSERT INTO LIKES (ID_USUARIO , ID_PUBLICACION) VALUES ( ? , ? )");
+                        $stmt->bind_param('ss', $id_user , $id_post);
+                        if($stmt->execute()){
+                            http_response_code(200);
+                            return json_encode([
+                                'status'=>200 , 
+                                'message'=>'Like añadido correctamente'
+                            ]);
+                        }else{
+                            http_response_code(404);
+                            return json_encode([
+                                'status'=>404 , 
+                                'message'=>'Error al añadir el like'
+                            ]);
+                        }
+                    }
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
+    public function eliminarLike(){
+        try{
+            header('Content-Type: application/json');
+            if(!$this->validarToken()){
+                http_response_code(400);
+                return json_encode([
+                    'status'=> 401 , 
+                    'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                ]);
+            }else{            
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                if($conn){
+                    $json = file_get_contents('php://input');
+                    $datos = json_decode($json, true);
+                    if(isset($datos['ID_USUARIO'] , $datos['ID_POST'])){
+                        $id_user = $datos['ID_USUARIO'];
+                        $id_post = $datos['ID_POST'];
+                        $stmt = $conn->prepare("DELETE FROM LIKES WHERE ID_USUARIO = ? AND ID_PUBLICACION = ?");
+                        $stmt->bind_param('ss', $id_user , $id_post);
+                        if($stmt->execute()){
+                            http_response_code(200);
+                            return json_encode([
+                                'status'=>200 , 
+                                'message'=>'Like eliminado correctamente'
+                            ]);
+                        }else{
+                            http_response_code(404);
+                            return json_encode([
+                                'status'=>404 , 
+                                'message'=>'Error al eliminar el like'
+                            ]);
+                        }
+                    }
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
+    public function anadirComentario(){
+        try{
+            header('Content-Type: application/json');
+            if(!$this->validarToken()){
+                http_response_code(400);
+                return json_encode([
+                    'status'=> 401 , 
+                    'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                ]);
+            }else{            
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                if($conn){
+                    $json = file_get_contents('php://input');
+                    $datos = json_decode($json, true);
+                    if(isset($datos['ID_USUARIO'] , $datos['ID_POST'])){
+                        $id_user = $datos['ID_USUARIO'];
+                        $id_post = $datos['ID_POST'];
+                        $comentario = $datos['COMENTARIO'];
+                        $stmt = $conn->prepare("INSERT INTO COMENTARIOS (ID_USUARIO , ID_PUBLICACION , CONTENIDO) VALUES ( ? , ? , ?)");
+                        $stmt->bind_param('sss', $id_user , $id_post , $comentario);
+                        if($stmt->execute()){
+                            http_response_code(200);
+                            return json_encode([
+                                'status'=>200 , 
+                                'message'=>'Comentario agregado'
+                            ]);
+                        }else{
+                            http_response_code(404);
+                            return json_encode([
+                                'status'=>404 , 
+                                'message'=>'Error al subir el comentario'
+                            ]);
+                        }
+                    }
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
+    public function getNumeroComentarios(){
+        try{
+            header('Content-Type: application/json');
+            if(!$this->validarToken()){
+                http_response_code(400);
+                return json_encode([
+                    'status'=> 401 , 
+                    'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                ]);
+            }else{            
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                if($conn){
+                    $json = file_get_contents('php://input');
+                    $datos = json_decode($json, true);
+                    if(isset($datos['ID_POST'])){
+                        $id_post = $datos['ID_POST'];
+                        $stmt = $conn->prepare("SELECT COUNT(*) as N_COMENTARIOS FROM COMENTARIOS WHERE ID_PUBLICACION = ? ");
+                        $stmt->bind_param('s' , $id_post);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        if($result->num_rows > 0){
+                            $row = $result->fetch_assoc();
+                            http_response_code(200);
+                            return json_encode([
+                                'status'=>200 , 
+                                'message'=>$row
+                            ]);
+                        }else{
+                            http_response_code(404);
+                            return json_encode([
+                                'status'=>404 , 
+                                'message'=>'No se han encontrado posts'
+                            ]);
+                        }
+                    }
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
+    public function eliminarPostPerfil(){
+        try{
+            header('Content-Type: application/json');
+            if(!$this->validarToken()){
+                http_response_code(400);
+                return json_encode([
+                    'status'=> 401 , 
+                    'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                ]);
+            }else{            
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                if($conn){
+                    $json = file_get_contents('php://input');
+                    $datos = json_decode($json, true);
+                    if(isset($datos['ID_POST'])){
+                        $id_post = $datos['ID_POST'];
+                        $stmt = $conn->prepare("DELETE FROM PUBLICACIONES WHERE ID_PUBLICACION = ?");
+                        $stmt->bind_param('s' , $id_post);
+                        if($stmt->execute()){
+                            http_response_code(200);
+                            return json_encode([
+                                'status'=>200 , 
+                                'message'=>'Publicacion eliminada correctamente'
+                            ]);
+                        }else{
+                            http_response_code(404);
+                            return json_encode([
+                                'status'=>404 , 
+                                'message'=>'Error al eliminar la publicacion'
+                            ]);
+                        }
+                    }
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
+    public function cargarPost(){
+        try{
+            header('Content-Type: application/json');
+            if(!$this->validarToken()){
+                http_response_code(400);
+                return json_encode([
+                    'status'=> 401 , 
+                    'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                ]);
+            }else{            
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                if($conn){
+                    $json = file_get_contents('php://input');
+                    $datos = json_decode($json, true);
+                    if(isset($datos['ID_POST'])){
+                        $id_post = $datos['ID_POST'];
+                        $stmt = $conn->prepare("SELECT * FROM PUBLICACIONES WHERE ID_PUBLICACION = ? ");
+                        $stmt->bind_param('s' , $id_post);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        if($result->num_rows > 0){
+                            $row = $result->fetch_assoc();
+                            http_response_code(200);
+                            return json_encode([
+                                'status'=>200 , 
+                                'message'=>$row
+                            ]);
+                        }else{
+                            http_response_code(404);
+                            return json_encode([
+                                'status'=>404 , 
+                                'message'=>'No se han encontrado posts'
+                            ]);
+                        }
+                    }
+                }
+            }
+        }catch(Exception $error){
+            http_response_code(500);
+            return json_encode([
+                'status'=>500 , 
+                'message'=>'Internal Server Error : '.$error
+            ]);
+        }
+    }
+    public function cargarComentarios(){
+        try{
+            header('Content-Type: application/json');
+            if(!$this->validarToken()){
+                http_response_code(400);
+                return json_encode([
+                    'status'=> 401 , 
+                    'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+                ]);
+            }else{            
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                if($conn){
+                    $json = file_get_contents('php://input');
+                    $datos = json_decode($json, true);
+                    if(isset($datos['ID_POST'])){
+                        $id = $datos['ID_POST'];
+                        $stmt = $conn->prepare("SELECT * FROM COMENTARIOS WHERE ID_PUBLICACION = ?");
+                        $stmt->bind_param('s', $id );
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        if($result->num_rows > 0){
+                            $comentarios = [];
+                            http_response_code(200);
+                            while($row = $result->fetch_assoc()){
+                                array_push($comentarios , $row);
+                            }
+                            return json_encode([
+                                'status'=>200 , 
+                                'message'=>$comentarios
+                            ]);
+                        }else{
+                            http_response_code(404);
+                            return json_encode([
+                                'status'=>404 , 
+                                'message'=>'No se han encontrado comentarios'
                             ]);
                         }
                     }

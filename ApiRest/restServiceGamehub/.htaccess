@@ -1,5 +1,11 @@
 RewriteEngine On 
 
+# Evitar que las peticiones a archivos y directorios existentes pasen por api.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+
+# Excluir la carpeta uploads de la redirección a api.php
+RewriteCond %{REQUEST_URI} !^/uploads/ 
+
+# Redirigir todo lo demás a api.php
 RewriteRule ^(.*)$ api.php/$1 [L]
