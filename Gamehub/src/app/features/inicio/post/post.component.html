@@ -59,7 +59,30 @@
         </div>
         <div class="comentarios">
             <div class="comentario" *ngFor="let comentario of arrayComentarios">
-                
+                <div class="infoUsuario">
+                    <div class="fotoPerfil">
+                        <img src="http://localhost/uploads/fotosPerfil/{{comentario.USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
+                    </div>
+                    <div class="nombre">
+                        <p class="fw-bold">{{comentario.USUARIO?.NOMBRE}}</p>
+                    </div>
+                    <div class="username">
+                        <p class="text-secondary">&nbsp;&nbsp;&nbsp;&commat;{{comentario.USUARIO?.NOMBRE_USUARIO}}</p>
+                    </div>
+                    <div class="options dropdown" *ngIf="mismoUsuario">
+                        <button type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item text-danger"><i class="bi bi-trash"></i>Eliminar</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="infoPost">
+                    <div class="contenido">
+                        <p>{{comentario.CONTENIDO}}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </article>

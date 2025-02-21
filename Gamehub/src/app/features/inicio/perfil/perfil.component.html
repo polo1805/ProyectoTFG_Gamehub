@@ -94,7 +94,7 @@
                     <div class="dropdown moreOptions d-flex flex-row" (click)="$event.stopPropagation()">
                         <i class="bi bi-three-dots mt-1" data-bs-toggle="dropdown" aria-expanded="true"></i>
                         <ul class="dropdown-menu text-danger">
-                            <li (click)="clickEliminar(post) ; $event.stopPropagation()"><i class="bi bi-trash"></i>Eliminar</li>
+                            <li (click)="clickEliminar(post) ; $event.stopPropagation()" class="dropdown-item text-danger"><i class="bi bi-trash"></i>Eliminar</li>
                         </ul>
                     </div>
                 </div>

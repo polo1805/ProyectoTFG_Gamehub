@@ -85,6 +85,9 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         case 'cargarComentarios':
             echo $service->cargarComentarios();
         break;
+        case 'getUsuario':
+            echo $service->getUsuario();
+        break;
         default:
             http_response_code(404);
             echo json_encode([

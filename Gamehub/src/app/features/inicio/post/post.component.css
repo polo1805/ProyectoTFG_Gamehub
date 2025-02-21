@@ -8,12 +8,12 @@ app-side-navbar{
     border-right:1px solid  orange;
 }
 article{
+    margin-left: 25%;
     display: flex;
     flex-direction: column;
 }
 .post{
     padding: 20px;
-    margin-left: 25%;
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid orange;
@@ -23,9 +23,6 @@ article{
     width: 100%;
     height: auto;
     flex-direction: row;
-}
-.fotoPerfil img{
-    width: 50%;
 }
 .infoUsuario{
     width: 100%;
@@ -48,10 +45,10 @@ article{
     width: max-content
 }
 .username{
-    width: 50%;
+    width: 70%;
 }
 .fotoPerfil{
-    width: 10%;
+    width: 100px;
 }
 .infoJuego{
     width: 20%;
@@ -143,4 +140,37 @@ ul i{
 }
 .dropdown-menu li:hover{
     background-color: rgba(255, 166, 0, 0.068) ;
+}
+.comentario{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid orange;
+}
+.fotoPerfil img{
+    width: 50px;
+}
+.infoUsuario {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.options button{
+    background-color: transparent;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: none;
+    &:hover{
+        background-color: rgba(255, 166, 0, 0.164);
+        transition: 0.5s;
+        i{
+            color: orange;
+            transition: 0.5s;
+        }
+    }
+}
+.dropdown-menu li{
+    cursor: pointer;
+    
 }

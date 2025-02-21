@@ -45,7 +45,7 @@ export class PostComponent implements OnInit {
             this.datosPost['USUARIO'] = response.message;
             console.log(this.datosPost);
             if(this.idUsuario == response.message.ID_USUARIO){
-              this.mismoUsuario == true;
+              this.mismoUsuario = true;
             }
             this.username = response.message.USERNAME
             this.request.verJuego(this.idJuego).subscribe({
@@ -77,7 +77,7 @@ export class PostComponent implements OnInit {
         this.arrayComentarios = response.message;
         console.log(this.arrayComentarios);
         for(let comentario of this.arrayComentarios){
-          this.request.getPerfil(comentario.ID_USUARIO).subscribe({
+          this.request.getUsuario(comentario.ID_USUARIO).subscribe({
             next:(response)=>{
               comentario['USUARIO']= response.message;
             }

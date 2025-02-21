@@ -290,7 +290,44 @@ class Services
         }
     }
     public function getUsuario(){
-        
+        if(!$this->validarToken()){//Comprobamos que el token es valido
+            http_response_code(400);
+            return json_encode([
+                'status'=> 401 , 
+                'message'=> 'No autorizado . Credenciales de autenticacion incorrectas'
+            ]);
+        }else{//Si es valido , obtenemos los datos del usuario que nos han mandado
+            http_response_code(200);
+            $json = file_get_contents('php://input');
+            $datos = json_decode($json, true);
+            if(isset($datos['ID_USUARIO'])){
+                $id = $datos['ID_USUARIO'];
+                $conexionBD = new ConexionBBDD;
+                $conn = $conexionBD->conectarBBDD();
+                $stmt = $conn->prepare("SELECT * FROM USUARIOS WHERE ID_USUARIO = ?");
+                $stmt->bind_param('s', $id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if($result->num_rows > 0){
+                    $row = $result->fetch_assoc();
+                    return json_encode([
+                        'status'=>200 , 
+                        'message'=>$row
+                    ]);
+                }else{
+                    return json_encode([
+                        'status'=>404 , 
+                        'message'=>'Usuario no encontrado'
+                    ]);
+                }
+            }else{//Si no nos han mandado ningun usuario , obtenemos los datos del usuario que ha iniciado sesion
+                return json_encode([
+                    'status'=>200 , 
+                    'message'=>$this->validarToken()
+                ]);
+            }
+
+        }
     }
     public function getPerfil()
     {

@@ -99,4 +99,8 @@ export class Request{
         const headers = new HttpHeaders({'Content-Type' : 'application/json' , 'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
         return this.http.post<any>(`${this.baseUrl}cargarComentarios` , {ID_POST : idPost} , {headers})
     }
+    getUsuario(idUsuario : string){
+        const headers = new HttpHeaders({'Content-Type' : 'application/json' , 'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
+        return this.http.post<any>(`${this.baseUrl}getUsuario` , {ID_USUARIO : idUsuario} , {headers})
+    }
 }
