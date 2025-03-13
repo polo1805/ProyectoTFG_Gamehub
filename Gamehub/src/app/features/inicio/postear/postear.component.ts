@@ -128,14 +128,14 @@ export class PostearComponent implements OnInit{
         next:(response)=>{
           console.log(response);
           this.publicacionService.notificarPublicacion(true);
-          this.router.navigate([`${this.key.USERNAME}`] , {
+          this.router.navigate([`/${this.key.USERNAME}`] , {
             state:{mensajeToast : 'Publicacion subida correctamente' , estado : 'success' , icon:'check'}
           })
         },
         error:(response)=>{
           console.log(response)
           this.publicacionService.notificarPublicacion(false);
-          this.router.navigate([`${this.key.USERNAME}`] , {
+          this.router.navigate([`/${this.key.USERNAME}`] , {
             state : { mensajeToast : 'No se ha podido subir la publicacion' , estado : 'danger' , icon : 'x'}
           })
         }

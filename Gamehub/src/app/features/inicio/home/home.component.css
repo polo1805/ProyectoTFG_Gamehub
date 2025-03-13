@@ -2,9 +2,15 @@
     display: flex;
     width: 100%;
 }
+main{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid orange;
+}
 header{
     height: 60px;
-    width: 75%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     text-align: center;
@@ -33,6 +39,91 @@ header div p{
 }
 .home app-side-navbar{
     width: 25%;
+}
+.post{
+    border-bottom: 1px solid rgba(255, 255, 255, 0.151);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    &:hover{
+        background-color: rgba(0, 0, 0, 0.274);
+    }
+}
+.infoPost{
+    display: flex;
+    flex-direction: row;
+}
+.infoUsuarioPost{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.infoUsuario{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+}
+.imagenUsuario img{
+    width: 50px;
+}
+.username{
+    width: 65%;
+}
+.imagenJuego img{
+    width: 100px;
+    height: 125px;
+}
+.infoJuego{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.descripcionPost{
+    padding-left: 80px;
+}
+.opcionesPost{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+.opcionesPost{
+    align-items: center;
+}
+.opcionesPost div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.opcionesPost div p{
+    margin: 0;
+}
+.opcionesPost div:hover{
+    color: orange;
+    transition: 0.5 ease;
+    cursor: pointer;
+}   
+.opcionesPost div:hover button{
+    background-color: rgba(255, 166, 0, 0.301);
+    transition: 0.5s ease;
+}
+.opcionesPost div:hover button i{
+    color: orange;
+    transition: 0.5s ease;
+}
+.opcionesPost button{
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+}
+.opcionesPost p {
+    font-size: 18px;
 }
 @media (max-width : 576px){
     .home{

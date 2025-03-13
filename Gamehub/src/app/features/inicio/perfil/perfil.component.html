@@ -18,24 +18,24 @@
         <header>
             <div class="info">
                 <div class="imagen-perfil">
-                    <img class="rounded-circle"src="http://localhost/uploads/fotosPerfil/{{this.perfil.IMAGEN}}" alt="">
+                    <img class="rounded-circle"src="http://localhost/uploads/fotosPerfil/{{perfilCargado?.IMAGEN}}" alt="">
                 </div>
                 <div class="nombre-pefil">
-                    <h5>{{this.perfil.NOMBRE}}</h5>
+                    <h5>{{perfilCargado?.NOMBRE}}</h5>
                 </div>
                 <div class="username">
-                    <p class="text-secondary">&commat;{{this.perfil.USERNAME}}</p>
+                    <p class="text-secondary">&commat;{{perfilCargado?.NOMBRE_USUARIO}}</p>
                 </div>
                 <div class="descripcion">
-                    <p>{{this.perfil.BIOGRAFIA}}</p>
+                    <p>{{perfilCargado?.BIOGRAFIA}}</p>
                 </div>
             </div>
             <div class="opciones">
                 <div class="editarPerfil">
-                    <button class="rounded-pill" *ngIf="mismoUsuario">Editar Perfil</button>
+                    <button class="rounded-pill" *ngIf="perfilCargado.MISMO_USUARIO">Editar Perfil</button>
                 </div>
                 <div class="seguir">
-                    <button class="rounded-pill" *ngIf="!mismoUsuario">Seguir</button>
+                    <button class="rounded-pill" [ngClass]="perfilCargado.SIGUIENDO ? 'siguiendo' : '' " (click)="clickSeguir()" *ngIf="!perfilCargado.MISMO_USUARIO">{{perfilCargado.SIGUIENDO ? 'Siguiendo' : 'Seguir'}}</button>
                 </div>
                 <div class="mas">
                     <button class="rounded-pill" ><i class="bi bi-three-dots"></i></button>
@@ -48,20 +48,20 @@
                     <div class="infoPost">
                         <div class="infoUsuario">
                             <div class="fotoPerfil">
-                                <img src="http://localhost/uploads/fotosPerfil/{{perfil.IMAGEN}}" alt="" class="rounded-circle">
+                                <img src="http://localhost/uploads/fotosPerfil/{{perfilCargado?.IMAGEN}}" alt="" class="rounded-circle">
                             </div>
                             <div class="nombre">
-                                <p class="fw-bold">{{perfil.NOMBRE}}</p>
+                                <p class="fw-bold">{{perfilCargado?.NOMBRE}}</p>
                             </div>
                             <div class="username">
-                                <p class="text-secondary">&nbsp;&nbsp;&nbsp;&commat;{{perfil.USERNAME}}</p>
+                                <p class="text-secondary">&nbsp;&nbsp;&nbsp;&commat;{{perfilCargado?.NOMBRE_USUARIO}}</p>
                             </div>
                             <div class="calificacion">
                                 <h4 [ngClass]="{
                                     'bg-danger': post.calificacion >= 0 && post.calificacion  < 5,
                                     'bg-warning': post.calificacion  >= 5 && post.calificacion  < 8,
                                     'bg-success': post.calificacion  >= 8
-                                }">{{post.calificacion}}</h4>
+                                }" class="rounded">{{post.calificacion}}</h4>
                             </div>
                         </div>
                         <div class="datosPost">
@@ -75,10 +75,10 @@
                     </div>
                     <div class="infoJuego">
                         <div class="imagenJuego">
-                            <img src="http://localhost/uploads/fotosJuegos/{{post.juego?.portada}}">
+                            <img src="http://localhost/uploads/fotosJuegos/{{post.INFO_JUEGO?.portada}}">
                         </div>
                         <div class="tituloJuego">
-                            <p class="text-center">{{post.juego?.nombre_juego}}</p>
+                            <p class="text-center fw-bold">{{post.INFO_JUEGO?.nombre_juego}}</p>
                         </div>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                     <div class="dropdown moreOptions d-flex flex-row" (click)="$event.stopPropagation()">
                         <i class="bi bi-three-dots mt-1" data-bs-toggle="dropdown" aria-expanded="true"></i>
                         <ul class="dropdown-menu text-danger">
-                            <li (click)="clickEliminar(post) ; $event.stopPropagation()" class="dropdown-item text-danger"><i class="bi bi-trash"></i>Eliminar</li>
+                            <li  (click)="clickEliminar(post) ; $event.stopPropagation()" class="dropdown-item text-danger"><i class="bi bi-trash"></i>Eliminar</li>
                         </ul>
                     </div>
                 </div>

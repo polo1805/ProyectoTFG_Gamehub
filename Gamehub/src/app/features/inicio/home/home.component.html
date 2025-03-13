@@ -1,11 +1,72 @@
 <div class="home">
     <app-side-navbar></app-side-navbar>
-    <header>
-        <div class="parati" (click)="cambiarVista('parati')" >
-            <p [ngClass]="{'seleccionado': vistaParati == true}">Para ti</p>
-        </div>
-        <div class="siguiendo" (click)="cambiarVista('siguiendo')">
-            <p [ngClass]="{'seleccionado': vistaSiguiendo == true}">Siguiendo</p>
-        </div>
-    </header>
+    <main>
+        <header>
+            <div class="parati" (click)="cambiarVista('parati')" >
+                <p [ngClass]="{'seleccionado': vistaParati == true}">Para ti</p>
+            </div>
+            <div class="siguiendo" (click)="cambiarVista('siguiendo')">
+                <p [ngClass]="{'seleccionado': vistaSiguiendo == true}">Siguiendo</p>
+            </div>
+        </header>
+        <article>
+            <div class="post p-3" *ngFor="let post of postCargados" (click)="clickPost(post.id_publicacion)">
+                <div class="infoPost">
+                    <div class="infoUsuarioPost">
+                        <div class="infoUsuario">
+                            <div class="imagenUsuario">
+                                <img src="http://localhost/uploads/fotosPerfil/{{post.INFO_USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
+                            </div>
+                            <div class="nombre">
+                                <p class="fw-bold mb-0">{{post.INFO_USUARIO?.NOMBRE}}</p>
+                            </div>
+                            <div class="username">
+                                <p class="text-secondary mb-0">&commat;{{post.INFO_USUARIO?.NOMBRE_USUARIO}}</p>
+                            </div>
+                            <div class="notaJuego">
+                                <h4 class="m-0 p-2 ps-3 pe-3 rounded" [ngClass]="{
+                                    'bg-danger':  post.calificacion >= 0 && post.calificacion < 5,
+                                    'bg-warning': post.calificacion  >= 5 && post.calificacion < 8,
+                                    'bg-success': post.calificacion  >= 8
+                                }">{{post.calificacion}}</h4>
+                            </div>
+                        </div>
+                        <div class="descripcionPost">
+                            <p>{{post.DESCRIPCION}}</p>
+                        </div>
+                    </div>
+                    <div class="infoJuego me-5">
+                        <div class="imagenJuego">
+                            <img src="http://localhost/uploads/fotosJuegos/{{post.INFO_JUEGO?.portada}}" alt="" class="rounded">
+                        </div>
+                        <div class="nombreJuego text-center">
+                            <p class="fw-bold">{{post.INFO_JUEGO?.nombre_juego}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="opcionesPost">
+                    <div class="comentar d-flex flex-row" (click)="clickComentar(post) ; $event.stopPropagation()">
+                        <button>
+                            <i class="bi bi-chat" ></i>
+                        </button>
+                        <p>{{post.COMENTARIOS?.N_COMENTARIOS}}</p>
+                    </div>
+                    <div class="like d-flex flex-row"(click)="cambiarLike(post) ; $event.stopPropagation()">
+                        <button>
+                            <i [ngClass]="post.LIKES?.LIKE_USUARIO ? 'bi bi-heart-fill text-warning' : 'bi bi-heart'"></i>
+                        </button>
+                        <p class="mb-0">{{post.LIKES?.N_LIKES}}</p>
+                    </div>
+                    <div class="dropdown moreOptions d-flex flex-row" (click)="$event.stopPropagation()">
+                        <button data-bs-toggle="dropdown" aria-expanded="true">
+                            <i class="bi bi-three-dots mt-1" ></i>
+                        </button>
+                        <ul class="dropdown-menu text-danger">
+                            <li *ngIf="post.mismoUsuario" (click)="clickEliminar(post) ; $event.stopPropagation()" class="dropdown-item text-danger"><i class="bi bi-trash"></i>Eliminar</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
 </div>

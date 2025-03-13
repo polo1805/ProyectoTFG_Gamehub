@@ -30,140 +30,369 @@ export class PostComponent implements OnInit {
   arrayComentarios : any[] = [];
   postComentar : any = {};
   comentario : string = '';
+  stateToast : string = '';
+  iconToast : string = '';
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.idPost = params.get('id');
+      this.cargarPagina();
     })
-    this.request.cargarPost(this.idPost).subscribe({
-      next: (response) => {
-        this.datosPost = response.message;
-        console.log(this.datosPost)
-        this.idUsuario = this.datosPost.id_usuario;
-        this.idJuego = this.datosPost.id_juego;
-        this.request.getPerfil().subscribe({
-          next: (response) => {
-            this.datosPost['USUARIO'] = response.message;
+    this.request.getPerfil().subscribe({
+      next:(response)=>{
+        this.idUsuario = response.message.ID_USUARIO;
+        this.request.cargarPost(this.idPost).subscribe({
+          next:(response)=>{
+            this.datosPost = response.message;
             console.log(this.datosPost);
-            if(this.idUsuario == response.message.ID_USUARIO){
-              this.mismoUsuario = true;
-            }
-            this.username = response.message.USERNAME
-            this.request.verJuego(this.idJuego).subscribe({
-              next: (response) => {
-                this.datosPost['JUEGO'] = response.message;
-                console.log(this.datosPost);
-                if(this.idPost){
-                  this.request.getLikes(this.idPost , this.idUsuario).subscribe({
-                    next:(response)=>{
-                      this.datosPost['LIKES'] = response.message;
-                      if(this.idPost){
-                        this.request.getNumeroComentarios(this.idPost).subscribe({
-                          next:(response)=>{
-                            this.datosPost['COMENTARIOS'] = response.message ; 
+            this.request.getUsuario(this.datosPost.ID_USUARIO).subscribe({
+              next:(response)=>{
+                this.datosPost['USUARIO'] = response.message;
+                if(this.datosPost.id_usuario === this.idUsuario){
+                  this.datosPost['MISMO_USUARIO'] = true;
+                }else{
+                  this.datosPost['MISMO_USUARIO'] = false;
+                }
+                this.request.verJuego(this.datosPost.id_juego).subscribe({
+                  next:(response)=>{
+                    this.datosPost['JUEGO']=  response.message;
+                    if(this.idPost){
+                      this.request.getLikes(this.idUsuario , this.idPost).subscribe({
+                        next:(response)=>{
+                          this.datosPost['LIKES']= response.message;
+                          if(this.idPost){
+                            this.request.getNumeroComentarios(this.idPost).subscribe({
+                              next:(response)=>{
+                                this.datosPost['COMENTARIOS'] = response.message;
+                                this.request.cargarComentarios(this.idPost).subscribe({
+                                  next:(response)=>{
+                                    
+                                    for(let comentario of this.arrayComentarios){
+                                      this.request.getUsuario(comentario.ID_USUARIO).subscribe({
+                                        next:(response)=>{
+                                          
+                                        }
+                                      })
+                                    }
+                                  }
+                                })
+                              }
+                            })
                           }
-                        })
-                      }
+                        }
+                      })
                     }
-                  })
-                } 
+                  }
+                })
               }
             })
           }
-        });
+        })
       }
     })
-    this.request.cargarComentarios(this.idPost).subscribe({
-      next:(response)=>{
-        this.arrayComentarios = response.message;
-        console.log(this.arrayComentarios);
-        for(let comentario of this.arrayComentarios){
-          this.request.getUsuario(comentario.ID_USUARIO).subscribe({
-            next:(response)=>{
-              comentario['USUARIO']= response.message;
-            }
-          })
+
+    
+  }
+  /*
+  * * FUNCION PARA CARGAR LA PAGINA
+  */
+  async cargarPagina(){
+    await this.obtenerUsuarioVisitante();
+    await this.cargarPost();
+    await this.getUsuarioPost(this.datosPost.id_usuario);
+    await this.getJuego(this.datosPost.id_juego)
+    await this.getLikes(this.idPost)
+    await this.getNumeroComentarios(this.idPost)
+    await this.cargarComentarios(this.idPost);
+    await this.getUsuario();
+  }
+  /*
+  * * FUNCIONES JUEGOS
+  */
+  //ESTA FUNCION SE ENCARGA DE OBTENER LA INFORMACION DEL JUEGO DEL POST
+  getJuego(id : any) : Promise <void>{
+    return new Promise((resolve , reject)=>{
+      this.request.verJuego(id).subscribe({
+        next:(response)=>{
+          this.datosPost['JUEGO']=  response.message;
+          resolve();
+        } , 
+        error:(response)=>{
+          reject(response);
         }
+      })
+    })
+  }
+  /*
+  * * FUNCIONES PARA LOS POSTS
+  */
+  //ESTA FUNCION SE ENCARGA DE CARGAR LA INFORMACION DEL POST
+  cargarPost() : Promise <void>{
+    return new Promise((resolve , reject)=>{
+      this.request.cargarPost(this.idPost).subscribe({
+        next:(response)=>{
+          this.datosPost = response.message;
+          console.log('Post cargado :' , this.datosPost);
+          resolve()
+        },
+        error:(response)=>{
+          console.log(response)
+          reject(response)
+        }
+      })
+    })
+  }
+
+  /*
+  * * FUNCIONES CLICKS
+  */
+ //FUNCION QUE SE LLAMA CUANDO SE ELIMINA UN COMENTARIO
+  eliminarComentario(idComentario : string){
+    this.request.eliminarComentario(idComentario).subscribe({
+      next:(response)=>{
+        this.arrayComentarios = this.arrayComentarios.filter((comentario) => comentario.ID_COMENTARIO !== idComentario);
+        this.datosPost.COMENTARIOS.N_COMENTARIOS = this.datosPost.COMENTARIOS.N_COMENTARIOS -1;
+        this.mostrarToast(true , response.message)
+      },
+      error:(response)=>{
+        this.mostrarToast(false , response.error.message)
       }
+      
     })
 
-
   }
-  
-  esArray(value: any) {
-    return Array.isArray(value) && value.length > 0
-  }
+  //ABRE UN MODAL CON LA FOTO DE LA IMAGEN
   clickImagen(imagen: string) {
     this.imagenClick = `http://localhost/uploads/fotosPost/${imagen}`;
-
-    const modalElement = document.getElementById('imagenModal');
-    if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-    }
+    this.mostrarModal('imagenModal')
   }
+  //FUNCION PARA ELIMINAR UN POST EN EL QUE SE HA HECHO CLIKC
   clickEliminar(post : any){
     this.request.eliminarPostPerfil(post.id_publicacion).subscribe({
       next:(response)=>{
-        this.router.navigate([`/${this.username}`])
+        this.router.navigate([`/${this.username}`], {
+          state:{mensajeToast : 'Publicacion eliminada correctamente' , estado : 'success' , icon:'check'}
+        })
       },
       error:(response)=>{
-        const toastLive = document.getElementById('liveToastError')
-        if (toastLive) {
-          const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-          this.mensajeToast = response.error.message
-          toastBootstrap.show();
-        }
+        this.router.navigate([`/${this.username}`], {
+          state:{mensajeToast : 'No se ha podido eliminar la publicacion' , estado : 'success' , icon:'check'}
+        })
       }
     })
   }
+ //FUNCION QUE SE LE LLAMA CUANDO SE LE HACE CLICK EN COMENTAR , ASI CAPTURAMOS EL POST AL QUE SE VA A COMENTAR
   clickComentar(post : any){
     this.postComentar = post ; 
-    const modalElement = document.getElementById('comentarioModal');
+    this.mostrarModal('comentarioModal')
+  }
+
+  /*
+  * * FUNCIONES LIKES 
+  */
+  //FUNCION QUE SE ENCARGA DE CAMBIAR EL ESTADO DEL LIKE
+  cambiarLike(post : any) : Promise<void>{
+    return new Promise((resolve , reject)=>{
+      post.LIKES.LIKE_USUARIO = !post.LIKES.LIKE_USUARIO
+      console.log(post)
+      if(post.LIKES.LIKE_USUARIO){
+        post.LIKES.N_LIKES = post.LIKES.N_LIKES+1
+        this.request.anadirLike(this.idUsuario , post.id_publicacion).subscribe({
+          next:(response :any )=>{
+            console.log(response)
+            resolve();
+          },
+          error:(response)=>{
+            console.log(response);
+            reject(response);
+          }
+        })
+      }else{
+        post.LIKES.N_LIKES = post.LIKES.N_LIKES-1
+        this.request.eliminarLike(this.idUsuario , post.id_publicacion).subscribe({
+          next:(response :any )=>{
+            console.log(response)
+            resolve()
+          }, 
+          error:(response)=>{
+            console.log(response)
+            reject(response)
+          }
+        })
+      }
+    })
+  }
+  //OBTIENE LA CANTIDAD DE LIKES DEL POST
+  getLikes(id : any) : Promise<void>{
+    return new Promise((resolve , reject)=>{
+      this.request.getLikes(this.idUsuario , id).subscribe({
+        next:(response)=>{
+          this.datosPost['LIKES']= response.message;
+          resolve();
+        },
+        error:(response)=>{
+          reject(response)
+        }
+      })
+    })
+  }
+
+  /*
+  * * FUNCIONES USUARIOS
+  */
+ //ESTA FUNCION SE ENCARGA DE OBTENER LA INFORMACION DEL USUARIO QUE HA SUBIDO UN POST
+ getUsuarioPost(id : any):Promise <void>{
+  return new Promise ((resolve , reject )=>{
+    this.request.getUsuario(id).subscribe({
+      next:(response)=>{
+        this.datosPost['USUARIO'] = response.message;
+        if(this.datosPost.id_usuario === this.idUsuario){
+          this.datosPost['MISMO_USUARIO'] = true;
+        }else{
+          this.datosPost['MISMO_USUARIO'] = false;
+        }
+        resolve();        
+      },
+      error:(response)=>{
+        console.log(response);
+        reject();
+      }
+    })
+  })
+ }
+ //ESTA FUNCION SE ENCARGA DE OBTENER LA INFORMACION DEL USUARIO DE UN COMENTARIO RECIEN PUBLICADO
+  getUsuarioComentario(id : any) : Promise<void>{
+    return new Promise((resolve , reject)=>{
+      this.request.getUsuario(id).subscribe({
+        next:(response)=>{
+          resolve(response.message)
+        },
+        error:(response)=>{
+          console.log(response);
+          reject(response);
+        }
+      })
+    })
+  }
+  getUsuario(){
+    return new Promise((resolve , reject)=>{
+      for(let comentario of this.arrayComentarios){
+        this.request.getUsuario(comentario.ID_USUARIO).subscribe({
+          next:(response)=>{
+            comentario['USUARIO'] = response.message;
+            if(comentario.ID_USUARIO == this.idUsuario){
+              comentario['MISMO_USUARIO'] = true;
+            }else{
+              comentario['MISMO_USUARIO'] = false;
+            }           
+          }
+        })
+      }
+    })
+  }
+  //OBTIENE INFORMACION DEL USUARIO QUE VISITA LA PAGINA
+  obtenerUsuarioVisitante() : Promise <void>{
+    return new Promise ((resolve , reject)=>{
+      this.request.getPerfil().subscribe({
+        next:(response)=>{
+          this.idUsuario = response.message.ID_USUARIO
+          resolve()
+        },
+        error:(response)=>{
+          console.log(response);
+          reject(response)
+        }
+      })
+    })
+  }
+  /* 
+  * * FUNCIONES COMENTARIOS 
+  */
+
+
+  cargarComentarios(id : any) : Promise <void>{
+    return new Promise((resolve , reject)=>{
+      this.request.cargarComentarios(id ).subscribe({
+        next:(response)=>{
+          this.arrayComentarios = response.message;
+          console.log(this.arrayComentarios)
+          resolve()
+        },
+        error:(response)=>{
+          console.log(response);
+          reject(response)
+        }
+      })
+    })
+  }
+
+  //FUNCION QUE SE ENCARGAR DE SUBIR UN COMENTARIO 
+  subirComentario(){
+    this.request.anadirComentario(this.idUsuario ,this.postComentar.id_publicacion , this.comentario).subscribe({
+      next: async (response)=>{
+        let comentarioNuevo = response.message;
+        let infoUsuario = await this.getUsuarioComentario(comentarioNuevo.ID_USUARIO)
+        comentarioNuevo['USUARIO'] = infoUsuario;
+        if(comentarioNuevo.ID_USUARIO == this.idUsuario){
+          comentarioNuevo['MISMO_USUARIO'] = true;
+        }else{
+          comentarioNuevo['MISMO_USUARIO'] = false;
+        }
+        console.log(response.message)
+        this.arrayComentarios.push(response.message);
+        this.datosPost.COMENTARIOS.N_COMENTARIOS = this.datosPost.COMENTARIOS.N_COMENTARIOS +1
+        this.mostrarToast(true , response.info)
+      },
+      error:(response)=>{
+        this.mostrarToast(false , response.error.error)
+      }
+    })
+  }
+  //FUNCION QUE OBTIENE EL NUMERO DE COMENTARIOS
+  getNumeroComentarios(id : any):Promise <void>{
+    return new Promise((resolve , reject)=>{
+      this.request.getNumeroComentarios(id).subscribe({
+        next:(response)=>{
+          this.datosPost['COMENTARIOS'] = response.message;
+          resolve();
+        },
+        error:(response)=>{
+          reject(response)
+        }
+      })
+    })
+
+  }
+
+  /* 
+  * * FUNCIONES TOAST Y OTROS
+  */
+ //EVENTO PARA MOSTRAR EL TOAST , LE PASAMOS POR PARAMETRO UN BOOLEANO Y EL MENSAJE
+  mostrarToast(success : boolean , mensaje:string ){
+    if(success){
+      this.stateToast = 'success'
+      this.iconToast = 'check'
+      this.mensajeToast = mensaje;
+    }else{
+      this.stateToast = 'danger'
+      this.iconToast = 'x';
+      this.mensajeToast = mensaje;
+    }
+    const toastLive = document.getElementById('liveToast');
+    if (toastLive) {
+      const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+      toastBootstrap.show();
+    }
+  }
+  //MUESTRA EL MODAL CON ID PASADO COMO PARAMETRO
+  mostrarModal(idElemento : any){
+        const modalElement = document.getElementById(idElemento);
     if(modalElement){
       const modal = new bootstrap.Modal(modalElement);
       modal.show();
     }
   }
-  cambiarLike(post : any){
-    post.LIKES.LIKE_USUARIO = !post.LIKES.LIKE_USUARIO
-    console.log(post)
-    if(post.LIKES.LIKE_USUARIO){
-      post.LIKES.N_LIKES = post.LIKES.N_LIKES+1
-      this.request.anadirLike(this.idUsuario , post.id_publicacion).subscribe({
-        next:(response :any )=>{
-          console.log(response)
-        }
-      })
-    }else{
-      post.LIKES.N_LIKES = post.LIKES.N_LIKES-1
-      this.request.eliminarLike(this.idUsuario , post.id_publicacion).subscribe({
-        next:(response :any )=>{
-          console.log(response)
-        }
-      })
-    }
-  }
-  subirComentario(){
-    this.request.anadirComentario(this.idUsuario ,this.postComentar.id_publicacion , this.comentario).subscribe({
-      next: (response)=>{
-        console.log(response);
-
-        const toastLive = document.getElementById('liveToast')
-        if (toastLive) {
-          const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-          this.mensajeToast = response.message
-          toastBootstrap.show();
-        }
-        this.datosPost.COMENTARIOS.N_COMENTARIOS = this.datosPost.COMENTARIOS.N_COMENTARIOS +1
-      },
-      error:(response)=>{
-        const toastLive = document.getElementById('liveToastError')
-        if (toastLive) {
-          const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-          this.mensajeToast = response.error.message
-          toastBootstrap.show();
-        }
-      }
-    })
+  //COMPRUEBA QUE ES UN ARRAY 
+  esArray(value: any) {
+    return Array.isArray(value) && value.length > 0
   }
 }

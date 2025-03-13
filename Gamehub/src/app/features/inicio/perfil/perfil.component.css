@@ -78,33 +78,24 @@ header{
     flex-direction: row;
 }
 .fotoPerfil img{
-    width: 50%;
+    width: 50px;
 }
 .infoUsuario{
     width: 100%;
     display: flex;
-    height: 80px;
-}
-.calificacion{
-    width: 20%;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
 }
 .calificacion h4{
     text-align: center;
     width: 60px;
     padding-top:12px;
     padding-bottom: 12px;
-    border: 2px solid gray;
-    border-radius: 50%;
     margin: 0;
 }
-.nombre{
-    width: max-content
-}
 .username{
-    width: 50%;
-}
-.fotoPerfil{
-    width: 10%;
+    width: 65%;
 }
 .infoJuego{
     width: 20%;
@@ -138,11 +129,14 @@ header{
     grid-template-rows: auto;
 }
 .imagenes img{
+
+    width: 75%;
     border-radius: 10px;
     cursor: pointer;
     object-fit: cover;
 }
 .imagenes-1{
+    text-align: center;
     grid-template-columns: 1fr;
 }
 .imagenes-2{
@@ -208,4 +202,8 @@ ul i{
 }
 .dropdown-menu li:hover{
     background-color: rgba(255, 166, 0, 0.068) ;
+}
+.siguiendo{
+    background-color: transparent !important;
+    border-color: white !important;
 }

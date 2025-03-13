@@ -103,4 +103,24 @@ export class Request{
         const headers = new HttpHeaders({'Content-Type' : 'application/json' , 'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
         return this.http.post<any>(`${this.baseUrl}getUsuario` , {ID_USUARIO : idUsuario} , {headers})
     }
+    cargarPostParaTi(){
+        const headers = new HttpHeaders({'Content-Type' : 'application/json' , 'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
+        return this.http.post<any>(`${this.baseUrl}cargarPostParaTi` , {} , {headers})
+    }
+    eliminarComentario(idComentario : string){
+        const headers = new HttpHeaders({'Content-Type' : 'application/json' , 'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
+        return this.http.post<any>(`${this.baseUrl}eliminarComentario` , {ID_COMENTARIO : idComentario} , {headers})
+    }
+    seguirUsuario(idUsuario : string , idSeguido : string){
+        const headers = new HttpHeaders({'Content-Type' : 'application/json' , 'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
+        return this.http.post<any>(`${this.baseUrl}seguirUsuario` , {ID_USUARIO : idUsuario , ID_SEGUIDO : idSeguido} , {headers})
+    }
+    comprobarSeguimiento(idUsuario : string , idSeguido : string){
+        const headers = new HttpHeaders({'Content-Type' : 'application/json' , 'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
+        return this.http.post<any>(`${this.baseUrl}comprobarSeguimiento` , {ID_USUARIO : idUsuario , ID_SEGUIDO : idSeguido} , {headers})
+    }
+    eliminarSeguimiento(idUsuario : string , idSeguido : string){
+        const headers = new HttpHeaders({'Content-Type' : 'application/json' , 'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
+        return this.http.post<any>(`${this.baseUrl}eliminarSeguimiento` , {ID_USUARIO : idUsuario , ID_SEGUIDO : idSeguido} , {headers})
+    }
 }

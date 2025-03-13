@@ -1,4 +1,16 @@
 <main>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3 ">
+        <div id="liveToast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="me-auto"><i class=" text-{{stateToast}} bi bi-{{iconToast}}-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;GAMEHUB</strong>
+            <small></small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body text-{{stateToast}}">
+            {{mensajeToast}}
+          </div>
+        </div>
+    </div>
     <app-side-navbar></app-side-navbar>
     <article>
         <div class="post">
@@ -19,7 +31,7 @@
                                 'bg-danger':  datosPost.calificacion >= 0 && datosPost.calificacion < 5,
                                 'bg-warning': datosPost.calificacion  >= 5 && datosPost.calificacion < 8,
                                 'bg-success': datosPost.calificacion  >= 8
-                            }">{{datosPost.calificacion}}</h4>
+                            }" class="rounded">{{datosPost.calificacion}}</h4>
                         </div>
                     </div>
                     <div class="datosPost">
@@ -33,10 +45,10 @@
                 </div>
                 <div class="infoJuego">
                     <div class="imagenJuego">
-                        <img src="http://localhost/uploads/fotosJuegos/{{datosPost.JUEGO?.portada}}">
+                        <img src="http://localhost/uploads/fotosJuegos/{{datosPost.JUEGO?.portada}}" class="rounded">
                     </div>
                     <div class="tituloJuego">
-                        <p class="text-center">{{datosPost.JUEGO?.nombre_juego}}</p>
+                        <p class="text-center fw-bold">{{datosPost.JUEGO?.nombre_juego}}</p>
                     </div>
                 </div>
             </div>
@@ -52,7 +64,7 @@
                 <div class="dropdown moreOptions d-flex flex-row">
                     <i class="bi bi-three-dots" data-bs-toggle="dropdown" aria-expanded="true"></i>
                     <ul class="dropdown-menu text-danger">
-                        <li (click)="clickEliminar(datosPost)"><i class="bi bi-trash"></i>Eliminar</li>
+                        <li (click)="clickEliminar(datosPost)" *ngIf="datosPost.MISMO_USUARIO"><i class="bi bi-trash"></i>Eliminar</li>
                     </ul>
                 </div>
             </div>
@@ -69,12 +81,12 @@
                     <div class="username">
                         <p class="text-secondary">&nbsp;&nbsp;&nbsp;&commat;{{comentario.USUARIO?.NOMBRE_USUARIO}}</p>
                     </div>
-                    <div class="options dropdown" *ngIf="mismoUsuario">
+                    <div class="options dropdown">
                         <button type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-three-dots"></i>
                         </button>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-item text-danger"><i class="bi bi-trash"></i>Eliminar</li>
+                            <li class="dropdown-item text-danger" (click)="eliminarComentario(comentario.ID_COMENTARIO)"*ngIf="comentario.MISMO_USUARIO"><i class="bi bi-trash"></i>Eliminar</li>
                         </ul>
                     </div>
                 </div>
