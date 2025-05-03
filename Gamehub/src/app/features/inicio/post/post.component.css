@@ -24,28 +24,79 @@ article{
     height: auto;
     flex-direction: row;
 }
-.infoUsuario{
-    width: 100%;
-    display: flex;
-    height: 80px;
+.calificacion{
+    margin-left: auto;
 }
-.calificacion h4{
+.nombre a{
+    text-decoration: none;
+    color: white;
+    &:hover{
+        text-decoration: underline;
+    }   
+}
+.tituloJuego{
     text-align: center;
-    width: 60px;
-    padding-top:12px;
-    padding-bottom: 12px;
-    border-radius: 50%;
-    margin: 0;
+}
+.tituloJuego a{
+    text-decoration: none;
+    color: white;
+    &:hover{
+        text-decoration: underline;
+    }   
+}
+.infoJuego{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
 }
 .username{
-    width: 70%;
-}
-.imagenJuego{
-    text-align: center;
+    width: fit-content;
 }
 .imagenJuego img{
-    width: 100px;
-    height: 125px;
+    width: 100%;
+    margin: auto;
+}
+.imagenJuego{
+    width: 50%;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    cursor: pointer;
+    text-align: center;
+}
+.imagenJuego:hover {
+    transform: scale(1.05);
+    filter: brightness(60%);
+}
+.overlay{
+    position: absolute;
+    top: 0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0 , 0 , 0 , 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+.imagenJuego:hover .overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+.texto-overlay {
+    color: white;
+    font-weight: bold;
+    font-size: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-direction: column;
 }
 .infoPost{
     width: 80%;
@@ -93,6 +144,7 @@ article{
     flex-direction: row;
     justify-content: space-around;
 }
+
 .modal-body img {
     max-width: 100%;
     max-height: 90vh;
@@ -101,6 +153,7 @@ article{
 .options i{
     padding: 5px 10px 5px 10px;
     border-radius: 50%;
+    color: rgba(255, 255, 255, 0.281) 1px solid;
 }
 .options div:hover{
     cursor: pointer;
@@ -132,6 +185,27 @@ ul i{
     flex-direction: column;
     border-bottom: 1px solid orange;
 }
+.comentarioOptions{
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.comentarioOptions button{
+    background-color: transparent;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: none;
+    &:hover{
+        background-color: rgba(255, 166, 0, 0.164);
+        transition: 0.5s;
+        i{
+            color: orange;
+            transition: 0.5s;
+        }
+    }
+}
 .fotoPerfil img{
     width: 50px;
 }
@@ -139,6 +213,7 @@ ul i{
     display: flex;
     flex-direction: row;
     gap: 10px;
+    align-items: center;
 }
 .options button{
     background-color: transparent;
@@ -165,4 +240,26 @@ ul i{
 .comentarios{
     display: flex;
     flex-direction: column-reverse;
+}
+.tituloPost{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 10px;
+    gap: 5px;
+    margin-top: 10px;
+}
+.tituloPost button{
+    background-color: transparent;
+    border-radius: 50%;
+    border: none;
+    font-size: 20px;
+    &:hover{
+        transition: 0.5s;
+        background-color: rgba(255, 166, 0, 0.349);
+    }
+}
+.tituloPost i{
+    width: 40px;
+    height: 40px;
 }

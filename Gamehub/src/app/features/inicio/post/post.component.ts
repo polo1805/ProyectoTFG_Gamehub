@@ -6,10 +6,12 @@ import { CommonModule } from '@angular/common';
 import * as bootstrap from 'bootstrap';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-post',
   standalone: true,
-  imports: [SideNavbarComponent, CommonModule , FormsModule],
+  imports: [SideNavbarComponent, CommonModule , FormsModule , RouterLink],
   templateUrl: './post.component.html',
   styleUrl: './post.component.css'
 })
@@ -18,6 +20,7 @@ export class PostComponent implements OnInit {
     private request: Request,
     private route: ActivatedRoute , 
     private router : Router , 
+    private location : Location 
   ) { }
   idPost: string | null = '';
   datosPost: any = {}
@@ -36,61 +39,7 @@ export class PostComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.idPost = params.get('id');
       this.cargarPagina();
-    })
-    this.request.getPerfil().subscribe({
-      next:(response)=>{
-        this.idUsuario = response.message.ID_USUARIO;
-        this.request.cargarPost(this.idPost).subscribe({
-          next:(response)=>{
-            this.datosPost = response.message;
-            console.log(this.datosPost);
-            this.request.getUsuario(this.datosPost.ID_USUARIO).subscribe({
-              next:(response)=>{
-                this.datosPost['USUARIO'] = response.message;
-                if(this.datosPost.id_usuario === this.idUsuario){
-                  this.datosPost['MISMO_USUARIO'] = true;
-                }else{
-                  this.datosPost['MISMO_USUARIO'] = false;
-                }
-                this.request.verJuego(this.datosPost.id_juego).subscribe({
-                  next:(response)=>{
-                    this.datosPost['JUEGO']=  response.message;
-                    if(this.idPost){
-                      this.request.getLikes(this.idUsuario , this.idPost).subscribe({
-                        next:(response)=>{
-                          this.datosPost['LIKES']= response.message;
-                          if(this.idPost){
-                            this.request.getNumeroComentarios(this.idPost).subscribe({
-                              next:(response)=>{
-                                this.datosPost['COMENTARIOS'] = response.message;
-                                this.request.cargarComentarios(this.idPost).subscribe({
-                                  next:(response)=>{
-                                    
-                                    for(let comentario of this.arrayComentarios){
-                                      this.request.getUsuario(comentario.ID_USUARIO).subscribe({
-                                        next:(response)=>{
-                                          
-                                        }
-                                      })
-                                    }
-                                  }
-                                })
-                              }
-                            })
-                          }
-                        }
-                      })
-                    }
-                  }
-                })
-              }
-            })
-          }
-        })
-      }
-    })
-
-    
+    })    
   }
   /*
   * * FUNCION PARA CARGAR LA PAGINA
@@ -99,6 +48,7 @@ export class PostComponent implements OnInit {
     await this.obtenerUsuarioVisitante();
     await this.cargarPost();
     await this.getUsuarioPost(this.datosPost.id_usuario);
+    this.datosPost['imagen'] = JSON.parse(this.datosPost.imagen)
     await this.getJuego(this.datosPost.id_juego)
     await this.getLikes(this.idPost)
     await this.getNumeroComentarios(this.idPost)
@@ -121,6 +71,11 @@ export class PostComponent implements OnInit {
         }
       })
     })
+  }
+  verJuego(event : MouseEvent , idJuego: string){
+    event.stopPropagation();
+    console.log('VerJuego' , idJuego)
+    this.router.navigate(['/juegos' , idJuego])
   }
   /*
   * * FUNCIONES PARA LOS POSTS
@@ -165,7 +120,7 @@ export class PostComponent implements OnInit {
     this.imagenClick = `http://localhost/uploads/fotosPost/${imagen}`;
     this.mostrarModal('imagenModal')
   }
-  //FUNCION PARA ELIMINAR UN POST EN EL QUE SE HA HECHO CLIKC
+  //FUNCION PARA ELIMINAR UN POST EN EL QUE SE HA HECHO CLICK
   clickEliminar(post : any){
     this.request.eliminarPostPerfil(post.id_publicacion).subscribe({
       next:(response)=>{
@@ -362,7 +317,34 @@ export class PostComponent implements OnInit {
     })
 
   }
-
+  /*
+  * *METODOS FORMATEO FECHA
+  */
+  //METODO PARA FORMATEAR LA FECHA
+  formatearFecha(fechaPublicacion : string){
+    const fecha = new Date(fechaPublicacion);
+    const ahora = new Date();
+    const diferencia = ahora.getTime() - fecha.getTime();
+    const segundos = Math.floor(diferencia / 1000);
+    const minutos = Math.floor(segundos / 60);
+    const horas = Math.floor(minutos / 60);
+    const dias = Math.floor(horas / 24);
+    if(segundos < 60){
+      return `${segundos} s`;
+    }else if(minutos < 60){
+      return `${minutos} min`;
+    }else if( horas < 24){
+      return `${horas} h`;
+    }else if(dias < 7){
+      return `${dias} d`;
+    }else{
+      return fecha.toLocaleDateString('es-ES' , {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit'
+      })
+    }
+  }
   /* 
   * * FUNCIONES TOAST Y OTROS
   */
@@ -394,5 +376,8 @@ export class PostComponent implements OnInit {
   //COMPRUEBA QUE ES UN ARRAY 
   esArray(value: any) {
     return Array.isArray(value) && value.length > 0
+  }
+  volverAtras(){
+    this.location.back();
   }
 }

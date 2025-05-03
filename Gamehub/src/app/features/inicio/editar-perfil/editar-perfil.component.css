@@ -1,0 +1,103 @@
+main{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+}
+app-side-navbar{
+    width: 25%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: 0;
+    height: 100vh;
+    border-right:1px solid  orange;
+}
+article{
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    margin-left:25%;
+}
+header{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-top: 10px;
+    padding-left: 20px;
+    align-items: center;
+
+    h4{
+        margin: 0px;
+    }
+}
+header button{
+    border : none;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 20px;
+    &:hover{
+        background-color: rgba(255, 166, 0, 0.349);
+        transition: 0.5s;
+    }
+}
+form{
+    padding-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.imagenPerfil{
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+}
+.overlay{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left : 0;
+    right : 0;
+    bottom: 0;
+    background: rgba(0 , 0 , 0 , 0.6);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+}
+.imagenPerfil:hover .overlay{
+    opacity: 1;
+    background-color: black;
+    transition: 0.5s;
+}
+.nombre{
+    width: 50%;
+}
+.username{
+    width: 50%;
+}
+.biografia{
+    width: 50%;
+}
+.botones{
+    display: flex;
+    flex-direction: row;
+    gap : 20px;
+}

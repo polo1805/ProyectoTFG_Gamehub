@@ -9,9 +9,11 @@ require_once('./services.php');
 
 $service = new Services();
 $request = trim($_SERVER['REQUEST_URI'] , '/');
-header("Access-Control-Allow-Origin: http://localhost:4200");
+header("Access-Control-Allow-Origin: http://192.168.1.151:3000");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
 //Obtenemos el token
 
 if($_SERVER['REQUEST_METHOD']==='GET'){
@@ -87,6 +89,33 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         break;
         case 'getUsuario':
             echo $service->getUsuario();
+        break;
+        case 'cargarPostParaTi':
+            echo $service->cargarPostParaTi();
+        break;
+        case 'eliminarComentario':
+            echo $service->eliminarComentario();
+        break;
+        case 'comprobarSeguimiento':
+            echo $service->comprobarSeguimiento();
+        break;
+        case 'seguirUsuario':
+            echo $service->seguirUsuario();
+        break;
+        case 'eliminarSeguimiento':
+            echo $service->eliminarSeguimiento();
+        break;
+        case 'cargarPostsSiguiendo':
+            echo $service->cargarPostSiguiendo();
+        break;
+        case 'getGeneroJuegos':
+            echo $service->getGeneroJuegos();
+        break;
+        case 'filtrarJuegosPorGenero':
+            echo $service->filtrarJuegosPorGenero();
+        break;
+        case 'editarPerfil':
+            echo $service->editarPerfil();
         break;
         default:
             http_response_code(404);

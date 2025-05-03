@@ -5,24 +5,38 @@ main{
 }
 app-side-navbar{
     width: 25%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: 0;
+    height: 100vh;
+    border-right:1px solid  orange;
 }
 .buscarJuegos{
+    margin-left:25%;
     width: 75%;
 }
 header{
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 20px;
-    padding-top:30px;
-    padding-left: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     align-items: center;
     justify-content: center;
-    padding-bottom: 50px;
     border-bottom:1px solid orange;
 }
 .buscador{
     width: 75%;
+}
+.buscar{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
 }
 .form-control:focus{
     border-color: rgb(255, 165, 0) !important;
@@ -40,21 +54,23 @@ header{
 
 }
 .listaJuegos{
-    padding: 40px;
+    padding-top: 20px;
+    padding-left: 10px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
 .juego{
-    width: 150px;
+    width: 125px;
+    height: 225px;
     display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: 5px;
-    padding: 10px;
+    padding-top: 10px;
     &:hover{
-        background-color: rgba(163, 163, 163, 0.267);
         cursor: pointer;
+        background-color: rgba(255, 165, 0, 0.2);
     }
 }
 .juego p{
@@ -62,7 +78,87 @@ header{
     margin:0;
 }
 .juego img{
-    width: 80%;
-    max-height: 140px;
+    width: 100px;
+    max-height: 125px;
     border-radius: 5px;
+}
+.filtros{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 80%;
+}
+.filtros div{
+    display: flex;
+    flex-direction: row;
+    gap:20px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.dropdown-menu{
+    width: 800px;
+}
+.filtrosDisponibles{
+    display: flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    padding: 20px;
+    width: 100%;
+}
+.filtrosDisponibles li{
+    width: fit-content;
+}
+.dropdown-item{
+    cursor: pointer;
+    border: 2px solid orange;
+}
+.filtroSeleccionado{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    border: 2px solid orange;
+    align-items: center;
+    &:hover{
+        background-color: orange;
+    }
+}
+.filtrosSeleccionados{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.filtroSeleccionado i{
+    padding: 3px 6px ;
+    font-size: 20px;
+}
+.icon{
+    cursor: pointer;
+}
+.btn{
+    background-color: transparent;
+    border: 2px solid orange;
+    width: 100%;
+}
+.form-select{
+    border: 2px solid orange;
+    text-align: center;
+}
+.genero select{
+    height: auto;
+    max-height: 200px;
+    overflow-y: auto;
+}
+@media (max-width : 600px){
+    .buscarJuegos{
+        margin-left:0;
+        width: 100%;
+    }
+    app-side-navbar{
+        width: 0px;
+        border-right:none;
+    }
 }

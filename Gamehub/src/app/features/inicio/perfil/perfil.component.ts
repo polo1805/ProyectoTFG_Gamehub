@@ -11,17 +11,15 @@ import { ActivatedRoute } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { FormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [SideNavbarComponent, LoadingComponent, CommonModule , FormsModule],
+  imports: [SideNavbarComponent, LoadingComponent, CommonModule , FormsModule , RouterLink],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css',
 })
 export class PerfilComponent implements OnInit{
-  private subscription!: Subscription;
-  @ViewChild('liveToast', { static: false }) liveToast!: ElementRef;  // ElementRef para el toast de éxito
-  @ViewChild('liveToastError', { static: false }) liveToastError!: ElementRef; // ElementRef para el toast de error
   constructor(
     private request : Request, 
     private key : KeyService  , 
@@ -104,6 +102,11 @@ export class PerfilComponent implements OnInit{
         }
       })
     })
+  }
+  verJuego(event : MouseEvent , idJuego: string){
+    event.stopPropagation();
+    console.log('VerJuego' , idJuego)
+    this.router.navigate(['/juegos' , idJuego])
   }
   /*
   * *FUNCIONES PARA POSTS
@@ -366,7 +369,34 @@ export class PerfilComponent implements OnInit{
       this.seguirUsuario()
     }
   }
-
+  /*
+  * *METODOS FORMATEO FECHA
+  */
+  //METODO PARA FORMATEAR LA FECHA
+  formatearFecha(fechaPublicacion : string){
+    const fecha = new Date(fechaPublicacion);
+    const ahora = new Date();
+    const diferencia = ahora.getTime() - fecha.getTime();
+    const segundos = Math.floor(diferencia / 1000);
+    const minutos = Math.floor(segundos / 60);
+    const horas = Math.floor(minutos / 60);
+    const dias = Math.floor(horas / 24);
+    if(segundos < 60){
+      return `${segundos} s`;
+    }else if(minutos < 60){
+      return `${minutos} min`;
+    }else if( horas < 24){
+      return `${horas} h`;
+    }else if(dias < 7){
+      return `${dias} d`;
+    }else{
+      return fecha.toLocaleDateString('es-ES' , {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit'
+      })
+    }
+  }
 
   /* 
    * *FUNCIONES DE ALERTAS  , MODALES Y OTROS 

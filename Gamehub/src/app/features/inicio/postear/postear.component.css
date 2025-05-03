@@ -5,11 +5,28 @@ main{
 }
 app-side-navbar{
     width: 25%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: 0;
+    height: 100vh;
+    border-right:1px solid  orange;
 }
 .postear{
     padding-top:20px ;
     padding-left: 20px;
     width: 75%;
+    margin-left: 25%;
+}
+.breadcrumb{
+    color: orange;
+    a{
+        text-decoration: none;
+        color: orange;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
 }
 .container-1{
     width: 100%;

@@ -10,18 +10,28 @@
             </div>
         </header>
         <article>
+            <app-loading *ngIf="cargando"></app-loading>
             <div class="post p-3" *ngFor="let post of postCargados" (click)="clickPost(post.id_publicacion)">
                 <div class="infoPost">
                     <div class="infoUsuarioPost">
                         <div class="infoUsuario">
                             <div class="imagenUsuario">
-                                <img src="http://localhost/uploads/fotosPerfil/{{post.INFO_USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
+                                <img src="http://192.168.1.151/uploads/fotosPerfil/{{post.INFO_USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
                             </div>
                             <div class="nombre">
-                                <p class="fw-bold mb-0">{{post.INFO_USUARIO?.NOMBRE}}</p>
+                                <a [routerLink]="['/' , post.INFO_USUARIO?.NOMBRE_USUARIO]" class="fw-bold w-100">{{post.INFO_USUARIO?.NOMBRE}}</a>
                             </div>
                             <div class="username">
-                                <p class="text-secondary mb-0">&commat;{{post.INFO_USUARIO?.NOMBRE_USUARIO}}</p>
+                                <p class="text-secondary">&commat;{{post.INFO_USUARIO?.NOMBRE_USUARIO}}</p>
+                            </div>
+                            <div class="fechaPublicacion">
+                                <p class="text-secondary">·  {{formatearFecha(post.fecha_publicacion)}}</p>
+                            </div>
+
+                        </div>
+                        <div class="contenidoPost">
+                            <div class="descripcionPost">
+                                <p>{{post.DESCRIPCION}}</p>
                             </div>
                             <div class="notaJuego">
                                 <h4 class="m-0 p-2 ps-3 pe-3 rounded" [ngClass]="{
@@ -30,19 +40,28 @@
                                     'bg-success': post.calificacion  >= 8
                                 }">{{post.calificacion}}</h4>
                             </div>
+                            <div class="infoJuego" >
+                                <div class="imagenJuego rounded" (click)="verJuego($event , post.id_juego)">
+                                    <img  src="http://192.168.1.151/uploads/fotosJuegos/{{post.INFO_JUEGO?.portada}}" alt="" class="rounded">
+                                    <div class="overlay">
+                                        <div class="texto-overlay">
+                                            <i class="bi bi-eye"></i> VER JUEGO
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nombreJuego text-center">
+                                    <a [routerLink]="['/juegos' , post.id_juego]" class="fw-bold">{{post.INFO_JUEGO?.nombre_juego}}</a>
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="descripcionPost">
-                            <p>{{post.DESCRIPCION}}</p>
+                        <div class="imagenes">
+                            <div *ngIf="esArray(post.imagen)" class="imagenes px-5 pb-3" [ngClass]="'imagenes-'+ post.imagen.length">
+                                <img  *ngFor="let imagen of post?.imagen"  src="http://192.168.1.151/uploads/fotosPost/{{imagen}}" alt="" (click)="clickImagen(imagen) ; $event.stopPropagation()">
+                            </div>
                         </div>
                     </div>
-                    <div class="infoJuego me-5">
-                        <div class="imagenJuego">
-                            <img src="http://localhost/uploads/fotosJuegos/{{post.INFO_JUEGO?.portada}}" alt="" class="rounded">
-                        </div>
-                        <div class="nombreJuego text-center">
-                            <p class="fw-bold">{{post.INFO_JUEGO?.nombre_juego}}</p>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="opcionesPost">
                     <div class="comentar d-flex flex-row" (click)="clickComentar(post) ; $event.stopPropagation()">
@@ -68,5 +87,14 @@
                 </div>
             </div>
         </article>
+        <div class="modal fade" id="imagenModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+                        <img [src]="imagenClick" class="img-fluid" alt="Imagen ampliada">
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </div>

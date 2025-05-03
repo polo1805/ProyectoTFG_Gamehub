@@ -5,10 +5,36 @@ main{
 }
 app-side-navbar{
     width: 25%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: 0;
+    height: 100vh;
+    border-right:1px solid  orange;
+}
+article{
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    margin-left:25%;
+}
+.breadcrumb{
+    display: flex;
+    align-items: center;
+    margin: 0;
+    height: 50px;
+    a{
+        text-decoration: none;
+        color: orange;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
 }
 .imagenJuego img{
     width: 40%;
     border-radius: 10px;
+    min-width: 125px;
 }
 .informacionJuego{
     width: 50%;
@@ -19,23 +45,32 @@ app-side-navbar{
     width: 50%;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 .descripcion {
-    width: 75%;
+    width: 100%;
 }
 .genero p{
     margin: 0;
 }
 .juego{
-    width: 75%;
+    width: 100%;
     display: flex;
     flex-direction: row;
 }
-.calificacion{
-    margin: 0px 200px 0px 200px;
-}
 .calificacion h1{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
     border-radius: 20px;
+}
+.calificacion{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
+    min-width: 100px;
 }
 .postear{
     text-align: center;
@@ -43,4 +78,17 @@ app-side-navbar{
 .postear button{
     color: orange;
     border: orange 2px solid;
+}
+.detalles{
+    width: 80%;
+}
+@media(max-width:1024px){
+    article{
+        width: 100% !important;
+        margin-left : 0px !important;
+    }
+    app-side-navbar{
+        width: 0px;
+        border-right:0px;
+    }
 }

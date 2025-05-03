@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { SideNavbarComponent } from "../../../services/side-navbar/side-navbar.component";
 import { CommonModule } from '@angular/common';
 import { Request } from '../../../core/request.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NotificarPublicacionService } from '../../../services/notificar-publicacion.service';
 import { KeyService } from '../../../core/keys.service';
 @Component({
   selector: 'app-postear',
   standalone: true,
-  imports: [SideNavbarComponent , CommonModule , FormsModule],
+  imports: [SideNavbarComponent , CommonModule , FormsModule , RouterLink] ,
   templateUrl: './postear.component.html',
   styleUrl: './postear.component.css'
 })

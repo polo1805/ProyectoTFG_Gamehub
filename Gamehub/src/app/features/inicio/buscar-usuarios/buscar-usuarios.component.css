@@ -1,5 +1,11 @@
 app-side-navbar{
     width: 25%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: 0;
+    height: 100vh;
+    border-right:1px solid  orange;
 }
 main{
     display: flex;
@@ -7,6 +13,7 @@ main{
     flex-direction: row;
 }
 .buscarUsuarios{
+    margin-left:25%;
     width: 75%;
 }
 header{

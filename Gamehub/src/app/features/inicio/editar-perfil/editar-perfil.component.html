@@ -1,0 +1,52 @@
+<main>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3 ">
+        <div id="liveToast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="me-auto"><i class=" text-{{stateToast}} bi bi-{{iconToast}}-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;GAMEHUB</strong>
+            <small></small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body text-{{stateToast}}">
+            {{mensajeToast}}
+          </div>
+        </div>
+    </div>
+    <app-side-navbar></app-side-navbar>
+    <article>
+        <app-loading *ngIf="cargando"></app-loading>
+        <header>
+            <button (click)="volverAtras()">    
+                <i class="bi bi-arrow-left"></i>
+            </button>
+            <h4>Editar perfil</h4>
+        </header>
+        <form action="" *ngIf="perfilCargado">
+            <div class="imagenPerfil" (click)="abrirSelectorArchivo()">
+                <img class="rounded-circle" [src]="imagenTemporal || 'http://192.168.1.151/uploads/fotosPerfil/' + imagenPerfil " alt="">
+                <div class="overlay">
+                    <i class="bi bi-pencil-fill"></i>
+                    <span>EDITAR IMAGEN</span>
+                </div>
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept=".jpg,.jpeg,.png,.webp">
+            </div>
+            <div class="nombre form-floating">
+                <input type="text" class="form-control" [(ngModel)]="nombrePerfil"  name="nombre" required (change)="cambios()">
+                <label for="floatingInput">Nombre</label>
+            </div>
+            <div class="username form-floating">
+                <input type="text" class="form-control" [(ngModel)]="usernamePerfil" name="username" required (change)="cambios()">
+                <label for="floatingInput">Nombre de usuario</label>
+            </div>
+            <div class="biografia form-floating">
+                <textarea class="form-control" id="floatingTextarea" style="height: 100px;" name="biografia" [(ngModel)]="biografiaPerfil" (change)="cambios()">
+                </textarea>
+                <label for="floatingTextarea"> Biografia</label>
+            </div>
+            <div class="botones">
+                <button class="btn btn-secondary" (click)="deshacerCambios()" [disabled]="!change">Deshacer cambios</button>
+                <button class="btn btn-warning" (click)="guardarCambios()">Guardar cambios</button>
+            </div>
+            
+        </form>
+    </article>
+</main>

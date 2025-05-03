@@ -10,7 +10,7 @@ import { RegistroJuego } from "../shared/juegoData";
     providedIn: 'root',
 })
 export class Request{
-    private baseUrl = 'http://localhost:80/';
+    private baseUrl = 'http://192.168.1.151:80/';
     constructor(
         private http:HttpClient , 
         private cookies : CookieService
@@ -122,5 +122,25 @@ export class Request{
     eliminarSeguimiento(idUsuario : string , idSeguido : string){
         const headers = new HttpHeaders({'Content-Type' : 'application/json' , 'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
         return this.http.post<any>(`${this.baseUrl}eliminarSeguimiento` , {ID_USUARIO : idUsuario , ID_SEGUIDO : idSeguido} , {headers})
+    }
+    cargarPostsSiguiendo(idUsuario : string){
+        const headers = new HttpHeaders({'Content-Type' : 'application/json' , 'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
+        return this.http.post<any>(`${this.baseUrl}cargarPostsSiguiendo` , {ID_USUARIO : idUsuario} , {headers})
+    }
+    getGeneroJuegos(){
+        const headers = new HttpHeaders({'Content-Type' : 'application/json' , 'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
+        return this.http.post<any>(`${this.baseUrl}getGeneroJuegos` , {} , {headers})
+    }
+    filtrarJuegosPorGenero(generos : string[]){
+        const headers = new HttpHeaders({'Content-Type' : 'application/json' , 'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
+        return this.http.post<any>(`${this.baseUrl}filtrarJuegosPorGenero` , {GENEROS : generos} , {headers})
+    }
+    cambiarDatosPerfil(formData : FormData){
+        const headers = new HttpHeaders({'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
+        return this.http.post<any>(`${this.baseUrl}cambiarDatosPerfil` , formData , {headers})
+    }
+    editarPerfil(formData : FormData){
+        const headers = new HttpHeaders({'Authorization' : "Bearer "+this.cookies.get('KEY')}); 
+        return this.http.post<any>(`${this.baseUrl}editarPerfil` , formData , {headers})
     }
 }

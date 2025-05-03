@@ -53,7 +53,7 @@ export class LoginComponent {
         next : (res)=>{
           this.key.USERNAME = this.usuario; 
           this.key.TOKEN = res.token;
-          this.cookieService.set('KEY' , this.key.TOKEN , 90 , '/' , undefined , true , 'Lax');
+          this.cookieService.set('KEY' , this.key.TOKEN , 90 , '/' , undefined , false , 'Lax');
           this.request.getPerfil().subscribe({
             next: (response) => {
               if(response.message.ROL == 'ADMIN'){

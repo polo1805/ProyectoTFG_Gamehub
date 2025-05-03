@@ -11,6 +11,7 @@ import { HomeAdminComponent } from './features/admin/home-admin/home-admin.compo
 import { JuegoComponent } from './features/inicio/juego/juego.component';
 import { PostearComponent } from './features/inicio/postear/postear.component';
 import { PostComponent } from './features/inicio/post/post.component';
+import { EditarPerfilComponent } from './features/inicio/editar-perfil/editar-perfil.component';
 export const routes: Routes = [
     {
         path:'home' , 
@@ -60,6 +61,10 @@ export const routes: Routes = [
         path: ':username' , 
         component:PerfilComponent
     } ,
+    {
+        path:':username/editar' , 
+        component:EditarPerfilComponent
+    },
     {
         path:'' , 
         redirectTo:'/home',

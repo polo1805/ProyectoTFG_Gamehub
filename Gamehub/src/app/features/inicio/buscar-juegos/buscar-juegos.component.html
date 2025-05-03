@@ -2,18 +2,46 @@
     <app-side-navbar></app-side-navbar>
     <div class="buscarJuegos">
         <header>
-            <div class="buscador">
-                <input type="text" class="form-control w-100" placeholder="Escribe el nombre del juego" (input)="buscarJuegos($event)">
+            <div class="buscar">
+                <div class="buscador">
+                    <input type="text" class="form-control w-100" placeholder="Escribe el nombre del juego" (input)="buscarJuegos($event)">
+                </div>
             </div>
-            <div class="botonBuscador">
-                <button class="rounded-pill px-3 py-2">Buscar</button>
+            <div class="filtros">
+                <div class="genero" *ngIf="arrayGeneros.length > 0">
+                    <select class="form-select " (change)="addGenero($event)">
+                        <option value="">Sin genero</option>
+                        <option *ngFor="let genero of arrayGeneros" value="{{genero}}">{{genero}}</option>
+                    </select>
+                </div>
+                <div class="orden">
+                    <select name="" id="" class="form-select" (change)="ordenarJuegos($event)">
+                        <option value="" selected>Sin orden </option>
+                        <option value="calificacionMenor">Ordenar por calificacion menor</option>
+                        <option value="calificacionMayor">Ordenar por calificacion mayor</option>
+                        <option value="fecha">Ordenar por fecha lanzamiento</option>
+                        <option value="nombreAZ">Ordenar por nombre (A-Z)</option>
+                        <option value="nombreZA">Ordenar por nombre (Z-A)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filtrosSeleccionados">
+                <div *ngFor="let generoSeleccionado of arrayFiltroGeneros" class="filtroSeleccionado rounded-pill">
+                    <div class="icon ms-2 rounded" (click)="eliminarGenero(generoSeleccionado)">
+                        <i class="bi bi-x"></i>
+                    </div>
+                    <div class="nombreGenero me-2">
+                        <p class="m-0 p-2">{{generoSeleccionado}}</p>
+                    </div>
+                </div>
             </div>
         </header>
         <div class="resultados">
+            <app-loading *ngIf="cargando"></app-loading>
             <div class="listaJuegos">
                 <div class="juego"*ngFor="let juego of arrayJuegos" (click)="verJuego(juego.id_juego)">
-                    <img src="http://localhost/uploads/fotosJuegos/{{juego.portada}}" alt="">
-                    <p class="my-4">{{juego.nombre_juego}}</p>
+                    <img src="http://192.168.1.151/uploads/fotosJuegos/{{juego.portada}}" alt="">
+                    <p class="my-2">{{juego.nombre_juego}}</p>
                 </div>
             </div>
         </div>

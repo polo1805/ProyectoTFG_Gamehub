@@ -3,10 +3,8 @@
     width: 100%;
 }
 main{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    border-left: 1px solid orange;
+    margin-left:25%;
+    width: 75%;
 }
 header{
     height: 60px;
@@ -34,11 +32,21 @@ header div p{
     padding: 10px;
     
 }
+article{
+    display: flex;
+    flex-direction: column-reverse;
+}
 .seleccionado{
     border-bottom: 3px solid orange;
 }
 .home app-side-navbar{
     width: 25%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: 0;
+    height: 100vh;
+    border-right:1px solid  orange;
 }
 .post{
     border-bottom: 1px solid rgba(255, 255, 255, 0.151);
@@ -57,33 +65,102 @@ header div p{
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 .infoUsuario{
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 30px;
+    gap:10px;
+    p{
+        margin: 0;
+    }
+    a{
+        text-decoration: none;
+        color: white;
+        &:hover{
+            text-decoration: underline;
+        }   
+    }
+}
+.nombreJuego a{
+    text-decoration: none;
+    color: white;
+    &:hover{
+        text-decoration: underline;
+    }   
 }
 .imagenUsuario img{
     width: 50px;
+    height: 50px;
 }
 .username{
-    width: 65%;
+    width: fit-content;
+}
+.nombre{
+    width:fit-content;
 }
 .imagenJuego img{
-    width: 100px;
-    height: 125px;
+    width: 100%;
+    margin: auto;
+}
+.imagenJuego{
+    width: 60%;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    cursor: pointer;
+    text-align: center;
+}
+.imagenJuego:hover {
+    transform: scale(1.05);
+    filter: brightness(60%);
+}
+.overlay{
+    position: absolute;
+    top: 0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0 , 0 , 0 , 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+.imagenJuego:hover .overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+.texto-overlay {
+    color: white;
+    font-weight: bold;
+    font-size: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-direction: column;
 }
 .infoJuego{
+    width: 20%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+}
+.contenidoPost{
+    display: flex;
+    flex-direction: row;
     gap: 10px;
 }
+.imagenes img{
+    width: 75%;
+    border-radius: 10px;
+}
 .descripcionPost{
-    padding-left: 80px;
+    margin-left: 60px;
 }
 .opcionesPost{
     display: flex;
@@ -125,11 +202,33 @@ header div p{
 .opcionesPost p {
     font-size: 18px;
 }
-@media (max-width : 576px){
+.notaJuego{
+    margin-left: auto;
+}
+@media (max-width : 600px){
     .home{
         display: block;
     }
     header{
         width: 100%;
     }
+    main{
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    app-side-navbar{
+        width: 0 !important;
+        border-right:0px solid  orange !important;
+    }
+    app-side-navbar{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+    }
+    .infoUsuario{
+        width: 100%;
+    }
+
 }
