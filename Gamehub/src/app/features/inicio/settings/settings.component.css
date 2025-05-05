@@ -1,0 +1,8 @@
+main{
+    display: flex;
+    flex-direction: column;
+}
+app-side-navbar{
+    width: 25%;
+    border-right: 1px solid orange;
+}

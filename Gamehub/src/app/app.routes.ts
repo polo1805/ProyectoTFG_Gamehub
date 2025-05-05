@@ -12,6 +12,7 @@ import { JuegoComponent } from './features/inicio/juego/juego.component';
 import { PostearComponent } from './features/inicio/postear/postear.component';
 import { PostComponent } from './features/inicio/post/post.component';
 import { EditarPerfilComponent } from './features/inicio/editar-perfil/editar-perfil.component';
+import { SettingsComponent } from './features/inicio/settings/settings.component';
 export const routes: Routes = [
     {
         path:'home' , 
@@ -25,6 +26,10 @@ export const routes: Routes = [
         path : 'registro' ,
         component : RegistroComponent
     } , 
+    {
+        path : 'settings' , 
+        component : SettingsComponent
+    },
     {
         path : 'verificacion' , 
         component : VerificacionComponent

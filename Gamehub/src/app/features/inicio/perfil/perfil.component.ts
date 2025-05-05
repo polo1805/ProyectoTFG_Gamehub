@@ -5,7 +5,6 @@ import { KeyService } from '../../../core/keys.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../../../services/loading/loading.component';
-import { Perfil } from '../../../shared/perfilData';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import * as bootstrap from 'bootstrap';
@@ -27,8 +26,7 @@ export class PerfilComponent implements OnInit{
     private router : Router , 
     private route : ActivatedRoute,
   ){}
-  isLoading : boolean = true; 
-  perfil !: Perfil; 
+  isLoading : boolean = true;  
   idUsuario : string = ''; 
   postsCargados : any[] = [];
   imagenes : any[] = [];
