@@ -1,3 +1,17 @@
 <main>
     <app-side-navbar></app-side-navbar>
+    <article>
+        <header>
+            <h3>Configuracion</h3>
+        </header>
+        <form>
+            <div class="apariencia">
+                <label>Selecciona la apariencia</label>
+                <select class="form-select" (change)="cambiarTema($event)">
+                    <option value="light">Claro</option>
+                    <option value="dark">Oscuro</option>
+                </select>
+            </div>
+        </form>
+    </article>
 </main>

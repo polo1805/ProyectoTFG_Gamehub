@@ -1,8 +1,44 @@
 main{
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
 app-side-navbar{
     width: 25%;
-    border-right: 1px solid orange;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: 0;
+    height: 100vh;
+    border-right:1px solid  orange;
+}
+article{
+    height: 100%;
+    width: 75%;
+    margin-left: 25%;
+}
+.apariencia{
+    gap: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    select{
+        width: 20%;
+        min-width: 200px;
+    }
+    label{
+        font-size: 20px;
+    }
+}
+form{
+    padding: 20px;
+}
+header{
+    margin-bottom: 20px;
+    border-bottom:1px solid orange;
+    h3{
+        margin: 20px;
+    }
 }
