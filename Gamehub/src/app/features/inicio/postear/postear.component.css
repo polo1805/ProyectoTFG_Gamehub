@@ -122,3 +122,19 @@ app-side-navbar{
     background-color: orange;
     border-color: orange;
 }
+@media(max-width : 1024px){
+    app-side-navbar{
+        width: 0px;
+        border: 0px !important;
+    }
+    .postear{
+        width: 100%;
+        margin-left: 0px;
+    }
+    main{
+        width: 100%;
+    }
+    .juego{
+        min-width: 100px;
+    }
+}

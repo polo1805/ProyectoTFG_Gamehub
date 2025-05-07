@@ -14,7 +14,6 @@
 
 <main >
     <app-side-navbar></app-side-navbar>
-
     <div class="perfil">
         <app-loading *ngIf="isLoading"></app-loading>
         <header>
@@ -38,9 +37,6 @@
                 </div>
                 <div class="seguir">
                     <button class="rounded-pill" [ngClass]="perfilCargado.SIGUIENDO ? 'siguiendo' : '' " (click)="clickSeguir()" *ngIf="!perfilCargado.MISMO_USUARIO">{{perfilCargado.SIGUIENDO ? 'Siguiendo' : 'Seguir'}}</button>
-                </div>
-                <div class="mas">
-                    <button class="rounded-pill" ><i class="bi bi-three-dots"></i></button>
                 </div>
             </div>
         </header>
