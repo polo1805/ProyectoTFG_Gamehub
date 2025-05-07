@@ -111,7 +111,7 @@ article{
     overflow: hidden;
     cursor: pointer;
     text-align: center;
-    min-width: 100px;
+    min-width: 75px;
 }
 .imagenJuego:hover {
     transform: scale(1.05);
