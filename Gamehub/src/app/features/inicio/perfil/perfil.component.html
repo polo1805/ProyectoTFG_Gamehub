@@ -45,7 +45,7 @@
             </div>
         </header>
         <div class="postUsuario" >
-            <div class="post ps-4 pt-4" *ngFor="let post of this.postsCargados" (click)="clickPost(post.id_publicacion)">
+            <div class="post ps-4 pt-4 pe-4" *ngFor="let post of this.postsCargados" (click)="clickPost(post.id_publicacion)">
                 <div *ngIf="post" class="content">
                     <div class="infoPost">
                         <div class="infoUsuario">
@@ -97,17 +97,23 @@
                 </div>
                 <div class="options mb-3 ">
                     <div class="comentar d-flex flex-row" (click)="clickComentar(post) ; $event.stopPropagation()">
-                        <i class="bi bi-chat" ></i>
+                        <button>
+                            <i class="bi bi-chat" ></i>
+                        </button>
                         <p>{{post.COMENTARIOS?.N_COMENTARIOS}}</p>
                     </div>
                     <div class="like d-flex flex-row"(click)="cambiarLike(post) ; $event.stopPropagation()">
-                        <i [ngClass]="post.LIKES?.LIKE_USUARIO ? 'bi bi-heart-fill text-warning' : 'bi bi-heart'" class="mt-1"></i>
-                        <p>{{post.LIKES?.N_LIKES}}</p>
+                        <button>
+                            <i [ngClass]="post.LIKES?.LIKE_USUARIO ? 'bi bi-heart-fill text-warning' : 'bi bi-heart'"></i>
+                        </button>
+                        <p class="mb-0">{{post.LIKES?.N_LIKES}}</p>
                     </div>
                     <div class="dropdown moreOptions d-flex flex-row" (click)="$event.stopPropagation()">
-                        <i class="bi bi-three-dots mt-1" data-bs-toggle="dropdown" aria-expanded="true"></i>
+                        <button data-bs-toggle="dropdown" aria-expanded="true">
+                            <i class="bi bi-three-dots mt-1" ></i>
+                        </button>
                         <ul class="dropdown-menu text-danger">
-                            <li  (click)="clickEliminar(post) ; $event.stopPropagation()" class="dropdown-item text-danger"><i class="bi bi-trash"></i>Eliminar</li>
+                            <li *ngIf="post.mismoUsuario" (click)="clickEliminar(post) ; $event.stopPropagation()" class="dropdown-item text-danger"><i class="bi bi-trash"></i>Eliminar</li>
                         </ul>
                     </div>
                 </div>

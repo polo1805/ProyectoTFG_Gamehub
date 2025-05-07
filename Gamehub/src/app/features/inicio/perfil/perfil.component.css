@@ -47,15 +47,31 @@ header{
         color: white;
     }
 }
-.seguir button{
-    background-color: orange;
-    padding: 5px 10px 5px 10px;
-    border: 2px solid orange;
+.options div:hover{
+    color: orange;
+    transition: 0.5 ease;
+    cursor: pointer;
+}   
+.options div:hover button{
+    background-color: rgba(255, 166, 0, 0.301);
+    transition: 0.5s ease;
 }
-.mas button{
+.options div:hover i{
+    color: orange;
+    transition: 0.5s ease;
+}
+.options button{
+    border: none;
+    width: 40px;
+    height: 40px;
     background-color: transparent;
-    border:2px solid white;
-    padding: 5px 10px 5px 10px;
+    border-radius: 50%;
+    &:hover{
+        background-color: rgba(0, 0, 0, 0.233);
+    }
+}
+.like p{
+    margin-bottom:1px !important;
 }
 .postUsuario{
     display: flex;
@@ -117,7 +133,7 @@ header{
     overflow: hidden;
     cursor: pointer;
     text-align: center;
-    min-width: 70px;
+    min-width: 100px;
 }
 .imagenJuego img{
     width: 100%;
@@ -210,19 +226,6 @@ header{
     max-height: 90vh;
     object-fit: contain; /* Evita deformaciones */
 }
-.options i{
-    padding: 5px 10px 5px 10px;
-    border-radius: 50%;
-}
-.options div:hover{
-    cursor: pointer;
-    transition: 0.5s;
-    color: rgb(255, 166, 0);
-    i{
-        background-color: rgba(255, 166, 0, 0.164);
-        transition: 0.5s;
-    }
-}
 .options div{
     align-items: center;
     gap:2px
@@ -267,8 +270,9 @@ ul i{
 .descripcion{
     width: 80%;
 }
-@media(max-width : 600px){
+@media(max-width : 1024px){
     app-side-navbar{
+        width: 0px;
         border: 0px !important;
     }
     .perfil{
