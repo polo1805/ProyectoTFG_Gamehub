@@ -1,8 +1,8 @@
 main{
+    height: 100%;
     width: 100%;
     display: flex;
     flex-direction: row;
-
 }
 app-side-navbar{
     width: 25%;
@@ -14,6 +14,7 @@ app-side-navbar{
     border-right:1px solid  orange;
 }
 article{
+    height: auto;
     width: 75%;
     display: flex;
     flex-direction: column;
@@ -43,6 +44,8 @@ header button{
     }
 }
 form{
+    position: relative;
+    z-index: 1 !important;
     padding-top: 50px;
     display: flex;
     flex-wrap: wrap;
@@ -51,6 +54,12 @@ form{
     align-content: center;
     align-items: center;
     gap: 20px;
+}
+.form-floating > label{
+    z-index: 1 !important;
+}
+.nombre , .username , .biografia{
+    width: 75% !important;
 }
 .imagenPerfil{
     position: relative;
@@ -100,4 +109,23 @@ form{
     display: flex;
     flex-direction: row;
     gap : 20px;
+}
+@media(max-width: 1024px){
+    app-side-navbar{
+        width: 0px !important;
+        border: 0px;
+        position: absolute;
+    }
+    main{
+        padding-bottom: 200px;
+    }
+    article{
+        width: 100%;
+        margin: 0px;
+    }
+    .imagenPerfil{
+        width: 75px;
+        height: 75px;
+    }
+
 }

@@ -37,6 +37,15 @@ header{
     display: flex;
     flex-direction: row-reverse;
     width: 50%;
+    button{
+        background-color: orange;
+        padding: 5px 10px 5px 10px;
+        border: 2px solid orange;
+        a{
+            text-decoration: none;
+            color: white;
+        }
+    }
 }
 .editarPerfil button{
     background-color: orange;
@@ -133,7 +142,7 @@ header{
     overflow: hidden;
     cursor: pointer;
     text-align: center;
-    min-width: 100px;
+    min-width: 75px;
 }
 .imagenJuego img{
     width: 100%;
@@ -181,6 +190,7 @@ header{
     width: 100%;
 }
 .datosPost{
+    gap: 20px;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -279,4 +289,14 @@ ul i{
         width: 100%;
         margin-left: 0;
     }
+    header{
+        padding-left: 10px;
+    }
+    .post{
+        padding-left: 10px !important;
+    }
+    main{
+        padding-bottom: 58px;
+    }
+
 }

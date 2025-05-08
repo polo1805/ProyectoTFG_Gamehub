@@ -91,4 +91,7 @@ article{
         width: 0px;
         border-right:0px;
     }
+    main{
+        padding-bottom: 60px;
+    }
 }

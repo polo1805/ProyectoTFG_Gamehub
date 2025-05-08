@@ -143,6 +143,7 @@ header{
     border: 2px solid orange;
     width: 100%;
 }
+
 .form-select{
     border: 2px solid orange;
     text-align: center;
@@ -152,7 +153,7 @@ header{
     max-height: 200px;
     overflow-y: auto;
 }
-@media (max-width : 600px){
+@media (max-width : 1024px){
     .buscarJuegos{
         margin-left:0;
         width: 100%;
