@@ -66,7 +66,7 @@
                     </div>
                 </div>
             </div>
-            <div class="options mb-3 ">
+            <div class="options mb-1 mt-4">
                 <div class="comentar d-flex flex-row" (click)="clickComentar(datosPost)">
                     <i class="bi bi-chat" ></i>
                     <p>{{datosPost.COMENTARIOS?.N_COMENTARIOS}}</p>
@@ -94,6 +94,9 @@
                     </div>
                     <div class="username">
                         <p class="text-secondary m-0">&nbsp;&nbsp;&nbsp;&commat;{{comentario.USUARIO?.NOMBRE_USUARIO}}</p>
+                    </div>
+                    <div class="fechaPublicacion">
+                        <p class="text-secondary m-0">·  {{formatearFecha(comentario.FECHA_COMENTARIO)}}</p>
                     </div>
                     <div class="dropdown comentarioOptions">
                         <button type="button" data-bs-toggle="dropdown" aria-expanded="false">

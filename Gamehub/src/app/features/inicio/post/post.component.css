@@ -208,6 +208,7 @@ ul i{
 }
 .fotoPerfil img{
     width: 50px;
+    height: 50px;
 }
 .infoUsuario {
     display: flex;
@@ -262,4 +263,16 @@ ul i{
 .tituloPost i{
     width: 40px;
     height: 40px;
+}
+@media(max-width: 1124px) {
+    main{
+        padding-bottom: 50px;
+    }
+    app-side-navbar{
+        width: 0px;
+        border: 0px;
+    }
+    article{
+        margin-left: 0;
+    }
 }

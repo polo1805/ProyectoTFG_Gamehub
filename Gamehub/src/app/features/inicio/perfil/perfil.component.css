@@ -280,7 +280,7 @@ ul i{
 .descripcion{
     width: 80%;
 }
-@media(max-width : 1024px){
+@media(max-width : 1124px){
     app-side-navbar{
         width: 0px;
         border: 0px !important;

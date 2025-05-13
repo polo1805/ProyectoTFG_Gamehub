@@ -42,3 +42,12 @@ header{
         margin: 20px;
     }
 }
+@media(max-width: 1124px) {
+    app-side-navbar{
+        width: 0px;
+    }
+    article{
+        margin-left: 0%;
+        width: 100%;
+    }
+}

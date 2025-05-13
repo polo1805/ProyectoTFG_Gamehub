@@ -209,7 +209,7 @@ article{
 .notaJuego{
     margin-left: auto;
 }
-@media (max-width : 1024px){
+@media (max-width : 1124px){
     .home{
         display: block;
     }

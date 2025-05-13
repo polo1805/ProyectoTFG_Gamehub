@@ -45,7 +45,6 @@ header button{
 }
 form{
     position: relative;
-    z-index: 1 !important;
     padding-top: 50px;
     display: flex;
     flex-wrap: wrap;
@@ -54,9 +53,6 @@ form{
     align-content: center;
     align-items: center;
     gap: 20px;
-}
-.form-floating > label{
-    z-index: 1 !important;
 }
 .nombre , .username , .biografia{
     width: 75% !important;
@@ -110,7 +106,7 @@ form{
     flex-direction: row;
     gap : 20px;
 }
-@media(max-width: 1024px){
+@media(max-width: 1124px){
     app-side-navbar{
         width: 0px !important;
         border: 0px;
@@ -126,6 +122,9 @@ form{
     .imagenPerfil{
         width: 75px;
         height: 75px;
+    }
+    .toast-container{
+        z-index:9999;
     }
 
 }

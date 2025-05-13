@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { Request } from '../../../core/request.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { NotificarPublicacionService } from '../../../services/notificar-publicacion.service';
 import { KeyService } from '../../../core/keys.service';
 @Component({
   selector: 'app-postear',
@@ -24,7 +23,6 @@ export class PostearComponent implements OnInit{
   constructor(
     private request : Request ,
     private route : ActivatedRoute , 
-    private publicacionService : NotificarPublicacionService , 
     private router : Router , 
     private key : KeyService
   ){} 
@@ -108,12 +106,10 @@ export class PostearComponent implements OnInit{
       this.request.subirPost(formData).subscribe({
         next:(response)=>{
           console.log(response)
-          this.publicacionService.notificarPublicacion(true);
           this.router.navigate([`${this.key.USERNAME}`])
         },
         error:(response)=>{
           console.log(response);
-          this.publicacionService.notificarPublicacion(false);
           this.router.navigate([`${this.key.USERNAME}`])
 
         }
@@ -127,14 +123,12 @@ export class PostearComponent implements OnInit{
       this.request.subirPost(formData).subscribe({
         next:(response)=>{
           console.log(response);
-          this.publicacionService.notificarPublicacion(true);
           this.router.navigate([`/${this.key.USERNAME}`] , {
             state:{mensajeToast : 'Publicacion subida correctamente' , estado : 'success' , icon:'check'}
           })
         },
         error:(response)=>{
           console.log(response)
-          this.publicacionService.notificarPublicacion(false);
           this.router.navigate([`/${this.key.USERNAME}`] , {
             state : { mensajeToast : 'No se ha podido subir la publicacion' , estado : 'danger' , icon : 'x'}
           })
