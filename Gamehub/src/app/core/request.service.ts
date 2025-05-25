@@ -10,7 +10,7 @@ import { RegistroJuego } from "../shared/juegoData";
     providedIn: 'root',
 })
 export class Request{
-    private baseUrl = 'http://192.168.1.151:80/';
+    private baseUrl = 'http://localhost:80/';
     constructor(
         private http:HttpClient , 
         private cookies : CookieService
