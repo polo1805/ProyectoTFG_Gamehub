@@ -8,11 +8,11 @@ import { Request } from '../../../core/request.service';
 import * as bootstrap from 'bootstrap';
 import { LoadingComponent } from '../../../services/loading/loading.component';
 import { RouterLink } from '@angular/router';
-
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [SideNavbarComponent, NgClass, CommonModule, LoadingComponent , RouterLink],
+  imports: [SideNavbarComponent, NgClass, CommonModule, LoadingComponent , RouterLink , FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -29,7 +29,8 @@ export class HomeComponent implements OnInit{
   iconToast : string = ''
   idUsuario : string = '';
   vistaParati : boolean = false ; 
-  vistaSiguiendo : boolean = false ; 
+  vistaSiguiendo : boolean = false ;
+  comentario : string = ''; 
   postCargados : any = [];
   postComentar : any = '';
   mensajeToast : string = '';
@@ -263,6 +264,17 @@ export class HomeComponent implements OnInit{
   clickComentar(post : any){
     this.postComentar = post;
     this.mostrarModal('comentarioModal')
+  }
+  subirComentario(){
+    this.request.anadirComentario(this.idUsuario ,this.postComentar.id_publicacion , this.comentario).subscribe({
+      next: async (response)=>{
+        console.log(response.message)
+        this.mostrarToast(true , response.info)
+      },
+      error:(response)=>{
+        this.mostrarToast(false , response.error.error)
+      }
+    })
   }
   /*
   * *METODOS FORMATEO FECHA

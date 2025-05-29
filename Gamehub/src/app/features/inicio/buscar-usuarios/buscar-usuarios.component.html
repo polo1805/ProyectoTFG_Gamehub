@@ -3,13 +3,13 @@
     <div class="buscarUsuarios">
         <header>
             <div class="buscador">
-                <input type="text" class="form-control w-100" placeholder="Buscar usuarios" (input)="buscarUsuarios($event)">
+                <input type="text" class="form-control w-100" placeholder="Buscar usuarios" (input)="buscarUsuarios($event)" aria-label="buscador">
             </div>
         </header>
         <div class="usuarios">
             <div class="usuario" *ngFor="let usuario of arrayUsuarios" (click)="clickPerfil(usuario.NOMBRE_USUARIO)">
                 <div class="imagen">
-                    <img src="http://192.168.1.151/uploads/fotosPerfil/{{usuario.IMAGEN}}" alt="Foto de perfil" class="rounded-circle">
+                    <img src="https://api.game-hub.me/uploads/fotosPerfil/{{usuario.IMAGEN}}" alt="Foto de perfil" class="rounded-circle">
                 </div>
                 <div class="nombre">
                     <p class="fw-bold">{{usuario.NOMBRE}}</p>

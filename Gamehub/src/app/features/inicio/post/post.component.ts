@@ -226,6 +226,9 @@ export class PostComponent implements OnInit {
           reject(response);
         }
       })
+
+
+      
     })
   }
   getUsuario(){

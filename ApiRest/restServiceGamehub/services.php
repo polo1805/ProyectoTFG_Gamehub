@@ -30,16 +30,13 @@ class Services
     function getToken()
     {
         try {
-            $headers = apache_request_headers();
-            if (!array_key_exists('Authorization', $headers)) {
-                return false;
-            } else {
-                $authorization = $headers["Authorization"];
-                $authorizationArray = explode(" ", $authorization);
-                $token = $authorizationArray[1];
-                $decodedToken = JWT::decode($token, new Key($_ENV['KEY'], 'HS256'));
-                return $decodedToken;
-            }
+            $headers = $_SERVER["REDIRECT_HTTP_AUTHORIZATION"];
+
+            $authorizationArray = explode(" ", $headers);
+            $token = $authorizationArray[1];
+            $decodedToken = JWT::decode($token, new Key($_ENV['KEY'], 'HS256'));
+            return $decodedToken;
+
         } catch (DomainException $domainException) {
             return false;
         } catch (ExpiredException $expiredException) {
@@ -231,8 +228,6 @@ class Services
                 'status' => 500,
                 'message' => 'Internal Server Error : ' . $error
             ]);
-        } finally {
-            $conn->close();
         }
     }
     //Comprueba que el codigo recibido , es el codigo registrado en la base de datos

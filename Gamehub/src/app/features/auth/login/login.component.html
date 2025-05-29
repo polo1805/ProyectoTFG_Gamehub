@@ -5,8 +5,8 @@
 <h1 class="text-center mb-4">Inicia sesión en Gamehub</h1>
 <form class="needs-validation" novalidate>
     <div class="form-floating w-100 has-validation" id="inputUsuario">
-        <input [(ngModel)]="usuario" name="usuario" type="user" class="form-control" [ngClass]="{'is-invalid' : !usuarioValidado}" 
-        id="usuario" aria-describedby="email" placeholder="Correo Electronico o usuario" for="invalid-feedback" required>
+        <input aria-label="Escribe el correo electronico o usuario" [(ngModel)]="usuario" name="usuario" type="user" class="form-control" [ngClass]="{'is-invalid' : !usuarioValidado}" 
+        id="usuario" aria-describedby="usuario" placeholder="Correo Electronico o usuario" for="invalid-feedback" required>
         <div class="invalid-feedback">
             Por favor , introduce un usuario o correo electronico valido
         </div>
@@ -15,11 +15,11 @@
     </div>
     <div class="input-group has-validation" id="inputContraseña">
         <div class="form-floating" [ngClass]="{'is-invalid' : !passwordValidada}">
-            <input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" name="password" [ngClass]="{'is-invalid' : !passwordValidada}"
+            <input  [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" name="password" [ngClass]="{'is-invalid' : !passwordValidada}"
             class="form-control" id="password" placeholder="Contraseña" for="invalid-feedback" required>
             <label for="password">Contraseña</label>
         </div>
-        <button class="input-group-text bg-dark" [ngClass]="{'is-invalid' : !passwordValidada}" (click)="cambiarVisibilidad()">
+        <button class="input-group-text bg-dark" [ngClass]="{'is-invalid' : !passwordValidada}" (click)="cambiarVisibilidad()" value="">
             <i [class]="passwordVisible ? 'bi bi-eye-slash' : 'bi bi-eye-fill'" ></i>
         </button>
         <div class="invalid-feedback">

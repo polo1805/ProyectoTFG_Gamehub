@@ -4,7 +4,7 @@
         <header>
             <div class="buscar">
                 <div class="buscador">
-                    <input type="text" class="form-control w-100" placeholder="Escribe el nombre del juego" (input)="buscarJuegos($event)">
+                    <input type="text" class="form-control w-100" placeholder="Escribe el nombre del juego" (input)="buscarJuegos($event)" aria-label="buscador">
                 </div>
             </div>
             <div class="filtros">
@@ -40,7 +40,7 @@
             <app-loading *ngIf="cargando"></app-loading>
             <div class="listaJuegos">
                 <div class="juego"*ngFor="let juego of arrayJuegos" (click)="verJuego(juego.id_juego)">
-                    <img src="http://192.168.1.151/uploads/fotosJuegos/{{juego.portada}}" alt="">
+                    <img src="https://api.game-hub.me/uploads/fotosJuegos/{{juego.portada}}" alt="Foto del juego">
                     <p class="my-2">{{juego.nombre_juego}}</p>
                 </div>
             </div>

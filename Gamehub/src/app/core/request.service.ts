@@ -2,15 +2,13 @@ import { Injectable } from "@angular/core";
 import { HttpClient , HttpHeaders  } from "@angular/common/http";
 import { Usuario } from "../shared/usuarioData";
 import { Observable } from "rxjs";
-import { NgModule } from "@angular/core";
 import { Registro } from "../shared/registroData";
 import { CookieService } from "ngx-cookie-service";
-import { RegistroJuego } from "../shared/juegoData";
 @Injectable({
     providedIn: 'root',
 })
 export class Request{
-    private baseUrl = 'http://localhost:80/';
+    private baseUrl = 'https://api.game-hub.me/index.php/';
     constructor(
         private http:HttpClient , 
         private cookies : CookieService

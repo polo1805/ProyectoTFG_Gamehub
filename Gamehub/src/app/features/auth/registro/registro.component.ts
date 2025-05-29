@@ -27,7 +27,7 @@ export class RegistroComponent {
   usernameValidado : boolean = true ; 
   password : string = '';
   passwordValidada : boolean = true ; 
-  passwordPattern : RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,16}$/;
+  passwordPattern : RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d].{8,16}$/;
   passwordError : string = "Por favor , introduce una contraseña valida"
   passwordVisible : boolean = false ; 
   isLoading : boolean = false ; 

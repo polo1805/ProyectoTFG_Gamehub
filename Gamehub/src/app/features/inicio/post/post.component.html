@@ -24,7 +24,7 @@
                 <div class="infoPost">
                     <div class="infoUsuario">
                         <div class="fotoPerfil">
-                            <img src="http://192.168.1.151/uploads/fotosPerfil/{{datosPost.USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
+                            <img src="https://api.game-hub.me/uploads/fotosPerfil/{{datosPost.USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
                         </div>
                         <div class="nombre">
                             <a [routerLink]="['/' , datosPost.USUARIO?.NOMBRE_USUARIO]" class="fw-bold">{{datosPost.USUARIO?.NOMBRE}}</a>
@@ -48,13 +48,13 @@
                             <p>{{datosPost.DESCRIPCION}}</p>
                         </div>
                         <div *ngIf="esArray(datosPost.imagen)" class="imagenes py-3" [ngClass]="'imagenes-'+ datosPost.imagen.length">
-                            <img *ngFor="let imagen of datosPost?.imagen"  src="http://192.168.1.151/uploads/fotosPost/{{imagen}}" alt="" (click)="clickImagen(imagen)">
+                            <img *ngFor="let imagen of datosPost?.imagen"  src="https://api.game-hub.me/uploads/fotosPost/{{imagen}}" alt="" (click)="clickImagen(imagen)">
                         </div>
                     </div>
                 </div>
                 <div class="infoJuego">
                     <div class="imagenJuego rounded" (click)="verJuego($event , datosPost.id_juego)">
-                        <img src="http://192.168.1.151/uploads/fotosJuegos/{{datosPost.JUEGO?.portada}}" class="rounded"  >
+                        <img src="https://api.game-hub.me/uploads/fotosJuegos/{{datosPost.JUEGO?.portada}}" class="rounded"  >
                         <div class="overlay">
                             <div class="texto-overlay">
                                 <i class="bi bi-eye"></i> VER JUEGO
@@ -87,7 +87,7 @@
             <div class="comentario" *ngFor="let comentario of arrayComentarios">
                 <div class="infoUsuario">
                     <div class="fotoPerfil">
-                        <img src="http://192.168.1.151/uploads/fotosPerfil/{{comentario.USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
+                        <img src="https://api.game-hub.me/uploads/fotosPerfil/{{comentario.USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
                     </div>
                     <div class="nombre">
                         <a [routerLink]="['/' , comentario.USUARIO?.NOMBRE_USUARIO]" class="fw-bold">{{comentario.USUARIO?.NOMBRE}}</a>

@@ -16,7 +16,7 @@
                     <div class="infoUsuarioPost">
                         <div class="infoUsuario">
                             <div class="imagenUsuario">
-                                <img src="http://192.168.1.151/uploads/fotosPerfil/{{post.INFO_USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
+                                <img src="https://api.game-hub.me/uploads/fotosPerfil/{{post.INFO_USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
                             </div>
                             <div class="nombre">
                                 <a [routerLink]="['/' , post.INFO_USUARIO?.NOMBRE_USUARIO]" class="fw-bold w-100">{{post.INFO_USUARIO?.NOMBRE}}</a>
@@ -42,7 +42,7 @@
                             </div>
                             <div class="infoJuego" >
                                 <div class="imagenJuego rounded" (click)="verJuego($event , post.id_juego)">
-                                    <img  src="http://192.168.1.151/uploads/fotosJuegos/{{post.INFO_JUEGO?.portada}}" alt="" class="rounded">
+                                    <img  src="https://api.game-hub.me/uploads/fotosJuegos/{{post.INFO_JUEGO?.portada}}" alt="Foto del juego" class="rounded">
                                     <div class="overlay">
                                         <div class="texto-overlay">
                                             <i class="bi bi-eye"></i> VER JUEGO
@@ -57,7 +57,7 @@
                         </div>
                         <div class="imagenes">
                             <div *ngIf="esArray(post.imagen)" class="imagenes px-5 pb-3" [ngClass]="'imagenes-'+ post.imagen.length">
-                                <img  *ngFor="let imagen of post?.imagen"  src="http://192.168.1.151/uploads/fotosPost/{{imagen}}" alt="" (click)="clickImagen(imagen) ; $event.stopPropagation()">
+                                <img  *ngFor="let imagen of post?.imagen"  src="https://api.game-hub.me/uploads/fotosPost/{{imagen}}" alt="" (click)="clickImagen(imagen) ; $event.stopPropagation()">
                             </div>
                         </div>
                     </div>
@@ -96,5 +96,21 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade modal-dark" id="comentarioModal" tabindex="-1" aria-labelledby="comentarioModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="comentarioModalLabel">Añadir Comentario</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" (click)="$event.stopPropagation()"></button>
+            </div>
+            <div class="modal-body">
+                <textarea class="form-control border-0 p-1" id="comentarioTextarea" rows="3" placeholder="Escribe un comentario..." [(ngModel)]="comentario"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" (click)="subirComentario()">Postear</button>
+            </div>
+          </div>
+        </div>
+    </div>
     </main>
 </div>

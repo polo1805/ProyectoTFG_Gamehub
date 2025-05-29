@@ -1,4 +1,4 @@
-<app-loading [isVisible]="isLoading"></app-loading>
+<app-loading *ngIf="isLoading"></app-loading>
 <form class="needs-validation" novalidate>
     <h1 class="text-center my-5">Verificacion</h1>
     <p class="text-center">Se ha enviado un codigo de verificacion a la siguiente direccion de correo electronico :  {{emailRecibido}} . Introduce el codigo para verificar la cuenta.</p>

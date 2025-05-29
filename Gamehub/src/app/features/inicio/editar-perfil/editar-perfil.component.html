@@ -23,7 +23,7 @@
         </header>
         <form action="" *ngIf="perfilCargado">
             <div class="imagenPerfil" (click)="abrirSelectorArchivo()">
-                <img class="rounded-circle" [src]="imagenTemporal || 'http://192.168.1.151/uploads/fotosPerfil/' + imagenPerfil " alt="">
+                <img class="rounded-circle" [src]="imagenTemporal || 'https://api.game-hub.me/uploads/fotosPerfil/' + imagenPerfil " alt="">
                 <div class="overlay">
                     <i class="bi bi-pencil-fill"></i>
                     <span>EDITAR IMAGEN</span>

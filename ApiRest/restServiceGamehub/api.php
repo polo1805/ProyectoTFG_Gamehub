@@ -1,5 +1,4 @@
 <?
-
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 require __DIR__ . '/vendor/autoload.php';
@@ -9,12 +8,10 @@ require_once('./services.php');
 
 $service = new Services();
 $request = trim($_SERVER['REQUEST_URI'] , '/');
-header("Access-Control-Allow-Origin: http://192.168.1.151:3000");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
-//Obtenemos el token
 
 if($_SERVER['REQUEST_METHOD']==='GET'){
     switch($request){

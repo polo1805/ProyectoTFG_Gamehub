@@ -9,7 +9,10 @@ Class ConexionBBDD{
     private $user;
     private $pass;
     private $dbname;
-    private $conexion ; 
+    private $conexion ;
+    private $port;
+
+        //Constructor de la clase que inicializa los parametros de conexion 
     public function __construct(){
         $this->host = $_ENV['DB_HOST'] ; 
         $this->user = $_ENV['DB_USER'] ;
@@ -18,20 +21,17 @@ Class ConexionBBDD{
     }
         //Metodo que realiza la conexion a la base de datos 
 public function conectarBBDD(){
-    $this->conexion = new mysqli(
-        $this->host , 
-        $this->user , 
-        $this->pass , 
-        $this->dbname , 
-        );
-        if($this->conexion->connect_error){
-            http_response_code(500);
-            echo json_encode([
-                'status'=>'500' , 
-                'message'=> 'Internal Server Error'
-            ]);
-        }else{
-            return $this->conexion;
+        $host_name = 'db5017923875.hosting-data.io';
+        $database = 'dbs14268221';
+        $user_name = 'dbu5685385';
+        $password = 'Poloo1805';
+
+        $link = new mysqli($host_name, $user_name, $password, $database);
+
+        if ($link->connect_error) {
+            die('<p>Error al conectar con servidor MySQL: '. $link->connect_error .'</p>');
+        } else {
+            return $link;
         }
     }
 }
