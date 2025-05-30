@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit{
     }
     await this.getUsuarioPost();
     for(let post of this.postCargados){
-      post['imagen'] = JSON.parse(post.imagen)
+      post['imagen'] = JSON.parse(post.IMAGEN)
     }
     await this.getJuegoPost();
     await this.getLikesPost();
@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit{
   getComentariosPost():Promise <void>{
     return new Promise((resolve , reject)=>{
       for(let post of this.postCargados){
-        this.request.getNumeroComentarios(post.id_publicacion).subscribe({
+        this.request.getNumeroComentarios(post.ID_PUBLICACION).subscribe({
           next:(response)=>{
             post['COMENTARIOS']= response.message;
             resolve();
@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit{
   getJuegoPost() : Promise <void> {
     return new Promise((resolve , reject)=>{
       for(let post of this.postCargados){
-        this.request.verJuego(post.id_juego).subscribe({
+        this.request.verJuego(post.ID_JUEGO).subscribe({
           next:(response)=>{
             post['INFO_JUEGO'] = response.message 
             resolve();
@@ -132,10 +132,10 @@ export class HomeComponent implements OnInit{
   getUsuarioPost(): Promise<void>{
     return new Promise((resolve , reject)=>{
       for(let post of this.postCargados){
-        this.request.getUsuario(post.id_usuario).subscribe({
+        this.request.getUsuario(post.ID_USUARIO).subscribe({
           next:(response)=>{
             post['INFO_USUARIO'] = response.message;
-            if(post.id_usuario == this.idUsuario){
+            if(post.ID_USUARIO == this.idUsuario){
               post.mismoUsuario = true;
             }else{
               post.mismoUsuario = false;
@@ -190,7 +190,7 @@ export class HomeComponent implements OnInit{
   getLikesPost(): Promise<void>{
     return new Promise((resolve , reject)=>{
       for(let post of this.postCargados){
-        this.request.getLikes(this.idUsuario , post.id_publicacion).subscribe({
+        this.request.getLikes(this.idUsuario , post.ID_PUBLICACION).subscribe({
           next:(response)=>{
             post['LIKES']= response.message;
             resolve();
@@ -209,10 +209,10 @@ export class HomeComponent implements OnInit{
     console.log(post)
     if(post.LIKES.LIKE_USUARIO){
       post.LIKES.N_LIKES = post.LIKES.N_LIKES+1
-      this.añadirLike(this.idUsuario , post.id_publicacion);
+      this.añadirLike(this.idUsuario , post.ID_PUBLICACION);
     }else{
       post.LIKES.N_LIKES = post.LIKES.N_LIKES-1
-      this.eliminarLike(this.idUsuario , post.id_publicacion);
+      this.eliminarLike(this.idUsuario , post.ID_PUBLICACION);
     }
   }
   //METODO PARA AÑADIR LIKE
@@ -249,10 +249,10 @@ export class HomeComponent implements OnInit{
   }
   //EVENTO PARA CUANDO SE HACE CLICK EN ELIMINAR POST
   clickEliminar(post : any){
-    this.request.eliminarPostPerfil(post.id_publicacion).subscribe({
+    this.request.eliminarPostPerfil(post.ID_PUBLICACION).subscribe({
       next:(response)=>{
         console.log(response);
-        this.postCargados = this.postCargados.filter((p: { id_publicacion: any; }) => p.id_publicacion !== post.id_publicacion); 
+        this.postCargados = this.postCargados.filter((p: { ID_PUBLICACION: any; }) => p.ID_PUBLICACION !== post.ID_PUBLICACION); 
         this.mostrarToast(true , response.message)
       },
       error:(response)=>{
@@ -266,7 +266,7 @@ export class HomeComponent implements OnInit{
     this.mostrarModal('comentarioModal')
   }
   subirComentario(){
-    this.request.anadirComentario(this.idUsuario ,this.postComentar.id_publicacion , this.comentario).subscribe({
+    this.request.anadirComentario(this.idUsuario ,this.postComentar.ID_PUBLICACION , this.comentario).subscribe({
       next: async (response)=>{
         console.log(response.message)
         this.mostrarToast(true , response.info)

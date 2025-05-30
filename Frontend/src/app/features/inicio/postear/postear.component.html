@@ -2,7 +2,7 @@
     <app-side-navbar></app-side-navbar>
     <div class="postear">
         <div class="breadcrumb">
-            <a [routerLink]="['/buscar-juegos']">Buscar juegos</a>&nbsp;<&nbsp;<a [routerLink]="['/juegos/' , this.juegoID]">{{datosJuego.nombre_juego}}</a>
+            <a [routerLink]="['/buscar-juegos']">Buscar juegos</a>&nbsp;<&nbsp;<a [routerLink]="['/juegos/' , this.juegoID]">{{datosJuego.NOMNRE_JUEGO}}</a>
         </div>
         <h4>Selecciona la valoracion:</h4>
         <div class="container-1">
@@ -47,8 +47,8 @@
                 </h3>
             </div>
             <div class="juego">
-                <img src="https://api.game-hub.me/uploads/fotosJuegos/{{ datosJuego.portada }}" alt="" />
-                <h5>{{ datosJuego.nombre_juego }}</h5>
+                <img src="https://api.game-hub.me/uploads/fotosJuegos/{{ datosJuego.PORTADA }}" alt="" />
+                <h5>{{ datosJuego.NOMBRE_JUEGO }}</h5>
             </div>
         </div>
     </div>

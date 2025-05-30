@@ -76,7 +76,7 @@ export class PerfilComponent implements OnInit{
       //OBTENEMOS LA INFORMACION DEL JUEGO
       await this.getJuego(post)
       //CONVERTIMOS LA INFO EN UN ARRAY DE IMAGENES
-      post['imagen'] = JSON.parse(post.imagen)
+      post['imagen'] = JSON.parse(post.IMAGEN)
       //OBTIENE EL NUMERO DE LIKES DEL POST
       await this.getLikes(post);
       //OBTIENE EL NUMERO DE COMENTARIOS EN UN POST
@@ -89,7 +89,7 @@ export class PerfilComponent implements OnInit{
   */
   getJuego(post : any) : Promise<void>{
     return new Promise ((resolve , reject)=>{
-      this.request.verJuego(post.id_juego).subscribe({
+      this.request.verJuego(post.ID_JUEGO).subscribe({
         next:(response)=>{
           post['INFO_JUEGO'] = response.message;
           resolve()
@@ -189,7 +189,7 @@ export class PerfilComponent implements OnInit{
   
   getLikes(post:any ) : Promise <void>{
     return new Promise((resolve , reject)=>{
-      this.request.getLikes(this.idUsuario , post.id_publicacion).subscribe({
+      this.request.getLikes(this.idUsuario , post.ID_PUBLICACION).subscribe({
         next:(response)=>{
           post['LIKES'] = response.message;
           resolve();
@@ -203,14 +203,14 @@ export class PerfilComponent implements OnInit{
   }
 
   añadirLikes(post : any){
-    this.request.anadirLike(this.idUsuario , post.id_publicacion).subscribe({
+    this.request.anadirLike(this.idUsuario , post.ID_PUBLICACION).subscribe({
       next:(response :any )=>{
         console.log(response)
       }
     })
   }
   eliminarLikes(post : any){
-    this.request.eliminarLike(this.idUsuario , post.id_publicacion).subscribe({
+    this.request.eliminarLike(this.idUsuario , post.ID_PUBLICACION).subscribe({
       next:(response :any )=>{
         console.log(response)
       }
@@ -222,7 +222,7 @@ export class PerfilComponent implements OnInit{
   */
   getNumeroComentarios(post : any ) : Promise <void>{
     return new Promise((resolve , reject)=>{
-      this.request.getNumeroComentarios(post.id_publicacion).subscribe({
+      this.request.getNumeroComentarios(post.ID_PUBLICACION).subscribe({
         next:(response)=>{
           post['COMENTARIOS'] = response.message;
           resolve();
@@ -235,7 +235,7 @@ export class PerfilComponent implements OnInit{
     })
   }
   añadirComentario(){
-    this.request.anadirComentario(this.idUsuario ,this.postComentar.id_publicacion , this.comentario).subscribe({
+    this.request.anadirComentario(this.idUsuario ,this.postComentar.ID_PUBLICACION , this.comentario).subscribe({
       next: (response)=>{
         console.log(response);
         this.stateToast = 'success';
@@ -296,12 +296,12 @@ export class PerfilComponent implements OnInit{
   */
   //FUNCION QUE SE ENCARGA DE ELIMINAR UN POST
   eliminarPost(post : any){
-    this.request.eliminarPostPerfil(post.id_publicacion).subscribe({
+    this.request.eliminarPostPerfil(post.ID_PUBLICACION).subscribe({
       next:(response)=>{
         this.stateToast = 'success';
         this.iconToast = 'check';
         this.mensajeToast = response.message
-        this.postsCargados = this.postsCargados.filter(p => p.id_publicacion !== post.id_publicacion); 
+        this.postsCargados = this.postsCargados.filter(p => p.ID_PUBLICACION !== post.ID_PUBLICACION); 
         this.mostrarToast();
       },
       error:(response)=>{

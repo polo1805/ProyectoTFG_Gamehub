@@ -39,9 +39,9 @@
         <div class="resultados">
             <app-loading *ngIf="cargando"></app-loading>
             <div class="listaJuegos">
-                <div class="juego"*ngFor="let juego of arrayJuegos" (click)="verJuego(juego.id_juego)">
-                    <img src="https://api.game-hub.me/uploads/fotosJuegos/{{juego.portada}}" alt="Foto del juego">
-                    <p class="my-2">{{juego.nombre_juego}}</p>
+                <div class="juego"*ngFor="let juego of arrayJuegos" (click)="verJuego(juego.ID_JUEGO)">
+                    <img src="https://api.game-hub.me/uploads/fotosJuegos/{{juego.PORTADA}}" alt="Foto del juego">
+                    <p class="my-2">{{juego.NOMBRE_JUEGO}}</p>
                 </div>
             </div>
         </div>

@@ -33,28 +33,28 @@
                             <p class="text-secondary m-0">&nbsp;&nbsp;&nbsp;&commat;{{datosPost.USUARIO?.NOMBRE_USUARIO}}</p>
                         </div>
                         <div class="fechaPublicacion">
-                            <p class="text-secondary m-0">·  {{formatearFecha(datosPost.fecha_publicacion)}}</p>
+                            <p class="text-secondary m-0">·  {{formatearFecha(datosPost.FECHA_PUBLICACION)}}</p>
                         </div>
                         <div class="calificacion">
                             <h4 [ngClass]="{
-                                'bg-danger':  datosPost.calificacion >= 0 && datosPost.calificacion < 5,
-                                'bg-warning': datosPost.calificacion  >= 5 && datosPost.calificacion < 8,
-                                'bg-success': datosPost.calificacion  >= 8
-                            }" class="m-0 p-2 ps-3 pe-3 rounded">{{datosPost.calificacion}}</h4>
+                                'bg-danger':  datosPost.CALIFICACION >= 0 && datosPost.CALIFICACION < 5,
+                                'bg-warning': datosPost.CALIFICACION  >= 5 && datosPost.CALIFICACION < 8,
+                                'bg-success': datosPost.CALIFICACION  >= 8
+                            }" class="m-0 p-2 ps-3 pe-3 rounded">{{datosPost.CALIFICACION}}</h4>
                         </div>
                     </div>
                     <div class="datosPost">
                         <div *ngIf="datosPost.DESCRIPCION" class="descripcion">
                             <p>{{datosPost.DESCRIPCION}}</p>
                         </div>
-                        <div *ngIf="esArray(datosPost.imagen)" class="imagenes py-3" [ngClass]="'imagenes-'+ datosPost.imagen.length">
-                            <img *ngFor="let imagen of datosPost?.imagen"  src="https://api.game-hub.me/uploads/fotosPost/{{imagen}}" alt="" (click)="clickImagen(imagen)">
+                        <div *ngIf="esArray(datosPost.IMAGEN)" class="imagenes py-3" [ngClass]="'imagenes-'+ datosPost.IMAGEN.length">
+                            <img *ngFor="let imagen of datosPost?.IMAGEN"  src="https://api.game-hub.me/uploads/fotosPost/{{imagen}}" alt="" (click)="clickImagen(imagen)">
                         </div>
                     </div>
                 </div>
                 <div class="infoJuego">
-                    <div class="imagenJuego rounded" (click)="verJuego($event , datosPost.id_juego)">
-                        <img src="https://api.game-hub.me/uploads/fotosJuegos/{{datosPost.JUEGO?.portada}}" class="rounded"  >
+                    <div class="imagenJuego rounded" (click)="verJuego($event , datosPost.ID_JUEGO)">
+                        <img src="https://api.game-hub.me/uploads/fotosJuegos/{{datosPost.JUEGO?.PORTADA}}" class="rounded"  >
                         <div class="overlay">
                             <div class="texto-overlay">
                                 <i class="bi bi-eye"></i> VER JUEGO
@@ -62,7 +62,7 @@
                         </div>
                     </div>
                     <div class="tituloJuego">
-                        <a [routerLink]="['/juegos' , datosPost.id_juego]" class="text-center fw-bold">{{datosPost.JUEGO?.nombre_juego}}</a>
+                        <a [routerLink]="['/juegos' , datosPost.ID_JUEGO]" class="text-center fw-bold">{{datosPost.JUEGO?.NOMBRE_JUEGO}}</a>
                     </div>
                 </div>
             </div>

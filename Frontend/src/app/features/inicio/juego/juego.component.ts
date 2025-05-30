@@ -30,7 +30,7 @@ export class JuegoComponent implements OnInit{
         next : (res)=>{
           this.juego = res.message;
           console.log(this.juego);
-          this.generos = this.juego.genero.split('/')
+          this.generos = this.juego.GENERO.split('/')
           console.log(this.generos)
         }
       })

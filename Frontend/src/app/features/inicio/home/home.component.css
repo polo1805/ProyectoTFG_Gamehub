@@ -102,6 +102,7 @@ article{
 }
 .imagenJuego img{
     width: 100%;
+    height: 100%;
     margin: auto;;
 }
 .imagenJuego{
@@ -112,6 +113,7 @@ article{
     cursor: pointer;
     text-align: center;
     min-width: 75px;
+    height: 175px;
 }
 .imagenJuego:hover {
     transform: scale(1.05);

@@ -47,9 +47,9 @@ export class PostComponent implements OnInit {
   async cargarPagina(){
     await this.obtenerUsuarioVisitante();
     await this.cargarPost();
-    await this.getUsuarioPost(this.datosPost.id_usuario);
-    this.datosPost['imagen'] = JSON.parse(this.datosPost.imagen)
-    await this.getJuego(this.datosPost.id_juego)
+    await this.getUsuarioPost(this.datosPost.ID_USUARIO);
+    this.datosPost['imagen'] = JSON.parse(this.datosPost.IMAGEN)
+    await this.getJuego(this.datosPost.ID_JUEGO)
     await this.getLikes(this.idPost)
     await this.getNumeroComentarios(this.idPost)
     await this.cargarComentarios(this.idPost);
@@ -122,7 +122,7 @@ export class PostComponent implements OnInit {
   }
   //FUNCION PARA ELIMINAR UN POST EN EL QUE SE HA HECHO CLICK
   clickEliminar(post : any){
-    this.request.eliminarPostPerfil(post.id_publicacion).subscribe({
+    this.request.eliminarPostPerfil(post.ID_PUBLICACION).subscribe({
       next:(response)=>{
         this.router.navigate([`/${this.username}`], {
           state:{mensajeToast : 'Publicacion eliminada correctamente' , estado : 'success' , icon:'check'}
@@ -151,7 +151,7 @@ export class PostComponent implements OnInit {
       console.log(post)
       if(post.LIKES.LIKE_USUARIO){
         post.LIKES.N_LIKES = post.LIKES.N_LIKES+1
-        this.request.anadirLike(this.idUsuario , post.id_publicacion).subscribe({
+        this.request.anadirLike(this.idUsuario , post.ID_PUBLICACION).subscribe({
           next:(response :any )=>{
             console.log(response)
             resolve();
@@ -163,7 +163,7 @@ export class PostComponent implements OnInit {
         })
       }else{
         post.LIKES.N_LIKES = post.LIKES.N_LIKES-1
-        this.request.eliminarLike(this.idUsuario , post.id_publicacion).subscribe({
+        this.request.eliminarLike(this.idUsuario , post.ID_PUBLICACION).subscribe({
           next:(response :any )=>{
             console.log(response)
             resolve()
@@ -200,7 +200,7 @@ export class PostComponent implements OnInit {
     this.request.getUsuario(id).subscribe({
       next:(response)=>{
         this.datosPost['USUARIO'] = response.message;
-        if(this.datosPost.id_usuario === this.idUsuario){
+        if(this.datosPost.ID_USUARIO === this.idUsuario){
           this.datosPost['MISMO_USUARIO'] = true;
         }else{
           this.datosPost['MISMO_USUARIO'] = false;
@@ -285,7 +285,7 @@ export class PostComponent implements OnInit {
 
   //FUNCION QUE SE ENCARGAR DE SUBIR UN COMENTARIO 
   subirComentario(){
-    this.request.anadirComentario(this.idUsuario ,this.postComentar.id_publicacion , this.comentario).subscribe({
+    this.request.anadirComentario(this.idUsuario ,this.postComentar.ID_PUBLICACION , this.comentario).subscribe({
       next: async (response)=>{
         let comentarioNuevo = response.message;
         let infoUsuario = await this.getUsuarioComentario(comentarioNuevo.ID_USUARIO)
