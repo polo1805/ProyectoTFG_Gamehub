@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit{
     }
     await this.getUsuarioPost();
     for(let post of this.postCargados){
-      post['imagen'] = JSON.parse(post.IMAGEN)
+      post['IMAGEN'] = JSON.parse(post.IMAGEN)
     }
     await this.getJuegoPost();
     await this.getLikesPost();
@@ -239,7 +239,7 @@ export class HomeComponent implements OnInit{
   */
   //ABRE UN MODAL CON LA FOTO DE LA IMAGEN
   clickImagen(imagen: string) {
-    this.imagenClick = `http://localhost/uploads/fotosPost/${imagen}`;
+    this.imagenClick = `https://api.game-hub.me/uploads/fotosPost/${imagen}`;
     this.mostrarModal('imagenModal')
   }
 
@@ -334,6 +334,7 @@ export class HomeComponent implements OnInit{
   }
   //COMPRUEBA QUE ES UN ARRAY 
   esArray(value: any) {
+    console.log(Array.isArray(value));
     return Array.isArray(value) && value.length > 0
   }
 }

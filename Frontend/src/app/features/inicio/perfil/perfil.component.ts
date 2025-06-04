@@ -76,7 +76,7 @@ export class PerfilComponent implements OnInit{
       //OBTENEMOS LA INFORMACION DEL JUEGO
       await this.getJuego(post)
       //CONVERTIMOS LA INFO EN UN ARRAY DE IMAGENES
-      post['imagen'] = JSON.parse(post.IMAGEN)
+      post['IMAGEN'] = JSON.parse(post.IMAGEN)
       //OBTIENE EL NUMERO DE LIKES DEL POST
       await this.getLikes(post);
       //OBTIENE EL NUMERO DE COMENTARIOS EN UN POST
@@ -320,7 +320,7 @@ export class PerfilComponent implements OnInit{
 
   //FUNCION QUE LLAMA AL MODAL DE LA IMAGEN 
   clickImagen(imagen : string){
-    this.imagenClick = `http://localhost/uploads/fotosPost/${imagen}`;
+    this.imagenClick = `https://api.game-hub.me/uploads/fotosPost/${imagen}`;
     // Abre el modal de Bootstrap
     this.mostrarModal('imagenModal');
   }

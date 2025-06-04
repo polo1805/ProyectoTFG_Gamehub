@@ -48,7 +48,7 @@ export class PostComponent implements OnInit {
     await this.obtenerUsuarioVisitante();
     await this.cargarPost();
     await this.getUsuarioPost(this.datosPost.ID_USUARIO);
-    this.datosPost['imagen'] = JSON.parse(this.datosPost.IMAGEN)
+    this.datosPost['IMAGEN'] = JSON.parse(this.datosPost.IMAGEN)
     await this.getJuego(this.datosPost.ID_JUEGO)
     await this.getLikes(this.idPost)
     await this.getNumeroComentarios(this.idPost)
@@ -117,7 +117,7 @@ export class PostComponent implements OnInit {
   }
   //ABRE UN MODAL CON LA FOTO DE LA IMAGEN
   clickImagen(imagen: string) {
-    this.imagenClick = `http://localhost/uploads/fotosPost/${imagen}`;
+    this.imagenClick = `https://api.game-hub.me/uploads/fotosPost/${imagen}`;
     this.mostrarModal('imagenModal')
   }
   //FUNCION PARA ELIMINAR UN POST EN EL QUE SE HA HECHO CLICK

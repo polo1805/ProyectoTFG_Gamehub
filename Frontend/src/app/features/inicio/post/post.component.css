@@ -60,12 +60,14 @@ article{
     margin: auto;
 }
 .imagenJuego{
-    width: 50%;
+    width: 60%;
     justify-content: center;
     transition: transform 0.3s ease;
     overflow: hidden;
     cursor: pointer;
     text-align: center;
+    min-width: 100px;
+    min-height: 175px;
 }
 .imagenJuego:hover {
     transform: scale(1.05);
@@ -99,7 +101,7 @@ article{
     flex-direction: column;
 }
 .infoPost{
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -107,34 +109,48 @@ article{
     width: 100%;
 }
 .datosPost{
+    width: 100%;
+    gap : 20px;
     padding-left: 60px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
-.imagenes{
+.imagenes {
     display: grid;
     gap: 5px;
-    grid-template-columns: repeat(2 , 1fr);
-    grid-template-rows: auto;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+    height: 50%;
 }
-.imagenes img{
+.imagenes img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 10px;
     cursor: pointer;
-    object-fit: cover;
 }
-.imagenes-1{
+.imagenes-1 {
     grid-template-columns: 1fr;
-}
-.imagenes-2{
-    grid-template-columns: repeat(2 , 1fr);
-}
-.imagenes-3{
-    grid-template-columns: repeat(2,1fr);
     grid-template-rows: auto;
 }
-.imagenes-3 img:nth-child(3) {
-    grid-column: span 2; /* La tercera imagen ocupa dos columnas */
+
+.imagenes-2 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
 }
+
+.imagenes-3 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+    height: fit-content;
+    grid-auto-rows: 1fr;
+}
+.imagenes-3 img:nth-child(3) {
+    grid-column: span 2;
+    height: 200px;
+}
+
 .imagenes-4 {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
@@ -274,5 +290,9 @@ ul i{
     }
     article{
         margin-left: 0;
+    }
+    .imagenJuego{
+        min-height: 125px !important;
+        min-width: 75px !important;
     }
 }

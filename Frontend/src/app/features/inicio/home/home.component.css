@@ -112,8 +112,8 @@ article{
     overflow: hidden;
     cursor: pointer;
     text-align: center;
-    min-width: 75px;
-    height: 175px;
+    min-width: 100px;
+    min-height: 175px;
 }
 .imagenJuego:hover {
     transform: scale(1.05);
@@ -158,9 +158,46 @@ article{
     flex-direction: row;
     gap: 10px;
 }
-.imagenes img{
-    width: 75%;
+.imagenes {
+    display: grid;
+    gap: 5px;
+    width: 100%;
+    max-width: 500px;
     border-radius: 10px;
+    height: 50%;
+}
+
+.imagenes img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.imagenes-1 {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+}
+
+.imagenes-2 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+}
+
+.imagenes-3 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+    height: fit-content;
+    grid-auto-rows: 1fr;
+}
+.imagenes-3 img:nth-child(3) {
+    grid-column: span 2;
+    height: 200px;
+}
+
+.imagenes-4 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
 }
 .descripcionPost{
     margin-left: 60px;
@@ -235,6 +272,10 @@ article{
     }
     .infoUsuario{
         width: 100%;
+    }
+    .imagenJuego{
+        min-height: 125px !important;
+        min-width: 75px !important;
     }
 
 }
