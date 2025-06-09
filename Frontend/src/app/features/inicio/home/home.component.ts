@@ -50,7 +50,12 @@ export class HomeComponent implements OnInit{
       })
       this.cargarPagina()
     }
+    const outlet = document.querySelector('body');
+    if(outlet){
+      outlet.setAttribute('data-bs-theme', localStorage.getItem('tema') || 'dark');
+    }
   }
+  
   async cargarPagina(){
     if(this.vistaParati){
       await this.cargarPostParaTi();
@@ -270,6 +275,8 @@ export class HomeComponent implements OnInit{
       next: async (response)=>{
         console.log(response.message)
         this.mostrarToast(true , response.info)
+        this.postComentar.COMENTARIOS.N_COMENTARIOS = this.postComentar.COMENTARIOS.N_COMENTARIOS + 1;
+        this.comentario = '';
       },
       error:(response)=>{
         this.mostrarToast(false , response.error.error)

@@ -377,7 +377,7 @@ class Services
                     $datos = json_decode($json, true);
                     if (isset($datos['INPUT'])) {
                         $input = $datos['INPUT'] . "%";
-                        $stmt = $conn->prepare("SELECT * FROM USUARIOS WHERE NOMBRE LIKE ? OR NOMBRE_USUARIO LIKE ?");
+                        $stmt = $conn->prepare("SELECT * FROM USUARIOS WHERE (NOMBRE LIKE ? OR NOMBRE_USUARIO LIKE ?) AND ROL = 'USER'");
                         $stmt->bind_param('ss', $input, $input);
                         $stmt->execute();
                         $result = $stmt->get_result();

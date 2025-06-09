@@ -98,6 +98,7 @@ article{
     width: fit-content;
 }
 .nombre{
+    color : var(--bs-body-color);
     width:fit-content;
 }
 .imagenJuego img{

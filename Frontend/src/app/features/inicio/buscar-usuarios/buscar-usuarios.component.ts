@@ -37,6 +37,7 @@ export class BuscarUsuariosComponent implements OnInit{
       },
       error : (error)=>{
         console.log(error);
+        this.arrayUsuarios = [];
       }
     })
   }

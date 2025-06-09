@@ -27,7 +27,7 @@
                             <img src="https://api.game-hub.me/uploads/fotosPerfil/{{datosPost.USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
                         </div>
                         <div class="nombre">
-                            <a [routerLink]="['/' , datosPost.USUARIO?.NOMBRE_USUARIO]" class="fw-bold">{{datosPost.USUARIO?.NOMBRE}}</a>
+                            <a [routerLink]="['/' , datosPost.USUARIO?.NOMBRE_USUARIO]" class="fw-bold text-body ">{{datosPost.USUARIO?.NOMBRE}}</a>
                         </div>
                         <div class="username">
                             <p class="text-secondary m-0">&nbsp;&nbsp;&nbsp;&commat;{{datosPost.USUARIO?.NOMBRE_USUARIO}}</p>
@@ -58,7 +58,7 @@
                                 </div>
                             </div>
                             <div class="tituloJuego">
-                                <a [routerLink]="['/juegos' , datosPost.ID_JUEGO]" class="text-center fw-bold">{{datosPost.JUEGO?.NOMBRE_JUEGO}}</a>
+                                <a [routerLink]="['/juegos' , datosPost.ID_JUEGO]" class="text-center fw-bold text-body">{{datosPost.JUEGO?.NOMBRE_JUEGO}}</a>
                             </div>
                         </div>                        
                     </div>
@@ -76,10 +76,10 @@
                     <i [ngClass]="datosPost.LIKES?.LIKE_USUARIO ? 'bi bi-heart-fill text-warning' : 'bi bi-heart'" class=""></i>
                     <p>{{datosPost.LIKES?.N_LIKES}}</p>
                 </div>
-                <div class="dropdown moreOptions d-flex flex-row">
+                <div class="dropdown moreOptions d-flex flex-row" *ngIf="datosPost.MISMO_USUARIO">
                     <i class="bi bi-three-dots" data-bs-toggle="dropdown" aria-expanded="true"></i>
                     <ul class="dropdown-menu text-danger">
-                        <li (click)="clickEliminar(datosPost)" *ngIf="datosPost.MISMO_USUARIO"><i class="bi bi-trash"></i>Eliminar</li>
+                        <li (click)="clickEliminar(datosPost)" ><i class="bi bi-trash"></i>Eliminar</li>
                     </ul>
                 </div>
             </div>
@@ -91,7 +91,7 @@
                         <img src="https://api.game-hub.me/uploads/fotosPerfil/{{comentario.USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
                     </div>
                     <div class="nombre">
-                        <a [routerLink]="['/' , comentario.USUARIO?.NOMBRE_USUARIO]" class="fw-bold">{{comentario.USUARIO?.NOMBRE}}</a>
+                        <a [routerLink]="['/' , comentario.USUARIO?.NOMBRE_USUARIO]" class="fw-bold text-body">{{comentario.USUARIO?.NOMBRE}}</a>
                     </div>
                     <div class="username">
                         <p class="text-secondary m-0">&nbsp;&nbsp;&nbsp;&commat;{{comentario.USUARIO?.NOMBRE_USUARIO}}</p>

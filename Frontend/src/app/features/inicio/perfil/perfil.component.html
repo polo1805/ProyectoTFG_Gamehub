@@ -79,7 +79,7 @@
                                     </div>
                                 </div>
                                 <div class="tituloJuego text-center">
-                                    <a [routerLink]="['/juegos' , post.ID_JUEGO]" class="text-center fw-bold">{{post.INFO_JUEGO?.NOMBRE_JUEGO}}</a>
+                                    <a [routerLink]="['/juegos' , post.ID_JUEGO]" class="text-center fw-bold text-body ">{{post.INFO_JUEGO?.NOMBRE_JUEGO}}</a>
                                 </div>
                             </div>
 
@@ -109,7 +109,7 @@
                             <i class="bi bi-three-dots mt-1" ></i>
                         </button>
                         <ul class="dropdown-menu text-danger">
-                            <li *ngIf="post.mismoUsuario" (click)="clickEliminar(post) ; $event.stopPropagation()" class="dropdown-item text-danger"><i class="bi bi-trash"></i>Eliminar</li>
+                            <li (click)="clickEliminar(post) ; $event.stopPropagation()" class="dropdown-item text-danger"><i class="bi bi-trash"></i>Eliminar</li>
                         </ul>
                     </div>
                 </div>

@@ -299,9 +299,11 @@ export class PostComponent implements OnInit {
         this.arrayComentarios.push(response.message);
         this.datosPost.COMENTARIOS.N_COMENTARIOS = this.datosPost.COMENTARIOS.N_COMENTARIOS +1
         this.mostrarToast(true , response.info)
+        this.comentario = '';
       },
       error:(response)=>{
         this.mostrarToast(false , response.error.error)
+        this.comentario = '';
       }
     })
   }

@@ -117,28 +117,28 @@ export class BuscarJuegosComponent implements OnInit{
     switch (valor) {
       case 'calificacionMenor':
         this.arrayJuegos.sort((a,b)=>{
-          return parseFloat(a.calificacion_media) - parseFloat(b.calificacion_media);
+          return parseFloat(a.CALIFICACION_MEDIA) - parseFloat(b.CALIFICACION_MEDIA);
         })
         break;
       case 'calificacionMayor':
         this.arrayJuegos.sort((a,b)=>{
-          return parseFloat(b.calificacion_media) - parseFloat(a.calificacion_media);
+          return parseFloat(b.CALIFICACION_MEDIA) - parseFloat(a.CALIFICACION_MEDIA);
         })
         break;
       case 'fecha':
         this.arrayJuegos.sort((a,b)=>{
-          return new Date(b.fecha_lanzamiento).getTime() - new Date(a.fecha_lanzamiento).getTime();
+          return new Date(b.FECHA_LANZAMIENTO).getTime() - new Date(a.FECHA_LANZAMIENTO).getTime();
         })
         break;
       case 'nombreAZ':
         this.arrayJuegos.sort((a , b )=>{
-          return a.nombre_juego.localeCompare(b.nombre_juego);
+          return a.nombre_juego.localeCompare(b.NOMBRE_JUEGO);
           
         })
         break; 
       case 'nombreZA':
         this.arrayJuegos.sort((a , b)=>{
-          return b.nombre_juego.localeCompare(a.nombre_juego);
+          return b.nombre_juego.localeCompare(a.NOMBRE_JUEGO);
         })
       break;
     }

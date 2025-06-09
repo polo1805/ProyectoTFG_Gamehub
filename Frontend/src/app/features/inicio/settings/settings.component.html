@@ -7,9 +7,9 @@
         <form>
             <div class="apariencia">
                 <label>Selecciona la apariencia</label>
-                <select class="form-select" (change)="cambiarTema($event)">
-                    <option value="light">Claro</option>
+                <select class="form-select" (change)="cambiarTema($event)" [(ngModel)]="temaActual">
                     <option value="dark">Oscuro</option>
+                    <option value="light">Claro</option>
                 </select>
             </div>
         </form>

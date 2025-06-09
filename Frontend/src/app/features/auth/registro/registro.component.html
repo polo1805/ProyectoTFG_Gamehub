@@ -34,7 +34,7 @@
             class="form-control" id="password" placeholder="Contraseña" for="invalid-feedback" required>
             <label for="password">Contraseña</label>
         </div>
-        <button class="input-group-text bg-dark" [ngClass]="{'is-invalid' : !passwordValidada}" (click)="cambiarVisibilidad()">
+        <button class="input-group-text" [ngClass]="{'is-invalid' : !passwordValidada}" (click)="cambiarVisibilidad()">
             <i [class]="passwordVisible ? 'bi bi-eye-slash' : 'bi bi-eye-fill'" ></i>
         </button>
         <div class="invalid-feedback" [innerHTML]="passwordError">

@@ -1,5 +1,17 @@
 <div class="home">
     <app-side-navbar></app-side-navbar>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3 ">
+        <div id="liveToast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto"><i class=" text-{{stateToast}} bi bi-{{iconToast}}-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;GAMEHUB</strong>
+                <small></small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-{{stateToast}}">
+                {{mensajeToast}}
+            </div>
+        </div>
+    </div>   
     <main>
         <header>
             <div class="parati" (click)="cambiarVista('parati')" >
@@ -19,7 +31,7 @@
                                 <img src="https://api.game-hub.me/uploads/fotosPerfil/{{post.INFO_USUARIO?.IMAGEN}}" alt="" class="rounded-circle">
                             </div>
                             <div class="nombre">
-                                <a [routerLink]="['/' , post.INFO_USUARIO?.NOMBRE_USUARIO]" class="fw-bold w-100">{{post.INFO_USUARIO?.NOMBRE}}</a>
+                                <a [routerLink]="['/' , post.INFO_USUARIO?.NOMBRE_USUARIO]" class="fw-bold w-100 text-body">{{post.INFO_USUARIO?.NOMBRE}}</a>
                             </div>
                             <div class="username">
                                 <p class="text-secondary">&commat;{{post.INFO_USUARIO?.NOMBRE_USUARIO}}</p>
@@ -50,7 +62,7 @@
                                     </div>
                                 </div>
                                 <div class="nombreJuego text-center">
-                                    <a [routerLink]="['/juegos' , post.ID_JUEGO]" class="fw-bold">{{post.INFO_JUEGO?.NOMBRE_JUEGO}}</a>
+                                    <a [routerLink]="['/juegos' , post.ID_JUEGO]" class="fw-bold text-body ">{{post.INFO_JUEGO?.NOMBRE_JUEGO}}</a>
                                 </div>
                             </div>
 
@@ -76,12 +88,12 @@
                         </button>
                         <p class="mb-0">{{post.LIKES?.N_LIKES}}</p>
                     </div>
-                    <div class="dropdown moreOptions d-flex flex-row" (click)="$event.stopPropagation()">
+                    <div class="dropdown moreOptions d-flex flex-row" (click)="$event.stopPropagation()" *ngIf="post.mismoUsuario">
                         <button data-bs-toggle="dropdown" aria-expanded="true">
                             <i class="bi bi-three-dots mt-1" ></i>
                         </button>
                         <ul class="dropdown-menu text-danger">
-                            <li *ngIf="post.mismoUsuario" (click)="clickEliminar(post) ; $event.stopPropagation()" class="dropdown-item text-danger"><i class="bi bi-trash"></i>Eliminar</li>
+                            <li  (click)="clickEliminar(post) ; $event.stopPropagation()" class="dropdown-item text-danger"><i class="bi bi-trash"></i>Eliminar</li>
                         </ul>
                     </div>
                 </div>
@@ -110,7 +122,7 @@
               <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" (click)="subirComentario()">Postear</button>
             </div>
           </div>
-        </div>
+        </div>     
     </div>
     </main>
 </div>
